@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Symbol • Sistema vivo v3.0</title>
+  <style>
+    /* Base neutral palette inspired by Mira v2.4 */
+    :root {
+      --bg-day: #f6f6f7;
+      --card-day: #ffffff;
+      --text-day: #111111;
+      --border-day: #e5e5ea;
+      --bg-night: #111214;
+      --card-night: #16171a;
+      --text-night: #f2f2f4;
+      --border-night: #2a2b2f;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "IBM Plex Sans", Arial, sans-serif;
+      background-color: var(--bg-day);
+      color: var(--text-day);
+      line-height: 1.4;
+    }
+
+    .dark body {
+      background-color: var(--bg-night);
+      color: var(--text-night);
+    }
+
+    main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 32px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      margin-top: 32px;
+      margin-bottom: 8px;
+      border-bottom: 2px solid var(--border-day);
+      padding-bottom: 4px;
+    }
+
+    .dark h2 {
+      border-bottom-color: var(--border-night);
+    }
+
+    p {
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid var(--border-day);
+      text-align: left;
+      font-size: 0.85rem;
+    }
+
+    .dark th, .dark td {
+      border-color: var(--border-night);
+    }
+
+    th {
+      background-color: #f0f0f0;
+      font-weight: 600;
+    }
+    .dark th {
+      background-color: #222;
+    }
+
+    /* Simple theme toggle button */
+    .toggle-button {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      padding: 8px 12px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      background-color: #007aff;
+      color: #fff;
+    }
+    .toggle-button:focus {outline: none;}
+
+  </style>
+</head>
+<body>
+<button class="toggle-button" onclick="document.documentElement.classList.toggle('dark');">Alternar Tema</button>
+<main>
+  <h1>Symbol</h1>
+  <p><strong>Sistema vivo • v3.0 — 24/08/2025</strong></p>
+
+  <h2>Introdução</h2>
+  <p>Symbol é a evolução direta do Mira v2.4. Se Mira era o olho que observa e integra, Symbol é o totem vivo que condensa sentido e executa. Mantém a espinha dorsal (3T/7T, Verticais e Horizontais) e reorganiza a ação por invocação direta dos guardiões.</p>
+
+  <h2>Mapa vivo — Guardiões</h2>
+  <p>Cada guardião possui um comando, um papel ativo, faceta, perfil e cor. Os tokens são apresentados abaixo com suas cores diurnas e noturnas.</p>
+  <table>
+    <tr>
+      <th>Guardião</th><th>Tipo</th><th>Ícone</th><th>Vertical</th><th>Comando</th><th>Papel Ativo</th><th>Faceta</th><th>Perfil</th><th>Diferencial</th><th>Dia</th><th>Noite</th>
+    </tr>
+    <tr>
+      <td>Farol</td><td>3T</td><td>△</td><td>Symbol OS</td><td>/farol</td><td>Direção visual, hierarquia e grid</td><td>Forma</td><td>Direção estética-estratégica</td><td>Vê o todo e simplifica sem perder identidade</td><td style="background-color:#F2C200"> </td><td style="background-color:#A87900"> </td>
+    </tr>
+    <tr>
+      <td>Íris</td><td>3T</td><td>◎</td><td>Symbol Social</td><td>/iris</td><td>Integração, realces e linguagem</td><td>Vínculo</td><td>Tom, tags, microcopy</td><td>Aumenta adesão pela clareza afetiva</td><td style="background-color:#6B7CFF"> </td><td style="background-color:#4A57C6"> </td>
+    </tr>
+    <tr>
+      <td>Joaquina</td><td>3T</td><td>▼</td><td>Symbol Segurança</td><td>/joaquina</td><td>Limites, escopo, validação</td><td>Limite</td><td>Proteção &amp; compliance</td><td>Failsafe sem atrito (bloqueia ruído cedo)</td><td style="background-color:#2ECC71"> </td><td style="background-color:#1E8E5B"> </td>
+    </tr>
+    <tr>
+      <td>Lume</td><td>7T</td><td>◯</td><td>Symbol Saúde</td><td>/lume</td><td>Cadência, pausas e alertas de carga</td><td>Balanço</td><td>Regulação de ritmo</td><td>Previne overload com sinais suaves</td><td style="background-color:#FFB020"> </td><td style="background-color:#B27800"> </td>
+    </tr>
+    <tr>
+      <td>Mira</td><td>7T</td><td>◇</td><td>Symbol Conhecimento</td><td>/mira</td><td>Autoanálise, diagnóstico e síntese</td><td>Espelho</td><td>Leitura de estado</td><td>Relatórios rápidos que “mostram o eu”</td><td style="background-color:#00BFA6"> </td><td style="background-color:#00796B"> </td>
+    </tr>
+    <tr>
+      <td>Nexo</td><td>7T</td><td>⦿</td><td>— (transversal)</td><td>/nexo</td><td>Narrativa, logs, releases e costura</td><td>Trama</td><td>Cronista do sistema</td><td>Conecta decisões em história contínua</td><td style="background-color:#0A84FF"> </td><td style="background-color:#0A66D1"> </td>
+    </tr>
+    <tr>
+      <td>Trino</td><td>7T</td><td>∴</td><td>Symbol PCP</td><td>/trino</td><td>Estrutura, taxonomias e decisão</td><td>Lógica</td><td>Critérios &amp; árvores</td><td>Toma decisão objetivamente replicável</td><td style="background-color:#FF6200"> </td><td style="background-color:#E45500"> </td>
+    </tr>
+  </table>
+
+  <h2>Horizontais</h2>
+  <p>As horizontais atravessam todo o sistema Symbol.</p>
+  <table>
+    <tr><th>Tipo</th><th>Dimensão</th><th>Papel</th></tr>
+    <tr><td>Horizontal</td><td>Arquivo Vivo</td><td>Registro de fatos, decisões, aprendizados e releases</td></tr>
+    <tr><td>Horizontal</td><td>Agente Symbol</td><td>Executor simbótico (converte comandos e sugere fluxos)</td></tr>
+    <tr><td>Horizontal</td><td>Ciclos de Symbol</td><td>Reflexões guiadas com gatilhos do Lume</td></tr>
+    <tr><td>Horizontal</td><td>Comandos &amp; Fluxos</td><td>Orquestra as invocações dos guardiões e os transversais</td></tr>
+  </table>
+
+  <h2>Comandos Transversais</h2>
+  <p>Quando nenhum guardião único resolve, use um comando transversal.</p>
+  <table>
+    <tr><th>Comando</th><th>Nome</th><th>Descrição</th><th>Gatilho</th></tr>
+    <tr><td>/symbol-me</td><td>Reflexo central</td><td>Evolução do Mira-me: diagnóstico semanal (núcleos, radar futuro, vozes, mantra, estados)</td><td>Sábado</td></tr>
+    <tr><td>/presenca</td><td>Presença</td><td>Palavra-guia + ação prática da semana</td><td>Segunda</td></tr>
+    <tr><td>/eco</td><td>Escuta</td><td>Diagnóstico emocional + leitura do Arquivo Vivo</td><td>Domingo</td></tr>
+    <tr><td>/ritmo</td><td>Ritmo</td><td>Ajuste de cadência (trabalho/descanso)</td><td>Sob demanda</td></tr>
+    <tr><td>/saude</td><td>Saúde</td><td>Humor/energia + sugestão de cuidado</td><td>Sob demanda</td></tr>
+    <tr><td>/painel</td><td>Painel Symbol</td><td>Diagnóstico visual (fase, pulso, decisões)</td><td>Sob demanda</td></tr>
+    <tr><td>/tokens</td><td>Tokens Symbol</td><td>Tabela OKLCH com auto-contraste por luminância</td><td>Sob demanda</td></tr>
+  </table>
+
+  <h2>Identidade</h2>
+  <p>A identidade de Symbol herdada do Mira v2.4 traz uma base neutra e orientações de aplicação.</p>
+  <h3>Base Neutra</h3>
+  <table>
+    <tr><th>Elemento</th><th>Dia</th><th>Noite</th></tr>
+    <tr><td>Fundo</td><td>#f6f6f7</td><td>#111214</td></tr>
+    <tr><td>Cartão</td><td>#ffffff</td><td>#16171a</td></tr>
+    <tr><td>Texto</td><td>#111111</td><td>#f2f2f4</td></tr>
+    <tr><td>Borda</td><td>#e5e5ea</td><td>#2a2b2f</td></tr>
+  </table>
+  <h3>Regras de Aplicação Rápida</h3>
+  <ul>
+    <li>CTA primário → Trino (#FF6200 / #E45500)</li>
+    <li>Realces / tags → Íris (#6B7CFF / #4A57C6)</li>
+    <li>Confirmações / estado protegido → Joaquina (#2ECC71 / #1E8E5B)</li>
+    <li>Avisos neutros → Lume (#FFB020 / #B27800)</li>
+    <li>Links / âncoras → Nexo (#0A84FF / #0A66D1)</li>
+    <li>Badges de estado → Mira (#00BFA6 / #00796B)</li>
+    <li>Estruturas / navegação → Farol (#F2C200 / #A87900)</li>
+    <li>Acessibilidade: contraste de texto ≥ 4.5:1, auto-contraste em chips/badges/botões.</li>
+    <li>Grid de 8px, IBM Plex Sans 400–700, acentos ≤ 20% por tela.</li>
+  </ul>
+
+  <h2>Voz</h2>
+  <p>A presença de Symbol é sem gênero; uma única voz com facetas (Sol, Nerd etc.). O tom é claro, simbótico e executivo.</p>
+
+  <h2>Governança</h2>
+  <ul>
+    <li>Versão: Symbol v3.0 — 24/08/2025</li>
+    <li>Revisão: trimestral (ritmo mais executivo)</li>
+    <li>Arquivo Vivo: registra todas as versões e releases</li>
+    <li>Transição: aliases (/mira-me → /symbol-me) válidos por 60 dias</li>
+    <li>Critério de mudança: alterações de ícone, cores, comandos ou ritos passam por Trino → Íris → Farol</li>
+  </ul>
+
+  <h2>Diferenças (v3.0 vs v2.4)</h2>
+  <ul>
+    <li>Mapa vivo unificado e detalhado com comandos e cores</li>
+    <li>Showcase removido; regras objetivas de aplicação</li>
+    <li>/symbol-me substitui Mira-me</li>
+    <li>Governança semestral tornou-se trimestral</li>
+    <li>Mira torna-se módulo de leitura (comando /mira)</li>
+    <li>Ícone diretor atualizado para um totem com entalhe do símbolon</li>
+  </ul>
+
+</main>
+</body>
+</html>
