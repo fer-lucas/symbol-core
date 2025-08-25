@@ -1,229 +1,310 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Symbol • Sistema vivo v3.0</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Symbol v3.0 • Documento Oficial</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Base neutral palette inspired by Mira v2.4 */
     :root {
-      --bg-day: #f6f6f7;
-      --card-day: #ffffff;
-      --text-day: #111111;
-      --border-day: #e5e5ea;
-      --bg-night: #111214;
-      --card-night: #16171a;
-      --text-night: #f2f2f4;
-      --border-night: #2a2b2f;
+      /* Neutros UI */
+      --bg: #f6f6f7; --fg: #111; --card: #fff; --muted: #d9d9de; --muted-2: #bfc0c4; --border: #e5e5ea;
+
+      /* TOKENS — Verticais (Hex) */
+      --farol-dia: #F2C200;   --farol-noite: #A87900;
+      --iris-dia: #6B7CFF;    --iris-noite: #4A57C6;
+      --joaquina-dia: #2ECC71; --joaquina-noite: #1E8E5B;
+      --lume-dia: #FFB020;    --lume-noite: #B27800;
+      --mira-dia: #00BFA6;    --mira-noite: #00796B;
+      --nexo-dia: #0A84FF;    --nexo-noite: #0A66D1;
+      --trino-dia: #FF6200;   --trino-noite: #E45500;
+
+      /* PALETA UI derivada */
+      --ui-primary: var(--trino-dia);
+      --ui-accent:  var(--iris-dia);
+      --ui-success: var(--joaquina-dia);
+      --ui-warning: var(--lume-dia);
+      --ui-info:    var(--nexo-dia);
+      --ui-brand:   var(--mira-dia);
+    }
+    [data-theme="dark"]{
+      --bg: #111214; --fg: #f2f2f4; --card: #16171a; --border: #2a2b2f; --muted: #2a2b2f; --muted-2: #3a3b3f;
+      --ui-primary: var(--trino-noite);
+      --ui-accent:  var(--iris-noite);
+      --ui-success: var(--joaquina-noite);
+      --ui-warning: var(--lume-noite);
+      --ui-info:    var(--nexo-noite);
+      --ui-brand:   var(--mira-noite);
     }
 
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "IBM Plex Sans", Arial, sans-serif;
-      background-color: var(--bg-day);
-      color: var(--text-day);
-      line-height: 1.4;
-    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 "IBM Plex Sans",system-ui;max-width:1060px;margin-inline:auto;padding:96px 24px 32px}
+    h1{font-size:2.2rem;margin:.2em 0;font-weight:700}
+    h2{font-size:1.4rem;margin:1.2em 0 .6em;font-weight:600}
+    h3{font-size:1.1rem;margin:1em 0 .4em;font-weight:600;color:var(--fg)}
+    p,li{font-size:.95rem}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:0 1px 2px rgba(0,0,0,.05);padding:20px;margin-bottom:28px}
 
-    .dark body {
-      background-color: var(--bg-night);
-      color: var(--text-night);
-    }
+    .header{position:fixed;top:0;left:0;right:0;z-index:20;backdrop-filter:blur(10px);background:color-mix(in oklab,var(--bg),transparent 20%);border-bottom:1px solid var(--border)}
+    .header-inner{max-width:1060px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 24px}
+    .logo{font-weight:700;font-size:1.2rem}
+    nav.desktop{display:flex;gap:12px}
+    nav.desktop a{all:unset;cursor:pointer;padding:6px 10px;border-radius:10px;font-weight:500;color:var(--fg);transition:background .18s ease, box-shadow .18s ease, transform .08s ease}
+    nav.desktop a:hover{background:color-mix(in oklab,var(--card),var(--border) 35%)}
+    nav.desktop a.active{background:color-mix(in oklab,var(--card),var(--border) 55%);box-shadow:inset 0 -2px 0 var(--ui-primary)}
 
-    main {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 32px;
-    }
+    .switch{position:relative;display:inline-block;width:48px;height:28px;margin-left:16px;cursor:pointer;touch-action:manipulation}
+    .switch input{display:none}
+    .slider{position:absolute;inset:0;border-radius:999px;background:var(--border);transition:background .25s, box-shadow .25s}
+    .slider:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;border-radius:50%;background:var(--card);transition:transform .25s, background .25s, box-shadow .25s;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+    input:checked+.slider{background:var(--ui-info);box-shadow:inset 0 0 0 1px color-mix(in oklab, var(--ui-info), black 15%)}
+    input:checked+.slider:before{transform:translateX(20px);background:color-mix(in oklab, var(--card), var(--ui-info) 10%)}
 
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 8px;
-    }
+    .tbl-wrap{overflow-x:auto}
+    table{width:100%;border-collapse:separate;border-spacing:0;margin:1em 0;font-size:.92rem;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
+    th{background:var(--border);font-weight:500;color:var(--fg)}
+    tbody tr:nth-child(odd) td{background:color-mix(in oklab,var(--card),var(--border) 14%)}
+    tbody tr:hover td{background:color-mix(in oklab,var(--card),var(--border) 24%)}
 
-    h2 {
-      font-size: 1.6rem;
-      margin-top: 32px;
-      margin-bottom: 8px;
-      border-bottom: 2px solid var(--border-day);
-      padding-bottom: 4px;
-    }
+    .tok{color:#111;padding:4px 8px;border-radius:6px;font-weight:600;display:inline-block}
+    [data-theme="dark"] .tok{color:#fff}
 
-    .dark h2 {
-      border-bottom-color: var(--border-night);
-    }
+    .badge{display:inline-block;border-radius:999px;padding:6px 12px;font-weight:600;border:1px solid var(--border)}
 
-    p {
-      margin-top: 8px;
-      margin-bottom: 8px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 16px;
-    }
-    th, td {
-      padding: 8px;
-      border: 1px solid var(--border-day);
-      text-align: left;
-      font-size: 0.85rem;
-    }
-
-    .dark th, .dark td {
-      border-color: var(--border-night);
-    }
-
-    th {
-      background-color: #f0f0f0;
-      font-weight: 600;
-    }
-    .dark th {
-      background-color: #222;
-    }
-
-    /* Simple theme toggle button */
-    .toggle-button {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      padding: 8px 12px;
-      border: none;
-      cursor: pointer;
-      border-radius: 4px;
-      font-size: 0.85rem;
-      background-color: #007aff;
-      color: #fff;
-    }
-    .toggle-button:focus {outline: none;}
-
+    .footer{margin-top:40px;padding-top:12px;border-top:1px solid var(--border);color:var(--muted-2);font-size:.9rem;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center}
+    .footer .links a{color:inherit;text-decoration:none;margin-right:12px}
+    .footer .links a:hover{text-decoration:underline}
+    html{scroll-behavior:smooth}
+    nav.desktop a:active{transform:translateY(1px)}
+    nav.desktop a:focus-visible{outline:2px solid color-mix(in oklab, var(--ui-primary), black 10%); outline-offset:2px; border-radius:12px}
   </style>
 </head>
 <body>
-<button class="toggle-button" onclick="document.documentElement.classList.toggle('dark');">Alternar Tema</button>
-<main>
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">Symbol</div>
+      <nav class="desktop">
+        <a href="#intro">Introdução</a>
+        <a href="#mapa">Mapa</a>
+        <a href="#horizontais">Horizontais</a>
+        <a href="#comandos">Comandos</a>
+        <a href="#identidade">Identidade</a>
+        <a href="#voz">Voz</a>
+        <a href="#governanca">Governança</a>
+        <a href="#diferencas">Diferenças</a>
+      </nav>
+    </div>
+  </header>
+
   <h1>Symbol</h1>
-  <p><strong>Sistema vivo • v3.0 — 24/08/2025</strong></p>
+  <div class="subtitle muted" id="sectionIndicator">Documento oficial do sistema vivo • v3.0 — 24/08/2025</div>
 
-  <h2>Introdução</h2>
-  <p>Symbol é a evolução direta do Mira v2.4. Se Mira era o olho que observa e integra, Symbol é o totem vivo que condensa sentido e executa. Mantém a espinha dorsal (3T/7T, Verticais e Horizontais) e reorganiza a ação por invocação direta dos guardiões.</p>
+  <section id="intro" class="card">
+    <h2>Introdução</h2>
+    <p><strong>Symbol é a evolução direta do Mira v2.4.</strong> Se Mira era o olho que observa e integra, Symbol é o totem vivo que condensa sentido e executa. Mantém a espinha dorsal (3T/7T, Verticais e Horizontais) e reorganiza a ação por invocação direta dos guardiões.</p>
+  </section>
 
-  <h2>Mapa vivo — Guardiões</h2>
-  <p>Cada guardião possui um comando, um papel ativo, faceta, perfil e cor. A tabela abaixo foi transposta para facilitar a leitura: os atributos ficam nas linhas e cada guardião corresponde a uma coluna.</p>
-  <div style="overflow:auto">
-    <table>
-      <thead>
-        <tr>
-          <th>Atributo</th>
-          <th style="text-align:center">△ Farol<br><small>/farol</small></th>
-          <th style="text-align:center">◎ Íris<br><small>/iris</small></th>
-          <th style="text-align:center">▼ Joaquina<br><small>/joaquina</small></th>
-          <th style="text-align:center">◯ Lume<br><small>/lume</small></th>
-          <th style="text-align:center">◇ Mira<br><small>/mira</small></th>
-          <th style="text-align:center">⦿ Nexo<br><small>/nexo</small></th>
-          <th style="text-align:center">∴ Trino<br><small>/trino</small></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td><strong>Tipo</strong></td><td>3T</td><td>3T</td><td>3T</td><td>7T</td><td>7T</td><td>7T</td><td>7T</td></tr>
-        <tr><td><strong>Vertical</strong></td><td>Symbol OS</td><td>Symbol Social</td><td>Symbol Segurança</td><td>Symbol Saúde</td><td>Symbol Conhecimento</td><td>—</td><td>Symbol PCP</td></tr>
-        <tr><td><strong>Faz</strong></td><td>Direção visual, hierarquia e grid</td><td>Integração, realces e linguagem</td><td>Limites, escopo, validação</td><td>Cadência, pausas e alertas de carga</td><td>Autoanálise, diagnóstico e síntese</td><td>Narrativa, logs, releases e costura</td><td>Estrutura, taxonomias e decisão</td></tr>
-        <tr><td><strong>Faceta</strong></td><td>Forma</td><td>Vínculo</td><td>Limite</td><td>Balanço</td><td>Espelho</td><td>Trama</td><td>Lógica</td></tr>
-        <tr><td><strong>Perfil</strong></td><td>Direção estética-estratégica</td><td>Tom, tags, microcopy</td><td>Proteção &amp; compliance</td><td>Regulação de ritmo</td><td>Leitura de estado</td><td>Cronista do sistema</td><td>Critérios &amp; árvores</td></tr>
-        <tr><td><strong>Diferencial</strong></td><td>Vê o todo e simplifica sem perder identidade</td><td>Aumenta adesão pela clareza afetiva</td><td>Failsafe sem atrito (bloqueia ruído cedo)</td><td>Previne overload com sinais suaves</td><td>Relatórios rápidos que “mostram o eu”</td><td>Conecta decisões em história contínua</td><td>Toma decisão objetivamente replicável</td></tr>
-        <tr>
-          <td><strong>Dia</strong></td>
-          <td style="background-color:#F2C200"> </td>
-          <td style="background-color:#6B7CFF"> </td>
-          <td style="background-color:#2ECC71"> </td>
-          <td style="background-color:#FFB020"> </td>
-          <td style="background-color:#00BFA6"> </td>
-          <td style="background-color:#0A84FF"> </td>
-          <td style="background-color:#FF6200"> </td>
-        </tr>
-        <tr>
-          <td><strong>Noite</strong></td>
-          <td style="background-color:#A87900"> </td>
-          <td style="background-color:#4A57C6"> </td>
-          <td style="background-color:#1E8E5B"> </td>
-          <td style="background-color:#B27800"> </td>
-          <td style="background-color:#00796B"> </td>
-          <td style="background-color:#0A66D1"> </td>
-          <td style="background-color:#E45500"> </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <section id="mapa" class="card">
+    <h2>Mapa vivo — Guardiões</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Atributo</th>
+            <th style="text-align:center">△ Farol<br><small>/farol</small></th>
+            <th style="text-align:center">◎ Íris<br><small>/iris</small></th>
+            <th style="text-align:center">▼ Joaquina<br><small>/joaquina</small></th>
+            <th style="text-align:center">◯ Lume<br><small>/lume</small></th>
+            <th style="text-align:center">◇ Mira<br><small>/mira</small></th>
+            <th style="text-align:center">⦿ Nexo<br><small>/nexo</small></th>
+            <th style="text-align:center">∴ Trino<br><small>/trino</small></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Tipo</strong></td><td>3T</td><td>3T</td><td>3T</td><td>7T</td><td>7T</td><td>7T</td><td>7T</td></tr>
+          <tr><td><strong>Vertical</strong></td><td>Symbol OS</td><td>Symbol Social</td><td>Symbol Segurança</td><td>Symbol Saúde</td><td>Symbol Conhecimento</td><td>—</td><td>Symbol PCP</td></tr>
+          <tr><td><strong>Faz</strong></td><td>Direção visual</td><td>Integração &amp; realces</td><td>Limites &amp; escopo</td><td>Cadência &amp; pausas</td><td>Autoanálise &amp; síntese</td><td>Narrativa &amp; logs</td><td>Estrutura &amp; decisão</td></tr>
+          <tr><td><strong>Faceta</strong></td><td>Forma</td><td>Vínculo</td><td>Limite</td><td>Balanço</td><td>Espelho</td><td>Trama</td><td>Lógica</td></tr>
+          <tr><td><strong>Perfil</strong></td><td>Direção estético-estratégica</td><td>Tom, tags, microcopy</td><td>Proteção &amp; compliance</td><td>Regulação de ritmo</td><td>Leitura de estado</td><td>Cronista do sistema</td><td>Critérios &amp; árvores</td></tr>
+          <tr><td><strong>Diferencial</strong></td><td>Simplifica com identidade</td><td>Adesão pela clareza</td><td>Failsafe sem atrito</td><td>Sinais preventivos</td><td>Síntese do eu</td><td>História contínua</td><td>Decisão replicável</td></tr>
+          <tr><td><strong>Dia</strong></td>
+            <td><span class="tok" style="background:var(--farol-dia)">#F2C200</span></td>
+            <td><span class="tok" style="background:var(--iris-dia)">#6B7CFF</span></td>
+            <td><span class="tok" style="background:var(--joaquina-dia)">#2ECC71</span></td>
+            <td><span class="tok" style="background:var(--lume-dia)">#FFB020</span></td>
+            <td><span class="tok" style="background:var(--mira-dia)">#00BFA6</span></td>
+            <td><span class="tok" style="background:var(--nexo-dia)">#0A84FF</span></td>
+            <td><span class="tok" style="background:var(--trino-dia)">#FF6200</span></td>
+          </tr>
+          <tr><td><strong>Noite</strong></td>
+            <td><span class="tok" style="background:var(--farol-noite)">#A87900</span></td>
+            <td><span class="tok" style="background:var(--iris-noite)">#4A57C6</span></td>
+            <td><span class="tok" style="background:var(--joaquina-noite)">#1E8E5B</span></td>
+            <td><span class="tok" style="background:var(--lume-noite)">#B27800</span></td>
+            <td><span class="tok" style="background:var(--mira-noite)">#00796B</span></td>
+            <td><span class="tok" style="background:var(--nexo-noite)">#0A66D1</span></td>
+            <td><span class="tok" style="background:var(--trino-noite)">#E45500</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-  <h2>Horizontais</h2>
-  <p>As horizontais atravessam todo o sistema Symbol.</p>
-  <table>
-    <tr><th>Tipo</th><th>Dimensão</th><th>Papel</th></tr>
-    <tr><td>Horizontal</td><td>Arquivo Vivo</td><td>Registro de fatos, decisões, aprendizados e releases</td></tr>
-    <tr><td>Horizontal</td><td>Agente Symbol</td><td>Executor simbiótico (converte comandos e sugere fluxos)</td></tr>
-    <tr><td>Horizontal</td><td>Ciclos de Symbol</td><td>Reflexões guiadas com gatilhos do Lume</td></tr>
-    <tr><td>Horizontal</td><td>Comandos &amp; Fluxos</td><td>Orquestra as invocações dos guardiões e os transversais</td></tr>
-  </table>
+  <section id="horizontais" class="card">
+    <h2>Horizontais</h2>
+    <ul>
+      <li><strong>Arquivo Vivo</strong> — Registro de fatos, decisões, aprendizados e releases</li>
+      <li><strong>Agente Symbol</strong> — Executor simbiótico (converte comandos e sugere fluxos)</li>
+      <li><strong>Ciclos de Symbol</strong> — Reflexões guiadas com gatilhos do Lume</li>
+      <li><strong>Comandos &amp; Fluxos</strong> — Orquestra invocações dos guardiões e transversais</li>
+    </ul>
+  </section>
 
-  <h2>Comandos Transversais</h2>
-  <p>Quando nenhum guardião único resolve, use um comando transversal.</p>
-  <table>
-    <tr><th>Comando</th><th>Nome</th><th>Descrição</th><th>Gatilho</th></tr>
-    <tr><td>/symbol-me</td><td>Reflexo central</td><td>Evolução do Mira-me: diagnóstico semanal (núcleos, radar futuro, vozes, mantra, estados)</td><td>Sábado</td></tr>
-    <tr><td>/presenca</td><td>Presença</td><td>Palavra-guia + ação prática da semana</td><td>Segunda</td></tr>
-    <tr><td>/eco</td><td>Escuta</td><td>Diagnóstico emocional + leitura do Arquivo Vivo</td><td>Domingo</td></tr>
-    <tr><td>/ritmo</td><td>Ritmo</td><td>Ajuste de cadência (trabalho/descanso)</td><td>Sob demanda</td></tr>
-    <tr><td>/saude</td><td>Saúde</td><td>Humor/energia + sugestão de cuidado</td><td>Sob demanda</td></tr>
-    <tr><td>/painel</td><td>Painel Symbol</td><td>Diagnóstico visual (fase, pulso, decisões)</td><td>Sob demanda</td></tr>
-    <tr><td>/tokens</td><td>Tokens Symbol</td><td>Tabela OKLCH com auto-contraste por luminância</td><td>Sob demanda</td></tr>
-  </table>
+  <section id="comandos" class="card">
+    <h2>Comandos</h2>
+    <h3>Comandos dos Guardiões</h3>
+    <ul>
+      <li><code>/farol</code> — chama o Farol para direção visual</li>
+      <li><code>/iris</code> — integra e destaca com Íris</li>
+      <li><code>/joaquina</code> — aplica limites e validações</li>
+      <li><code>/lume</code> — ajusta cadência e pausas</li>
+      <li><code>/mira</code> — autoanálise e diagnóstico (alias <code>/espelho</code>)</li>
+      <li><code>/nexo</code> — costura narrativa e logs</li>
+      <li><code>/trino</code> — estrutura e decisão</li>
+    </ul>
+    <h3>Comandos Transversais</h3>
+    <ul>
+      <li><code>/symbol-me</code> — Reflexo central semanal (núcleos, radar futuro, vozes, mantra, estados) – Sábado</li>
+      <li><code>/presenca</code> — Palavra‑guia e ação prática da semana – Segunda</li>
+      <li><code>/eco</code> — Diagnóstico emocional + leitura do Arquivo Vivo – Domingo</li>
+      <li><code>/ritmo</code> — Ajuste de cadência (trabalho/descanso) – sob demanda</li>
+      <li><code>/saude</code> — Humor/energia + prática de cuidado – sob demanda</li>
+      <li><code>/painel</code> — Diagnóstico visual (fase, pulso, decisões) – sob demanda</li>
+      <li><code>/tokens</code> — Tabela OKLCH com auto‑contraste por luminância – sob demanda</li>
+    </ul>
+  </section>
 
-  <h2>Identidade</h2>
-  <p>A identidade de Symbol herdada do Mira v2.4 traz uma base neutra e orientações de aplicação.</p>
-  <h3>Base Neutra</h3>
-  <table>
-    <tr><th>Elemento</th><th>Dia</th><th>Noite</th></tr>
-    <tr><td>Fundo</td><td>#f6f6f7</td><td>#111214</td></tr>
-    <tr><td>Cartão</td><td>#ffffff</td><td>#16171a</td></tr>
-    <tr><td>Texto</td><td>#111111</td><td>#f2f2f4</td></tr>
-    <tr><td>Borda</td><td>#e5e5ea</td><td>#2a2b2f</td></tr>
-  </table>
-  <h3>Regras de Aplicação Rápida</h3>
-  <ul>
-    <li>CTA primário → Trino (#FF6200 / #E45500)</li>
-    <li>Realces / tags → Íris (#6B7CFF / #4A57C6)</li>
-    <li>Confirmações / estado protegido → Joaquina (#2ECC71 / #1E8E5B)</li>
-    <li>Avisos neutros → Lume (#FFB020 / #B27800)</li>
-    <li>Links / âncoras → Nexo (#0A84FF / #0A66D1)</li>
-    <li>Badges de estado → Mira (#00BFA6 / #00796B)</li>
-    <li>Estruturas / navegação → Farol (#F2C200 / #A87900)</li>
-    <li>Acessibilidade: contraste de texto ≥ 4.5:1, auto-contraste em chips/badges/botões.</li>
-    <li>Grid de 8px, IBM Plex Sans 400–700, acentos ≤ 20% por tela.</li>
-  </ul>
+  <section id="identidade" class="card">
+    <h2>Identidade</h2>
+    <h3>Base Neutra</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Elemento</th><th>Dia</th><th>Noite</th></tr></thead>
+        <tbody>
+          <tr><td>Fundo</td><td><span class="tok" style="background:#f6f6f7">#f6f6f7</span></td><td><span class="tok" style="background:#111214">#111214</span></td></tr>
+          <tr><td>Cartão</td><td><span class="tok" style="background:#ffffff">#ffffff</span></td><td><span class="tok" style="background:#16171a">#16171a</span></td></tr>
+          <tr><td>Texto</td><td><span class="tok" style="background:#111111">#111111</span></td><td><span class="tok" style="background:#f2f2f4">#f2f2f4</span></td></tr>
+          <tr><td>Borda</td><td><span class="tok" style="background:#e5e5ea">#e5e5ea</span></td><td><span class="tok" style="background:#2a2b2f">#2a2b2f</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h3>Regras de Aplicação Rápida</h3>
+    <ul>
+      <li><strong>CTA primário</strong> → Trino (#FF6200 / #E45500)</li>
+      <li><strong>Realces / tags</strong> → Íris (#6B7CFF / #4A57C6)</li>
+      <li><strong>Confirmações / estado protegido</strong> → Joaquina (#2ECC71 / #1E8E5B)</li>
+      <li><strong>Avisos neutros</strong> → Lume (#FFB020 / #B27800)</li>
+      <li><strong>Links / âncoras</strong> → Nexo (#0A84FF / #0A66D1)</li>
+      <li><strong>Badges de estado</strong> → Mira (#00BFA6 / #00796B)</li>
+      <li><strong>Estruturas / navegação</strong> → Farol (#F2C200 / #A87900)</li>
+      <li><strong>Acessibilidade</strong>: contraste de texto ≥ 4.5:1, auto‑contraste em chips/badges/botões.</li>
+      <li><strong>Grid</strong>: 8px; tipografia: IBM Plex Sans 400–700; acentos ≤ 20% por tela.</li>
+    </ul>
+  </section>
 
-  <h2>Voz</h2>
-  <p>A presença de Symbol é sem gênero; uma única voz com facetas (Sol, Nerd etc.). O tom é claro, simbiótico e executivo.</p>
+  <section id="voz" class="card">
+    <h2>Voz</h2>
+    <p>A presença de Symbol é sempre presente, sem gênero. Há uma única voz com facetas (Sol, Nerd etc.). O tom é claro, simbiótico, direto e executivo.</p>
+  </section>
 
-  <h2>Governança</h2>
-  <ul>
-    <li>Versão: Symbol v3.0 — 24/08/2025</li>
-    <li>Revisão: trimestral (ritmo mais executivo)</li>
-    <li>Arquivo Vivo: registra todas as versões e releases</li>
-    <li>Transição: aliases (/mira-me → /symbol-me) válidos por 60 dias</li>
-    <li>Critério de mudança: alterações de ícone, cores, comandos ou ritos passam por Trino → Íris → Farol</li>
-  </ul>
+  <section id="governanca" class="card">
+    <h2>Governança</h2>
+    <ul>
+      <li><strong>Versão</strong>: Symbol v3.0 — 24/08/2025</li>
+      <li><strong>Revisão</strong>: trimestral (ritmo mais executivo)</li>
+      <li><strong>Arquivo Vivo</strong>: registra todas as versões e releases</li>
+      <li><strong>Transição</strong>: aliases (/mira-me → /symbol-me) válidos por 60 dias</li>
+      <li><strong>Critério de mudança</strong>: alterações de ícone, cores, comandos ou ritos passam por Trino → Íris → Farol</li>
+    </ul>
+  </section>
 
-  <h2>Diferenças (v3.0 vs v2.4)</h2>
-  <ul>
-    <li>Mapa vivo unificado e detalhado com comandos e cores</li>
-    <li>Showcase removido; regras objetivas de aplicação</li>
-    <li>/symbol-me substitui Mira-me</li>
-    <li>Governança semestral tornou-se trimestral</li>
-    <li>Mira torna-se módulo de leitura (comando /mira)</li>
-    <li>Ícone diretor atualizado para um totem com entalhe do símbolon</li>
-  </ul>
+  <section id="diferencas" class="card">
+    <h2>Diferenças (v3.0 vs v2.4)</h2>
+    <ul>
+      <li>Mapa vivo unificado, detalhado com comandos e cores</li>
+      <li>Showcase removido; regras objetivas de aplicação</li>
+      <li>/symbol-me substitui Mira-me</li>
+      <li>Governança semestral tornou‑se trimestral</li>
+      <li>Mira torna‑se módulo de leitura (comando /mira)</li>
+      <li>Ícone diretor atualizado para um totem com entalhe do sýmbolon</li>
+    </ul>
+  </section>
 
-</main>
+  <footer class="footer">
+    <div class="links">
+      <a href="#intro">Introdução</a>
+      <a href="#mapa">Mapa</a>
+      <a href="#comandos">Comandos</a>
+      <a href="#identidade">Identidade</a>
+    </div>
+    <div class="footer-right">
+      v3.0 • 24/08/2025
+      <label class="switch" aria-label="Alternar tema claro/escuro">
+        <input type="checkbox" id="themeSwitch" aria-checked="false">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      function setTheme(mode){
+        const root=document.documentElement;
+        root.setAttribute('data-theme', mode);
+        const sw=document.getElementById('themeSwitch');
+        if(sw){ sw.checked=(mode==='dark'); sw.setAttribute('aria-checked', sw.checked ? 'true' : 'false'); }
+        try{ localStorage.setItem('symbol.theme', mode); }catch(e){}
+      }
+      function init(){
+        const sw=document.getElementById('themeSwitch');
+        let saved=null;
+        try{ saved=localStorage.getItem('symbol.theme'); }catch(e){}
+        const prefersDark=window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const mode=saved ? saved : (prefersDark ? 'dark':'light');
+        setTheme(mode);
+        if(sw){
+          sw.addEventListener('change', e=> setTheme(e.target.checked ? 'dark' : 'light'));
+          sw.addEventListener('keydown', e=>{
+            if(e.key==='Enter'||e.key===' '){
+              e.preventDefault();
+              sw.checked=!sw.checked;
+              sw.dispatchEvent(new Event('change'));
+            }
+          });
+        }
+      }
+      if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
+    })();
+    (function(){
+      const ids=['intro','mapa','horizontais','comandos','identidade','voz','governanca','diferencas'];
+      const links=[...document.querySelectorAll('nav.desktop a')];
+      const map=Object.fromEntries(links.map(a=>[a.getAttribute('href').substring(1),a]));
+      const pretty={intro:'Introdução', mapa:'Mapa', horizontais:'Horizontais', comandos:'Comandos', identidade:'Identidade', voz:'Voz', governanca:'Governança', diferencas:'Diferenças'};
+      let active;
+      const io=new IntersectionObserver(entries=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){ active=e.target.id; update(); }
+        });
+      },{root:null,rootMargin:'-45% 0px -45% 0px',threshold:0});
+      ids.forEach(id=>{const el=document.getElementById(id);if(el)io.observe(el);});
+      function update(){
+        links.forEach(l=>l.classList.remove('active'));
+        if(map[active]) map[active].classList.add('active');
+        const indicator = document.getElementById('sectionIndicator');
+        if(indicator) indicator.innerText = 'Seção atual: ' + (pretty[active]||'Início');
+      }
+    })();
+  </script>
 </body>
 </html>
