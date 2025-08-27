@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Symbol v5.7.5 • Instrumento Vivo</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tipografia: IBM Plex Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href=\"https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap\" rel=\"stylesheet\">
+<style>
+    :root{
+      font-size:16px;
+
+      /* Paleta Neutra — Dia */
+      --neutral-100:#FFFFFF;
+      --neutral-200:#F7F7F8;
+      --neutral-300:#E5E5EA;
+      --neutral-400:#888A91;
+      --neutral-500:#111111;
+
+      /* TOKENS — Verticais */
+      --farol-dia:#F2C200;   --farol-noite:#A87900;
+      --iris-dia:#6B7CFF;    --iris-noite:#4A57C6;
+      --joaquina-dia:#2ECC71;--joaquina-noite:#1E8E5B;
+      --lume-dia:#FFB020;    --lume-noite:#B27800;
+      --mira-dia:#00BFA6;    --mira-noite:#00796B;
+      --nexo-dia:#0A84FF;    --nexo-noite:#0A66D1;
+      --trino-dia:#FF6200;   --trino-noite:#E45500;
+
+      --bg:var(--neutral-200);
+      --fg:var(--neutral-500);
+      --card:var(--neutral-100);
+      --border:var(--neutral-300);
+      --muted-2:var(--neutral-400);
+    }
+    [data-theme="dark"]{
+      --neutral-100:#111214;
+      --neutral-200:#1A1B1E;
+      --neutral-300:#2A2B2F;
+      --neutral-400:#A0A1A7;
+      --neutral-500:#F2F2F4;
+
+      --bg:var(--neutral-100);
+      --fg:var(--neutral-500);
+      --card:var(--neutral-200);
+      --border:var(--neutral-300);
+      --muted-2:var(--neutral-400);
+    }
+
+    body{
+      background-color:var(--bg);
+      color:var(--fg);
+      font-family:"IBM Plex Sans", system-ui, sans-serif;
+    /* Títulos em Manrope para modernidade */
+    h1,h2,h3,h4{ font-family:'Manrope', sans-serif; }
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    html{ scroll-behavior:smooth; }
+
+    .section-title{
+      font-weight:700; font-size:1.875rem;
+      margin-bottom:1.5rem; border-bottom:2px solid var(--border); padding-bottom:.75rem;
+      display:flex; align-items:center; gap:.5rem;
+    }
+    .section-title .anchor{
+      opacity:.6; text-decoration:none; font-weight:700; border:1px solid var(--border);
+      padding:.05rem .35rem; border-radius:.35rem; font-size:.9rem;
+    }
+    .logo-unicode{ font-weight:800; color:var(--fg); }
+
+    /* Banner no topo com gradiente sutil e logo + slogan */
+    .banner{
+      width:100%;
+      background: linear-gradient(135deg, var(--farol-dia) 0%, var(--iris-dia) 100%);
+      color: var(--fg);
+      padding: 1.5rem 0;
+      text-align:center;
+      font-size: 1.5rem;
+      font-weight:600;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.5rem;
+    }
+
+    /* Oculta os ícones de âncora (§) nos títulos */
+    a.anchor{
+      display:none;
+    }
+
+    /* Tabelas base */
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:0.95rem;
+}
+th,td{
+  border:1px solid var(--border);
+  padding:0.75rem 1rem;
+  text-align:left;
+}
+th{
+  background-color:color-mix(in oklab, var(--bg), var(--border) 50%);
+  font-weight:600;
+}
+
+/* Nav ativa */
+
+    nav a.active{ background-color:var(--border); color:var(--fg) }
+
+    /* Tabela Guardiões */
+    .table-container{overflow-x:auto;border:1px solid var(--border);border-radius:12px;background-color:var(--card)}
+    table.guardians{width:100%;border-collapse:collapse;min-width:960px}
+    .guardians th,.guardians td{padding:1rem 1.25rem;text-align:left;border-bottom:1px solid var(--border);font-size:.95rem;vertical-align:top}
+    .guardians thead th{background:rgba(0,0,0,.04);font-weight:800;font-size:1rem;position:sticky;top:0;z-index:10}
+    [data-theme="dark"] .guardians thead th{background:rgba(255,255,255,.06)}
+    .guardians tbody tr:last-child td{border-bottom:none}
+    .guardians tbody tr:hover{background:rgba(0,0,0,.04)}
+    [data-theme="dark"] .guardians tbody tr:hover{background:rgba(255,255,255,.04)}
+    .guardians tbody td:first-child{font-weight:700;color:var(--fg);position:sticky;left:0;background:var(--card);z-index:5}
+    .guardians small{font-size:.8rem;color:var(--muted-2);font-weight:500}
+    .color-swatch{display:inline-block;width:1rem;height:1rem;border-radius:.25rem;margin-right:.5rem;vertical-align:middle;border:1px solid var(--border)}
+
+    /* Switch de tema */
+    .switch{position:relative;display:inline-block;width:48px;height:28px;cursor:pointer;touch-action:manipulation}
+    .switch input{display:none}
+    .slider{position:absolute;inset:0;border-radius:999px;background:var(--neutral-400);transition:background .25s, box-shadow .25s}
+    .slider:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;border-radius:50%;background:var(--card);transition:transform .25s, background .25s, box-shadow .25s;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+    input:checked+.slider{background:#2c2c54}
+    input:checked+.slider:before{transform:translateX(20px);background:var(--card)}
+
+    /* Botão Topo */
+    #back-to-top{
+      position:fixed; bottom:20px; right:20px; background-color:var(--card); color:var(--fg);
+      border:1px solid var(--border); border-radius:50%; width:48px; height:48px; display:none;
+      align-items:center; justify-content:center; cursor:pointer; transition:opacity .3s, transform .3s;
+      opacity:0; transform:translateY(10px); z-index:100;
+    }
+    #back-to-top.show{ display:flex; opacity:1; transform:translateY(0) }
+
+    /* Diretrizes de Imagem – seleção */
+    .row-selected{ outline:2px solid var(--border); background:rgba(0,0,0,.04) }
+    [data-theme="dark"] .row-selected{ background:rgba(255,255,255,.06) }
+
+    /* Acessibilidade – movimento reduzido */
+    @media (prefers-reduced-motion: reduce){
+      *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important;}
+      html{ scroll-behavior:auto; }
+    }
+
+    /* Print A4 */
+    @media print{
+      @page{ size:A4; margin:16mm; }
+      header, #back-to-top, #cmdpal{ display:none !important; }
+      .section-title{ border:none; padding:0; margin-top:12mm; }
+      .table-container{ border-color:#ccc }
+    }
+
+    /* Estilo para botões de prompt por linha */
+    .prompt-btn{
+      font-size:0.75rem;
+      padding:0.25rem 0.5rem;
+      border:1px solid var(--border);
+      border-radius:0.25rem;
+      background-color:var(--card);
+      cursor:pointer;
+    }
+    .prompt-btn:hover{
+      background-color:rgba(0,0,0,.05);
+    }
+  </style>
+</head>
+<body class="bg-bg text-fg pb-24 sm:pb-0">
+
+  <!-- Cabeçalho -->
+  <header id="header" class="sticky top-0 z-30 w-full backdrop-blur-lg bg-opacity-80 bg-bg border-b border-border transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <span class="logo-unicode text-3xl">&infin;</span>
+          <span class="text-xl font-extrabold">Symbol</span>
+          <span id="state-pill" class="ml-2 text-xs px-2 py-1 rounded border border-border text-muted-2">Guardião ativo: —</span>
+          <span id="img-pill" class="ml-2 text-xs px-2 py-1 rounded border border-border text-muted-2 hidden">Última diretriz: —</span>
+        </div>
+
+        <div class="flex items-center gap-3 md:hidden">
+          <button id="navToggle" class="px-2 py-1 rounded border border-border" aria-label="Abrir menu">☰</button>
+        </div>
+
+        <nav id="main-nav" class="hidden md:flex items-center space-x-2">
+          <a href="#guardians" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Guardiões</a>
+          <a href="#commands" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Comandos</a>
+          <a href="#identity" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Identidade</a>
+          <a href="#image-guidelines" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Imagens</a>
+          <a href="#governance" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Governança</a>
+          <a href="#changelog" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Versões</a>
+        </nav>
+      </div>
+
+      <!-- Nav mobile -->
+      <nav id="mobile-nav" class="hidden md:hidden pt-2 pb-3 space-y-1">
+        <a href="#guardians" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-border">Guardiões</a>
+        <a href="#commands" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-border">Comandos</a>
+        <a href="#identity" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-border">Identidade</a>
+        <a href="#image-guidelines" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-border">Imagens</a>
+        <a href="#governance" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-border">Governança</a>
+        <a href="#changelog" class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-border">Versões</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Banner com logo e slogan -->
+  <div class="banner">
+    <span class="logo-unicode text-4xl">&infin;</span>
+    <span>Symbol — O poder está em suas mãos.</span>
+  </div>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Hero -->
+    <section id="hero" class="text-center py-16 sm:py-24">
+      <div class="flex justify-center mb-6">
+        <span class="logo-unicode text-7xl">&infin;</span>
+      </div>
+      <h1 class="text-5xl md:text-6xl font-extrabold tracking-tighter mb-4">Symbol</h1>
+      <p class="max-w-2xl mx-auto text-lg text-muted-2">
+        A evolução de um sistema simbólico sustentável.
+      </p>
+
+      <!-- Invocação rápida -->
+      <div class="mt-8 flex flex-wrap justify-center gap-2">
+        <button class="px-3 py-1 rounded border border-border" data-guardian="Farol">Invocar Farol</button>
+        <button class="px-3 py-1 rounded border border-border" data-guardian="Íris">Invocar Íris</button>
+        <button class="px-3 py-1 rounded border border-border" data-guardian="Joaquina">Invocar Joaquina</button>
+        <button class="px-3 py-1 rounded border border-border" data-guardian="Lume">Invocar Lume</button>
+        <button class="px-3 py-1 rounded border border-border" data-guardian="Mira">Invocar Mira</button>
+        <button class="px-3 py-1 rounded border border-border" data-guardian="Nexo">Invocar Nexo</button>
+        <button class="px-3 py-1 rounded border border-border" data-guardian="Trino">Invocar Trino</button>
+
+        <button id="open-cmd" class="ml-2 px-3 py-1 rounded border border-border" title="⌘K / Ctrl+K">⌘K</button>
+      </div>
+    </section>
+
+    <!-- Guardiões -->
+    <section id="guardians" class="py-16">
+      <h2 class="section-title">Os Guardiões</h2>
+      <div class="table-container">
+        <table class="guardians" id="guardians-table">
+          <thead>
+          <tr>
+            <th>Atributo</th>
+            <th>△ Farol <br><small>/farol</small></th>
+            <th>◎ Íris <br><small>/iris</small></th>
+            <th>▼ Joaquina <br><small>/joaquina</small></th>
+            <th>◯ Lume <br><small>/lume</small></th>
+            <th>◇ Mira <br><small>/mira</small></th>
+            <th>⦿ Nexo <br><small>/nexo</small></th>
+            <th>∴ Trino <br><small>/trino</small></th>
+          </tr>
+          </thead>
+          <tbody><!-- preenchido via JS --></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Comandos -->
+    <section id="commands" class="py-16">
+      <h2 class="section-title">Comandos & Fluxos</h2>
+      <div class="bg-card p-6 rounded-lg border border-border">
+        <h3 class="font-bold text-lg mb-4">Rituais Transversais</h3>
+        <ul class="space-y-2 text-muted-2" id="cmd-list">
+          <li class="font-mono"><code>/symbol-me</code> — Reflexo semanal</li>
+          <li class="font-mono"><code>/presenca</code> — Guia da semana</li>
+          <li class="font-mono"><code>/eco</code> — Diagnóstico emocional</li>
+          <li class="font-mono"><code>/ritmo</code> — Ajuste de cadência</li>
+          <li class="font-mono"><code>/saude</code> — Humor e energia</li>
+          <li class="font-mono"><code>/painel</code> — Diagnóstico visual</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Identidade -->
+    <section id="identity" class="py-16">
+      <h2 class="section-title">Identidade & Voz</h2>
+      <div class="bg-card p-8 rounded-lg border border-border">
+        <h3 class="font-bold text-xl mb-2">Paleta Neutra</h3>
+        <p class="text-muted-2 mb-6">A base é uma paleta neutra de 5 tons. As cores dos guardiões entram como acentos intencionais.</p>
+
+        <div class="space-y-4">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-lg border border-border shrink-0" style="background-color:var(--neutral-100)"></div>
+            <div>
+              <div class="font-bold">Neutral 100 <span class="font-mono text-muted-2 text-sm">[#FFFFFF / #111214]</span></div>
+              <p class="text-sm text-muted-2">Uso: fundos de cartões e elementos elevados no modo claro; fundo principal no modo escuro.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-lg border border-border shrink-0" style="background-color:var(--neutral-200)"></div>
+            <div>
+              <div class="font-bold">Neutral 200 <span class="font-mono text-muted-2 text-sm">[#F7F7F8 / #1A1B1E]</span></div>
+              <p class="text-sm text-muted-2">Uso: fundo principal da página no modo claro; fundo de cartões no modo escuro.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-lg border border-border shrink-0" style="background-color:var(--neutral-300)"></div>
+            <div>
+              <div class="font-bold">Neutral 300 <span class="font-mono text-muted-2 text-sm">[#E5E5EA / #2A2B2F]</span></div>
+              <p class="text-sm text-muted-2">Uso: bordas, divisórias e fundos de elementos interativos sutis.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-lg border border-border shrink-0" style="background-color:var(--neutral-400)"></div>
+            <div>
+              <div class="font-bold">Neutral 400 <span class="font-mono text-muted-2 text-sm">[#888A91 / #A0A1A7]</span></div>
+              <p class="text-sm text-muted-2">Uso: texto secundário, placeholders e ícones não interativos.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-lg border border-border shrink-0" style="background-color:var(--neutral-500)"></div>
+            <div>
+              <div class="font-bold">Neutral 500 <span class="font-mono text-muted-2 text-sm">[#111111 / #F2F2F4]</span></div>
+              <p class="text-sm text-muted-2">Uso: texto principal, títulos e elementos de alto contraste para legibilidade.</p>
+            </div>
+          </div>
+        </div>
+
+        <hr class="my-8 border-border">
+
+        <h3 class="font-bold text-xl mt-10 mb-2">Orquestração da Voz</h3>
+        <div class="text-muted-2 space-y-4">
+          <p>O Symbol age como maestro de três camadas de voz:</p>
+          <ul class="list-disc list-inside space-y-2 pl-4">
+            <li><strong>Voz Falada (Sol):</strong> output de áudio.</li>
+            <li><strong>Voz de Configuração (Nerd):</strong> base técnica.</li>
+            <li><strong>Voz de Interação:</strong> textual do dia a dia, modulada pelos Guardiões.</li>
+          </ul>
+          <p>Os Guardiões ajustam a <strong>intenção</strong> da interação (empática, lógica, protetora, etc.).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diretrizes de Imagem -->
+    <section id="image-guidelines" class="py-16">
+      <h2 class="section-title">Diretrizes de Imagem</h2>
+      <div class="bg-card p-6 rounded-lg border border-border overflow-x-auto">
+        <table id="img-guidelines-table" class="min-w-full text-sm">
+          <thead class="font-bold">
+            <tr>
+              <td class="p-2">Item</td>
+              <td class="p-2">Diretriz</td>
+              <td class="p-2">Exemplo prático</td>
+              <td class="p-2"></td> <!-- coluna do botão -->
+            </tr>
+          </thead>
+          <tbody class="text-muted-2">
+            <tr data-item="Tipografia" class="cursor-pointer hover:bg-border/40">
+              <td class="p-2">Tipografia</td><td class="p-2">IBM Plex Sans, pesos 400–700</td><td class="p-2">Títulos 600/700; corpo 400/500</td>
+              <td class="p-2"><button class="prompt-btn copy-row-prompt" title="Gerar prompt">⚡</button></td>
+            </tr>
+            <tr data-item="Estilo" class="cursor-pointer hover:bg-border/40">
+              <td class="p-2">Estilo</td><td class="p-2">Geometria simples, fundo limpo</td><td class="p-2">Cards modulares, grid 8px</td>
+              <td class="p-2"><button class="prompt-btn copy-row-prompt" title="Gerar prompt">⚡</button></td>
+            </tr>
+            <tr data-item="Personas" class="cursor-pointer hover:bg-border/40">
+              <td class="p-2">Personas</td><td class="p-2">Semi-realista suave</td><td class="p-2">Bordas macias, luz difusa</td>
+              <td class="p-2"><button class="prompt-btn copy-row-prompt" title="Gerar prompt">⚡</button></td>
+            </tr>
+            <tr data-item="Objetos" class="cursor-pointer hover:bg-border/40">
+              <td class="p-2">Objetos</td><td class="p-2">Realismo fosco</td><td class="p-2">Reflexos leves, sem brilho duro</td>
+              <td class="p-2"><button class="prompt-btn copy-row-prompt" title="Gerar prompt">⚡</button></td>
+            </tr>
+            <tr data-item="Paleta" class="cursor-pointer hover:bg-border/40">
+              <td class="p-2">Paleta</td><td class="p-2">Tokens Dia/Noite; acentos ≤ 20%</td><td class="p-2">Header neutro; Íris só em realces</td>
+              <td class="p-2"><button class="prompt-btn copy-row-prompt" title="Gerar prompt">⚡</button></td>
+            </tr>
+            <tr data-item="Contraste" class="cursor-pointer hover:bg-border/40">
+              <td class="p-2">Contraste</td><td class="p-2">Texto ≥ 4.5:1 (WCAG AA)</td><td class="p-2">Autoajuste nos chips de token</td>
+              <td class="p-2"><button class="prompt-btn copy-row-prompt" title="Gerar prompt">⚡</button></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="mt-3 flex flex-wrap items-center gap-2">
+          <button id="copy-image-prompt" class="px-3 py-2 rounded border border-border">Copiar como prompt de imagem</button>
+          <span class="text-xs text-muted-2">Dica: clique numa linha para selecionar; o prompt usa <em>Item + Diretriz + Exemplo</em>.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Governança -->
+    <section id="governance" class="py-16">
+      <h2 class="section-title">Governança</h2>
+      <div class="bg-card p-8 rounded-lg border border-border">
+        <h3 class="font-bold text-xl mb-4">Princípios Orientadores</h3>
+        <p class="text-muted-2 mb-6">Qualquer evolução do Symbol passa por quatro pilares:</p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div class="bg-border/50 p-4 rounded-lg"><strong class="block text-lg">Simples</strong></div>
+          <div class="bg-border/50 p-4 rounded-lg"><strong class="block text-lg">Seguro</strong></div>
+          <div class="bg-border/50 p-4 rounded-lg"><strong class="block text-lg">Relevante</strong></div>
+          <div class="bg-border/50 p-4 rounded-lg"><strong class="block text-lg">Memorável</strong></div>
+        </div>
+        <hr class="my-8 border-border">
+        <h3 class="font-bold text-xl mb-4">Regras do Sistema</h3>
+        <ul class="space-y-3 text-muted-2 list-disc list-inside" id="rules">
+        <li><strong>Versão Atual:</strong> Symbol v5.7.6 — 27/08/2025</li>
+          <li><strong>Ciclo de Revisão:</strong> Trimestral, ritmo executivo e adaptativo.</li>
+          <li><strong>Arquivo Vivo:</strong> decisões, versões e releases registradas.</li>
+          <li><strong>Critério de Mudança:</strong> fluxo de aprovação: Trino → Íris → Farol.</li>
+        </ul>
+        <div class="mt-4">
+          <button id="promote-version" class="px-3 py-2 rounded border border-border">Promover versão</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="py-16">
+      <h2 class="section-title">Histórico de Versões</h2>
+      <div class="bg-card p-6 rounded-lg border border-border space-y-6" id="changelog-list">
+        <div>
+          <h3 class="font-bold text-lg">v5.7.6 <span class="text-sm font-normal text-muted-2">— Atual</span></h3>
+          <ul class="list-disc list-inside text-muted-2 mt-2">
+            <li>Inclusão de um banner no topo com logo e slogan para melhor branding.</li>
+            <li>Padronização global de tabelas e unificação de estilos.</li>
+            <li>Botões de invocação integrados diretamente na tabela dos Guardiões.</li>
+            <li>Ajustes de fontes: títulos em Manrope, textos em IBM Plex.</li>
+            <li>Correções de cores e melhoria no contraste do modo noite.</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg">v5.7.5</h3>
+          <ul class="list-disc list-inside text-muted-2 mt-2">
+            <li>Adição de botão <strong>⚡</strong> em cada linha de Diretrizes para gerar prompt imediato.</li>
+            <li>Atualização do script para copiar prompt por linha e registrar no Arquivo Vivo.</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg">v5.7.3</h3>
+          <ul class="list-disc list-inside text-muted-2 mt-2">
+            <li>Botão “Copiar como prompt de imagem” e registro do último prompt.</li>
+            <li>“Promover versão” inclui guardião, comando, diretriz e prompt.</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg">v5.7.2</h3>
+          <ul class="list-disc list-inside text-muted-2 mt-2">
+            <li>Rastreamento da última diretriz de imagem consultada.</li>
+            <li>Promo registra a diretriz no changelog.</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg">v5.7.1</h3>
+          <ul class="list-disc list-inside text-muted-2 mt-2">
+            <li>Fonte IBM Plex Sans; anchors limpos; Diretrizes de Imagem.</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-bold text-lg">v5.7</h3>
+          <ul class="list-disc list-inside text-muted-2 mt-2">
+            <li>Data-driven Guardiões; ⌘K; A4/print; acessibilidade.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Topo -->
+  <button id="back-to-top" aria-label="Voltar ao topo">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/>
+    </svg>
+  </button>
+
+  <!-- Rodapé -->
+  <footer class="border-t border-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-4 sm:flex-row justify-between items-center text-sm text-muted-2">
+      <div class="flex items-center space-x-2">
+        <span class="logo-unicode text-2xl">&infin;</span>
+        <span>Symbol • Sistema Simbólico Sustentável v5.7.6</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2">
+          <span class="font-semibold">Fonte:</span>
+          <button id="decrease-font" class="px-2 py-1 rounded border border-border" aria-label="Diminuir">A-</button>
+          <button id="increase-font" class="px-2 py-1 rounded border border-border" aria-label="Aumentar">A+</button>
+        </div>
+        <label class="switch" aria-label="Alternar tema">
+          <input type="checkbox" id="themeSwitch"><span class="slider"></span>
+        </label>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Command Palette -->
+  <div id="cmdpal" class="hidden fixed inset-0 z-[100]">
+    <div class="absolute inset-0 bg-black/40" data-close></div>
+    <div class="relative mx-auto mt-24 w-11/12 max-w-xl rounded-xl border border-border bg-card p-4">
+      <input id="cmd-input" class="w-full border border-border rounded px-3 py-2 mb-3 bg-bg"
+             placeholder="Digite um comando (/presenca, /eco, …)" autofocus />
+      <ul id="cmd-results" class="max-h-64 overflow-y-auto text-sm"></ul>
+      <div class="mt-3 text-xs text-muted-2">Dica: use ⌘K / Ctrl+K para abrir; Enter executa.</div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+    const root = document.documentElement;
+
+    const themeSwitch = $('#themeSwitch');
+    const decBtn = $('#decrease-font');
+    const incBtn = $('#increase-font');
+    const backTop = $('#back-to-top');
+    const nav = $('#main-nav');
+    const navLinks = nav ? $$('#main-nav a') : [];
+    const sections = navLinks.map(l => document.getElementById(l.getAttribute('href').slice(1))).filter(Boolean);
+    const statePill = $('#state-pill');
+    const imgPill = $('#img-pill');
+    const navToggle = $('#navToggle');
+    const mobileNav = $('#mobile-nav');
+
+    const FONT_STEP = 1, MIN_FONT = 12, MAX_FONT = 20, DEF_FONT = 16;
+
+    const GUARDIOES = [
+      { key:"Farol",  icon:"△", cmd:"/farol",   intenc:"Clareza & beleza", faz:"Direção visual",     faceta:"Forma",   perfil:"Direção estético-estratégica",  dia:"--farol-dia", noite:"--farol-noite" },
+      { key:"Íris",   icon:"◎", cmd:"/iris",    intenc:"Vínculo & compreensão", faz:"Integração & realces", faceta:"Vínculo", perfil:"Tom, tags, microcopy",        dia:"--iris-dia",  noite:"--iris-noite"  },
+      { key:"Joaquina",icon:"▼", cmd:"/joaquina",intenc:"Proteção & foco",  faz:"Limites & escopo",  faceta:"Limite",  perfil:"Proteção & compliance",         dia:"--joaquina-dia", noite:"--joaquina-noite" },
+      { key:"Lume",   icon:"◯", cmd:"/lume",    intenc:"Energia & bem-estar",faz:"Cadência & pausas", faceta:"Balanço", perfil:"Regulação de ritmo",            dia:"--lume-dia",  noite:"--lume-noite"  },
+      { key:"Mira",   icon:"◇", cmd:"/mira",    intenc:"Autoconhecimento",  faz:"Autoanálise & síntese", faceta:"Espelho", perfil:"Leitura de estado",          dia:"--mira-dia",  noite:"--mira-noite"  },
+      { key:"Nexo",   icon:"⦿", cmd:"/nexo",    intenc:"Narrativa coerente",faz:"Narrativa & logs",   faceta:"Trama",   perfil:"Cronista do sistema",           dia:"--nexo-dia",  noite:"--nexo-noite"  },
+      { key:"Trino",  icon:"∴", cmd:"/trino",   intenc:"Estratégia & decisão", faz:"Estrutura & decisão", faceta:"Lógica", perfil:"Critérios & árvores",        dia:"--trino-dia", noite:"--trino-noite" }
+    ];
+
+    const CMDS = [
+      {cmd:"/symbol-me", desc:"Reflexo semanal"},
+      {cmd:"/presenca",  desc:"Guia da semana"},
+      {cmd:"/eco",       desc:"Diagnóstico emocional"},
+      {cmd:"/ritmo",     desc:"Ajuste de cadência"},
+      {cmd:"/saude",     desc:"Humor e energia"},
+      {cmd:"/painel",    desc:"Diagnóstico visual"},
+    ];
+
+    function getCSSVar(varName){
+      return getComputedStyle(root).getPropertyValue(varName).trim();
+    }
+
+    function hexFromCssColor(c){
+      if(c.startsWith('#')) return c.toUpperCase();
+      const m = c.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+      if(!m) return '#000000';
+      const [r,g,b]=[+m[1],+m[2],+m[3]];
+      return '#' + [r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('').toUpperCase();
+    }
+
+    // Tabela data-driven Guardiões
+    function renderGuardians(){
+      const tbody = document.querySelector('#guardians-table tbody');
+      if(!tbody) return;
+      tbody.innerHTML = '';
+      const rows = [
+        { label:'Intenção',   key:'intenc' },
+        { label:'Faz',        key:'faz'    },
+        { label:'Faceta',     key:'faceta' },
+        { label:'Perfil', key:'perfil' },
+        { label:'Ação', action:true },
+        { label:'Dia',        key:'dia',   color:true },
+        { label:'Noite',      key:'noite', color:true }
+      ];
+      rows.forEach(row=>{
+        const tr = document.createElement('tr');
+        const tdHead = document.createElement('td'); tdHead.textContent = row.label; tr.appendChild(tdHead);
+        GUARDIOES.forEach(g=>{
+          const td = document.createElement('td');
+          if(row.action){
+            const btn=document.createElement('button'); btn.className='px-2 py-1 rounded border border-border text-xs'; btn.textContent='🔮 Invocar'; btn.setAttribute('data-guardian', g.key); td.appendChild(btn);
+          } else if(row.color){
+            const cssVar = g[row.key];
+            const color = hexFromCssColor(getCSSVar(cssVar));
+            const sw = document.createElement('span'); sw.className='color-swatch'; sw.style.backgroundColor = `var(${cssVar})`;
+            const text = document.createElement('span'); text.textContent = ' ' + color;
+            td.appendChild(sw); td.appendChild(text);
+          }else{
+            td.textContent = g[row.key];
+          }
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Tema
+    function setTheme(mode){
+      root.setAttribute('data-theme', mode);
+      if(themeSwitch){ themeSwitch.checked = (mode === 'dark'); }
+      try { localStorage.setItem('symbol.theme', mode); } catch(e){}
+    }
+
+    // Fonte
+    function setFontSize(px){
+      const size = Math.max(MIN_FONT, Math.min(px, MAX_FONT));
+      root.style.fontSize = size + 'px';
+      try { localStorage.setItem('symbol.fontSize', size); } catch(e){}
+    }
+
+    // Nav ativa
+    function updateActiveNav(){
+      if(sections.length === 0) return;
+      let current = sections[0].id;
+      const all = [document.getElementById('hero'), ...sections];
+      for(const s of all){
+        if(!s) continue;
+        const r = s.getBoundingClientRect();
+        if(r.top <= 100 && r.bottom >= 100){ current = s.id; break; }
+      }
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${current}`));
+    }
+
+    // Estado de guardião
+    function setGuardian(key){
+      try{ localStorage.setItem('symbol.guardian', key); }catch(e){}
+      if(statePill){ statePill.textContent = `Guardião ativo: ${key}`; }
+      document.title = `Symbol v5.7.6 • ${key}`;
+    }
+
+    // Anchors copiáveis
+    function enhanceAnchors(){
+      $$('#hero h1, h2.section-title, h3').forEach(h=>{
+        const id = h.id || h.textContent.trim().toLowerCase().replace(/\s+/g,'-');
+        h.id = id;
+        if(h.querySelector('.anchor')) return;
+        const a = document.createElement('a');
+        a.href = `#${id}`; a.className='anchor'; a.textContent='§';
+        a.title = 'Copiar link';
+        a.addEventListener('click', (e)=>{
+          e.preventDefault();
+          const url = `${location.origin}${location.pathname}#${id}`;
+          navigator.clipboard.writeText(url);
+          a.textContent='✓'; setTimeout(()=>a.textContent='§', 1200);
+        });
+        h.appendChild(a);
+      });
+    }
+
+    // Command Palette
+    const cmdpal = $('#cmdpal'), cmdInput = $('#cmd-input'), cmdRes = $('#cmd-results');
+    function openCmd(){
+      cmdpal.classList.remove('hidden');
+      cmdInput.value=''; renderCmd('');
+      cmdInput.focus();
+    }
+    function closeCmd(){ cmdpal.classList.add('hidden'); }
+    function renderCmd(q){
+      const ql = q.toLowerCase();
+      const hits = CMDS.filter(c => c.cmd.toLowerCase().includes(ql) || c.desc.toLowerCase().includes(ql));
+      cmdRes.innerHTML = hits.map(h=>`<li class="px-2 py-2 border-b border-border"><button class="w-full text-left" data-exec="${h.cmd}"><code>${h.cmd}</code> — ${h.desc}</button></li>`).join('') || `<li class="px-2 py-2 text-muted-2">Sem resultados</li>`;
+    }
+    function execCmd(cmd){
+      try{ localStorage.setItem('symbol.lastCmd', cmd); }catch(e){}
+      alert(`Executar: ${cmd}\n(plugue esse valor no seu fluxo real: Copilot/Loop/Notion)`);
+      closeCmd();
+    }
+
+    // Diretrizes de Imagem — rastreamento, botão global e botões por linha
+    function attachImageGuidelineTracking(){
+      const table = $('#img-guidelines-table');
+      const copyBtn = $('#copy-image-prompt');
+      if(!table || !copyBtn) return;
+      const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+      function setLastItem(item){
+        try{ localStorage.setItem('symbol.lastImageGuideline', item); }catch(e){}
+        if(imgPill){
+          imgPill.textContent = `Última diretriz: ${item}`;
+          imgPill.classList.remove('hidden');
+        }
+      }
+
+      // click row to highlight and set last item
+      rows.forEach(r=>{
+        r.addEventListener('click', () => {
+          const item = r.getAttribute('data-item') || '—';
+          rows.forEach(x=>x.classList.remove('row-selected'));
+          r.classList.add('row-selected');
+          setLastItem(item);
+        });
+      });
+
+      // restore selection
+      let lastItem = null; try{ lastItem = localStorage.getItem('symbol.lastImageGuideline'); }catch(e){}
+      if(lastItem){
+        const target = rows.find(x=> (x.getAttribute('data-item')||'') === lastItem);
+        if(target){ target.classList.add('row-selected'); }
+        if(imgPill){
+          imgPill.textContent = `Última diretriz: ${lastItem}`;
+          imgPill.classList.remove('hidden');
+        }
+      }
+
+      // copy button global
+      copyBtn.addEventListener('click', () => {
+        const selected = rows.find(x=> x.classList.contains('row-selected')) || rows[0];
+        if(!selected){ alert('Selecione uma diretriz.'); return; }
+        const item   = (selected.getAttribute('data-item')||'').trim();
+        const tds    = selected.querySelectorAll('td');
+        const dire   = (tds[1]?.textContent||'').trim();
+        const ex     = (tds[2]?.textContent||'').trim();
+        const prompt = `Imagem Symbol — ${item}. Diretriz: ${dire}. Exemplo: ${ex}. Paleta: tokens Dia/Noite com acentos ≤ 20%. Fundo limpo, geometria simples. Contraste mínimo 4.5:1.`;
+        try{
+          navigator.clipboard.writeText(prompt);
+          localStorage.setItem('symbol.lastImagePrompt', prompt);
+          copyBtn.textContent = 'Copiado ✓'; setTimeout(()=> copyBtn.textContent='Copiar como prompt de imagem', 1400);
+        }catch(e){ alert('Não foi possível copiar para a área de transferência.'); }
+      });
+
+      // per-row prompt buttons
+      const rowButtons = table.querySelectorAll('.copy-row-prompt');
+      rowButtons.forEach(btn => {
+        btn.addEventListener('click', (ev) => {
+          ev.stopPropagation(); // avoid selecting the row
+          const row = btn.closest('tr');
+          const item = (row.getAttribute('data-item')||'').trim();
+          const tds = row.querySelectorAll('td');
+          const dire   = (tds[1]?.textContent||'').trim();
+          const ex     = (tds[2]?.textContent||'').trim();
+          const prompt = `Imagem Symbol — ${item}. Diretriz: ${dire}. Exemplo: ${ex}. Paleta: tokens Dia/Noite com acentos ≤ 20%. Fundo limpo, geometria simples. Contraste mínimo 4.5:1.`;
+          try{
+            navigator.clipboard.writeText(prompt);
+            localStorage.setItem('symbol.lastImagePrompt', prompt);
+            setLastItem(item);
+            // show feedback on the button
+            const original = btn.textContent;
+            btn.textContent = '✓';
+            setTimeout(() => { btn.textContent = original; }, 1000);
+          }catch(e){ alert('Não foi possível copiar para a área de transferência.'); }
+        });
+      });
+    }
+
+    // Promover versão → inclui guardião, último comando, diretriz e prompt copiado
+    function promoteVersion(){
+      const now = new Date();
+      const stamp = now.toLocaleString();
+      const list = $('#changelog-list');
+      const guardian = (localStorage.getItem('symbol.guardian')||'—');
+      const lastCmd = (localStorage.getItem('symbol.lastCmd')||'—');
+      const lastImg = (localStorage.getItem('symbol.lastImageGuideline')||'—');
+      const lastPrompt = (localStorage.getItem('symbol.lastImagePrompt')||'—');
+      const el = document.createElement('div');
+      el.innerHTML = `
+        <h3 class="font-bold text-lg">v5.7.5.${now.getHours()}${now.getMinutes()}</h3>
+        <ul class="list-disc list-inside text-muted-2 mt-2">
+          <li>Carimbo de promoção: ${stamp}</li>
+          <li>Guardião ativo no momento: ${guardian}</li>
+          <li>Último comando: ${lastCmd}</li>
+          <li>Última diretriz de imagem consultada: ${lastImg}</li>
+          <li>Último prompt de imagem copiado: <span class="font-mono">${lastPrompt}</span></li>
+        </ul>`;
+      list.prepend(el);
+    }
+
+    function init(){
+      // Tema
+      let savedTheme = null; try{ savedTheme = localStorage.getItem('symbol.theme'); }catch(e){}
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+      // Fonte
+      let savedFS = null; try{ savedFS = localStorage.getItem('symbol.fontSize'); }catch(e){}
+      setFontSize(savedFS ? parseInt(savedFS, 10) : DEF_FONT);
+      // Guardião
+      let g = '—'; try{ g = localStorage.getItem('symbol.guardian') || '—'; }catch(e){}
+      setGuardian(g);
+      // Render
+      renderGuardians();
+      enhanceAnchors();
+      attachImageGuidelineTracking();
+      updateActiveNav();
+      // Listeners
+      if(themeSwitch){ themeSwitch.addEventListener('change', e => setTheme(e.target.checked ? 'dark' : 'light')); }
+      if(decBtn){ decBtn.addEventListener('click', () => setFontSize(parseFloat(getComputedStyle(root).fontSize) - FONT_STEP)); }
+      if(incBtn){ incBtn.addEventListener('click', () => setFontSize(parseFloat(getComputedStyle(root).fontSize) + FONT_STEP)); }
+      window.addEventListener('scroll', () => {
+        if(window.scrollY > 300){ backTop.classList.add('show'); } else { backTop.classList.remove('show'); }
+        updateActiveNav();
+      });
+      backTop.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+      // Invocações e botões
+      document.addEventListener('click', (e) => {
+        const t = e.target;
+        if(t.matches('[data-guardian]')){
+          setGuardian(t.getAttribute('data-guardian'));
+        }
+        if(t.matches('#open-cmd')) openCmd();
+        if(t.matches('#cmdpal [data-close]')) closeCmd();
+        if(t.matches('#cmd-results [data-exec]')) execCmd(t.getAttribute('data-exec'));
+        if(t.matches('#promote-version')) promoteVersion();
+      });
+      // Command Palette
+      window.addEventListener('keydown', (e) => {
+        if((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k'){
+          e.preventDefault(); openCmd();
+        } else if(e.key === 'Escape'){ closeCmd(); }
+      });
+      if(cmdInput){
+        cmdInput.addEventListener('input', () => renderCmd(cmdInput.value));
+        cmdInput.addEventListener('keydown', (e) => {
+          if(e.key === 'Enter'){
+            const first = $('#cmd-results [data-exec]');
+            if(first) execCmd(first.getAttribute('data-exec'));
+          }
+        });
+      }
+      // Mobile nav toggle
+      if(navToggle){ navToggle.addEventListener('click', () => mobileNav.classList.toggle('hidden')); }
+    }
+
+    if(document.readyState === 'loading'){ document.addEventListener('DOMContentLoaded', init); }
+    else { init(); }
+  })();
+  </script>
+</body>
+</html>
