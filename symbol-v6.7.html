@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Symbol v6.7 • Guardiões + Ação + IA-pronta</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      font-size:16px;
+
+      /* Neutros — Dia */
+      --neutral-100:#FFFFFF; --neutral-200:#F7F7F8; --neutral-300:#E5E5EA; --neutral-400:#888A91; --neutral-500:#111111;
+
+      /* Guardiões */
+      --farol-dia:#F2C200;   --farol-noite:#A87900;
+      --iris-dia:#6B7CFF;    --iris-noite:#4A57C6;
+      --joaquina-dia:#2ECC71;--joaquina-noite:#1E8E5B;
+      --lume-dia:#FFB020;    --lume-noite:#B27800;
+      --mira-dia:#00BFA6;    --mira-noite:#00796B;
+      --nexo-dia:#0A84FF;    --nexo-noite:#0A66D1;
+      --trino-dia:#FF6200;   --trino-noite:#E45500;
+
+      /* Semântica — Dia */
+      --bg:var(--neutral-200); --fg:var(--neutral-500);
+      --card:var(--neutral-100); --border:var(--neutral-300); --muted-2:var(--neutral-400);
+
+      /* Tints */
+      --tint-dia:8%;
+      --tint-noite:10%;
+    }
+    [data-theme="dark"]{
+      /* Neutros — Noite */
+      --neutral-100:#111214; --neutral-200:#1A1B1E; --neutral-300:#2A2B2F; --neutral-400:#A0A1A7; --neutral-500:#F2F2F4;
+
+      /* Semântica — Noite */
+      --bg:var(--neutral-100); --fg:var(--neutral-500);
+      --card:var(--neutral-200); --border:var(--neutral-300); --muted-2:var(--neutral-400);
+    }
+
+    /* Tipografia global */
+    body{ background:var(--bg); color:var(--fg); font-family:'Manrope',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+    html{ scroll-behavior:smooth; }
+
+    .section-title{ color:var(--fg); font-weight:800; font-size:1.875rem; margin-bottom:1.5rem; border-bottom:2px solid var(--border); padding-bottom:.75rem; }
+    .logo-unicode{ font-weight:800; color:var(--fg); }
+
+    /* Switch de tema */
+    .switch{position:relative;display:inline-block;width:48px;height:28px;cursor:pointer}
+    .switch input{display:none}
+    .slider{position:absolute;inset:0;border-radius:999px;background:var(--neutral-400);transition:background .25s}
+    .slider:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;border-radius:50%;background:var(--card);transition:transform .25s}
+    input:checked+.slider{background:var(--nexo-noite)}
+    input:checked+.slider:before{transform:translateX(20px)}
+
+    /* Tabelas */
+    .table-container{overflow-x:auto;border:1px solid var(--border);border-radius:12px;background:var(--card)}
+    .guardians-table{width:100%;border-collapse:collapse;min-width:1000px;table-layout:fixed}
+    .guardians-table th,.guardians-table td{padding:1rem 1.25rem;text-align:left;border-bottom:1px solid var(--border);font-size:.95rem;vertical-align:top}
+    .guardians-table thead th{background:color-mix(in oklab,var(--bg),var(--border) 50%);font-weight:700;font-size:1rem;position:sticky;top:0;z-index:10;border-bottom-width:3px}
+    .guardians-table tbody tr:last-child td{border-bottom:none}
+    .guardians-table th:first-child,.guardians-table td:first-child{width:16%}
+    .guardians-table tbody td:first-child{font-weight:800;color:var(--fg);position:sticky;left:0;background:var(--card);z-index:5}
+    .guardians-table tbody tr:hover td:first-child{background:color-mix(in oklab,var(--card),var(--border) 50%)}
+    .hex-tag{padding:.25rem .6rem;border-radius:6px;font-family:monospace;font-size:.85em;font-weight:700}
+
+    /* Coloração por colgroup */
+    col.col-farol{ background: color-mix(in srgb, var(--farol-dia) var(--tint-dia), var(--card)); }
+    col.col-iris{ background: color-mix(in srgb, var(--iris-dia) var(--tint-dia), var(--card)); }
+    col.col-joaquina{ background: color-mix(in srgb, var(--joaquina-dia) var(--tint-dia), var(--card)); }
+    col.col-lume{ background: color-mix(in srgb, var(--lume-dia) var(--tint-dia), var(--card)); }
+    col.col-mira{ background: color-mix(in srgb, var(--mira-dia) var(--tint-dia), var(--card)); }
+    col.col-nexo{ background: color-mix(in srgb, var(--nexo-dia) var(--tint-dia), var(--card)); }
+    col.col-trino{ background: color-mix(in srgb, var(--trino-dia) var(--tint-dia), var(--card)); }
+    [data-theme="dark"] col.col-farol{ background: color-mix(in srgb, var(--farol-noite) var(--tint-noite), var(--card)); }
+    [data-theme="dark"] col.col-iris{ background: color-mix(in srgb, var(--iris-noite) var(--tint-noite), var(--card)); }
+    [data-theme="dark"] col.col-joaquina{ background: color-mix(in srgb, var(--joaquina-noite) var(--tint-noite), var(--card)); }
+    [data-theme="dark"] col.col-lume{ background: color-mix(in srgb, var(--lume-noite) var(--tint-noite), var(--card)); }
+    [data-theme="dark"] col.col-mira{ background: color-mix(in srgb, var(--mira-noite) var(--tint-noite), var(--card)); }
+    [data-theme="dark"] col.col-nexo{ background: color-mix(in srgb, var(--nexo-noite) var(--tint-noite), var(--card)); }
+    [data-theme="dark"] col.col-trino{ background: color-mix(in srgb, var(--trino-noite) var(--tint-noite), var(--card)); }
+
+    /* Accordion (mobile) */
+    .accordion{display:none}
+    @media (max-width: 768px){
+      .table-container{display:none}
+      .accordion{display:block}
+      .acc-item{border:1px solid var(--border);border-radius:12px;background:var(--card)}
+      .acc-head{width:100%;text-align:left;padding:1rem 1.25rem;font-weight:800;display:flex;justify-content:space-between;align-items:center}
+      .acc-body{padding:0 1.25rem 1rem 1.25rem}
+      .badge{display:inline-block;padding:.25rem .5rem;border-radius:999px;background:var(--neutral-300);font-weight:600;font-size:.8rem;margin-right:.5rem;margin-top:.5rem}
+    }
+
+    /* UI misc */
+    .accessibility-controls{display:flex;align-items:center;gap:1rem}
+    .font-size-controls button{background:var(--neutral-300);color:var(--fg);border:1px solid var(--border);border-radius:8px;width:36px;height:36px;font-weight:800;cursor:pointer;transition:background .2s}
+    .font-size-controls button:hover{background:color-mix(in oklab,var(--neutral-300),var(--fg) 8%)}
+    nav a.active{background:var(--border);color:var(--fg)}
+    #back-to-top{position:fixed;bottom:20px;right:20px;background:var(--card);color:var(--fg);border:1px solid var(--border);border-radius:50%;width:48px;height:48px;display:none;align-items:center;justify-content:center;cursor:pointer;transition:opacity .3s,transform .3s;opacity:0;transform:translateY(10px);z-index:100}
+    #back-to-top.show{display:flex;opacity:1;transform:translateY(0)}
+    .gemini-button{background:var(--nexo-dia);color:var(--neutral-100)}
+    [data-theme="dark"] .gemini-button{background:var(--nexo-noite)}
+    .gemini-button:disabled{opacity:.5;cursor:not-allowed}
+    .loader{border:2px solid var(--border);border-top:2px solid var(--fg);border-radius:50%;width:16px;height:16px;animation:spin 1s linear infinite}
+    @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+
+    /* Toast */
+    .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:.5rem .75rem;border-radius:8px;font-weight:700;opacity:0;pointer-events:none;transition:opacity .25s;z-index:120}
+    .toast.show{opacity:1}
+  </style>
+</head>
+<body class="bg-bg text-fg pb-24 sm:pb-0">
+
+  <!-- Cabeçalho -->
+  <header id="header" class="sticky top-0 z-30 w-full backdrop-blur-lg bg-opacity-80 bg-bg border-b border-border transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center space-x-3">
+          <span class="logo-unicode text-3xl" aria-label="Símbolo de infinito">&infin;</span>
+          <span class="text-xl font-extrabold text-fg">Symbol</span>
+        </div>
+        <nav id="main-nav" class="hidden md:flex items-center space-x-2">
+          <a href="#welcome" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Início</a>
+          <a href="#howto" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Como usar</a>
+          <a href="#guardians" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Guardiões</a>
+          <a href="#psyche" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Psique</a>
+          <a href="#flows" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Fluxos</a>
+          <a href="#identity" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Identidade</a>
+          <a href="#imagery" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Imagens</a>
+          <a href="#governance" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Governança</a>
+          <a href="#changelog" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Versões</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Hero -->
+    <section id="hero" class="text-center py-12 sm:py-16">
+      <div class="flex justify-center mb-4"><span class="logo-unicode text-7xl" aria-label="Símbolo de infinito grande">&infin;</span></div>
+      <h1 class="text-5xl md:text-6xl font-extrabold tracking-tighter mb-2">Symbol</h1>
+      <p class="max-w-2xl mx-auto text-lg text-muted-2">
+        Totem vivo que condensa sentido, guia a identidade e orquestra a ação pelos Guardiões.
+      </p>
+    </section>
+
+    <!-- Boas-vindas -->
+    <section id="welcome" class="py-12">
+      <div class="bg-card p-8 rounded-lg border border-border">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h2 class="text-2xl font-extrabold mb-2">O que é o Symbol?</h2>
+            <p class="text-muted-2">Guia vivo de identidade e filosofia de interação humano-IA. Aparência, tom e regras para uma parceria coerente e sustentável.</p>
+          </div>
+          <div>
+            <h2 class="text-2xl font-extrabold mb-2">Para que serve?</h2>
+            <p class="text-muted-2">Manual operacional para colaboração <strong>intencional</strong>. Ferramentas: Guardiões, Comandos e Fluxos modulam apoio conforme o momento.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Como usar com IA -->
+    <section id="howto" class="py-12">
+      <h2 class="section-title">Como usar com IA</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-card p-6 rounded-lg border border-border">
+          <h3 class="font-extrabold mb-2">Invocações rápidas</h3>
+          <ul class="space-y-2">
+            <li><button class="copy-btn underline" data-copy='Como /nexo, narre meu progresso no projeto X em 5 tópicos.'>“/nexo narre progresso”</button></li>
+            <li><button class="copy-btn underline" data-copy='Atue como /joaquina: defina limites e um bloco de foco de 25 min para esta tarefa.'>“/joaquina foco 25min”</button></li>
+            <li><button class="copy-btn underline" data-copy='Responda como /lume com energia e pausas: proponha um ciclo 25/5 para hoje.'>“/lume ciclo 25/5”</button></li>
+            <li><button class="copy-btn underline" data-copy='Como /mira, faça uma autoanálise breve: sinais, fricções e próxima micro-ação.'>“/mira autoanálise”</button></li>
+          </ul>
+        </div>
+        <div class="bg-card p-6 rounded-lg border border-border">
+          <h3 class="font-extrabold mb-2">Rituais transversais</h3>
+          <ul class="space-y-2">
+            <li><button class="copy-btn underline" data-copy='/presenca — gere palavra-guia e ação prática da semana.'>“/presenca semanal”</button></li>
+            <li><button class="copy-btn underline" data-copy='/eco — diagnóstico emocional em 3 sinais e 1 ajuste.'>“/eco diagnóstico”</button></li>
+            <li><button class="copy-btn underline" data-copy='/painel — snapshot visual do dia em 3 cards.'>“/painel 3 cards”</button></li>
+          </ul>
+        </div>
+      </div>
+      <p class="text-sm text-muted-2 mt-3">Dica: combine persona + guardião. Ex.: “<strong>Sol</strong> + <strong>/iris</strong>” para empatia conectiva.</p>
+    </section>
+
+    <!-- Guardiões (tabela desktop) -->
+    <section id="guardians" class="py-12">
+      <h2 class="section-title">Os Guardiões</h2>
+      <div class="table-container" role="region" aria-label="Tabela dos Guardiões">
+        <table class="guardians-table">
+          <colgroup>
+            <col style="width:16%">
+            <col class="col-farol">
+            <col class="col-iris">
+            <col class="col-joaquina">
+            <col class="col-lume">
+            <col class="col-mira">
+            <col class="col-nexo">
+            <col class="col-trino">
+            <col style="width:12%">
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Atributo</th>
+              <th style="border-bottom-color: var(--farol-dia)">△ Farol <br><small>/farol</small></th>
+              <th style="border-bottom-color: var(--iris-dia)">◎ Íris <br><small>/iris</small></th>
+              <th style="border-bottom-color: var(--joaquina-dia)">▼ Joaquina <br><small>/joaquina</small></th>
+              <th style="border-bottom-color: var(--lume-dia)">◯ Lume <br><small>/lume</small></th>
+              <th style="border-bottom-color: var(--mira-dia)">◇ Mira <br><small>/mira</small></th>
+              <th style="border-bottom-color: var(--nexo-dia)">⦿ Nexo <br><small>/nexo</small></th>
+              <th style="border-bottom-color: var(--trino-dia)">∴ Trino <br><small>/trino</small></th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Intenção</td>
+              <td>Clareza e beleza</td>
+              <td>Vínculo e compreensão</td>
+              <td>Proteção e foco</td>
+              <td>Energia e bem-estar</td>
+              <td>Autoconhecimento e reflexão</td>
+              <td>Narrativa e crescimento</td>
+              <td>Estrutura e decisão</td>
+              <td><button class="px-3 py-1 rounded-md border border-border hover:bg-border" data-guardian="farol">🔮 Invocar</button></td>
+            </tr>
+            <tr>
+              <td>Faz</td>
+              <td>Direção visual</td>
+              <td>Integração & realces</td>
+              <td>Limites & escopo</td>
+              <td>Cadência & pausas</td>
+              <td>Autoanálise & síntese</td>
+              <td>Narrativa & logs</td>
+              <td>Critérios & árvores</td>
+              <td><button class="px-3 py-1 rounded-md border border-border hover:bg-border" data-guardian="iris">🔮 Invocar</button></td>
+            </tr>
+            <tr>
+              <td>Faceta</td>
+              <td>Forma</td>
+              <td>Vínculo</td>
+              <td>Limite</td>
+              <td>Balanço</td>
+              <td>Espelho</td>
+              <td>Trama</td>
+              <td>Lógica</td>
+              <td><button class="px-3 py-1 rounded-md border border-border hover:bg-border" data-guardian="joaquina">🔮 Invocar</button></td>
+            </tr>
+            <tr>
+              <td>Perfil</td>
+              <td>Estético-estratégico</td>
+              <td>Tom, tags, microcopy</td>
+              <td>Proteção & compliance</td>
+              <td>Regulação de ritmo</td>
+              <td>Leitura de estado</td>
+              <td>Cronista</td>
+              <td>Árvores de decisão</td>
+              <td><button class="px-3 py-1 rounded-md border border-border hover:bg-border" data-guardian="lume">🔮 Invocar</button></td>
+            </tr>
+            <tr>
+              <td>Dia</td>
+              <td><span class="hex-tag" style="background:var(--farol-dia); color:#1a1a1a">#F2C200</span></td>
+              <td><span class="hex-tag" style="background:var(--iris-dia); color:#FFFFFF">#6B7CFF</span></td>
+              <td><span class="hex-tag" style="background:var(--joaquina-dia); color:#FFFFFF">#2ECC71</span></td>
+              <td><span class="hex-tag" style="background:var(--lume-dia); color:#1a1a1a">#FFB020</span></td>
+              <td><span class="hex-tag" style="background:var(--mira-dia); color:#FFFFFF">#00BFA6</span></td>
+              <td><span class="hex-tag" style="background:var(--nexo-dia); color:#FFFFFF">#0A84FF</span></td>
+              <td><span class="hex-tag" style="background:var(--trino-dia); color:#FFFFFF">#FF6200</span></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Noite</td>
+              <td><span class="hex-tag" style="background:var(--farol-noite); color:#FFFFFF">#A87900</span></td>
+              <td><span class="hex-tag" style="background:var(--iris-noite); color:#FFFFFF">#4A57C6</span></td>
+              <td><span class="hex-tag" style="background:var(--joaquina-noite); color:#FFFFFF">#1E8E5B</span></td>
+              <td><span class="hex-tag" style="background:var(--lume-noite); color:#FFFFFF">#B27800</span></td>
+              <td><span class="hex-tag" style="background:var(--mira-noite); color:#FFFFFF">#00796B</span></td>
+              <td><span class="hex-tag" style="background:var(--nexo-noite); color:#FFFFFF">#0A66D1</span></td>
+              <td><span class="hex-tag" style="background:var(--trino-noite); color:#FFFFFF">#E45500</span></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Accordion (mobile) -->
+      <div class="accordion space-y-3" aria-label="Guardiões (mobile)">
+        <div class="acc-item" style="background:color-mix(in srgb, var(--farol-dia) var(--tint-dia), var(--card));">
+          <button class="acc-head">△ Farol <span>+</span></button>
+          <div class="acc-body hidden">
+            <div class="badge">Clareza</div><div class="badge">Beleza</div>
+            <p class="mt-2 text-sm">Faz: direção visual</p>
+            <button class="mt-3 px-3 py-1 rounded-md border border-border hover:bg-border" data-guardian="farol">🔮 Invocar</button>
+          </div>
+        </div>
+        <div class="acc-item" style="background:color-mix(in srgb, var(--iris-dia) var(--tint-dia), var(--card));">
+          <button class="acc-head">◎ Íris <span>+</span></button>
+          <div class="acc-body hidden">
+            <div class="badge">Vínculo</div><div class="badge">Compreensão</div>
+            <p class="mt-2 text-sm">Faz: integração & realces</p>
+            <button class="mt-3 px-3 py-1 rounded-md border border-border hover:bg-border" data-guardian="iris">🔮 Invocar</button>
+          </div>
+        </div>
+        <div class="acc-item" style="background:color-mix(in srgb, var(--joaquina-dia) var(--tint-dia), var(--card));">
+          <button class="acc-head">▼ Joaquina <span>+</span></button>
+          <div class="acc-body hidden">
+            <div class="badge">Proteção</div><div class="badge">Foco</div>
+            <p class="mt-2 text-sm">Faz: limites & escopo</p>
+            <button class="mt-3 px-3 py-1 rounded-md border border-border hover:bg-border" data-guardian="joaquina">🔮 Invocar</button>
+          </div>
+        </div>
+        <div class="acc-item" style="background:color-mix(in srgb, var(--lume-dia) var(--tint-dia), var(--card));">
+          <button class="acc-head">◯ Lume <span>+</span></button>
+          <div class="acc-body hidden">
+            <div class="badge">Energia</div><div class="badge">Bem-estar</div>
+            <p class="mt-2 text-sm">Faz: cadência & pausas</p>
+            <button class="mt-3 px-3 py-1 rounded-md border border-border hover:bg-border" data-guardian="lume">🔮 Invocar</button>
+          </div>
+        </div>
+        <div class="acc-item" style="background:color-mix(in srgb, var(--mira-dia) var(--tint-dia), var(--card));">
+          <button class="acc-head">◇ Mira <span>+</span></button>
+          <div class="acc-body hidden">
+            <div class="badge">Espelho</div><div class="badge">Reflexão</div>
+            <p class="mt-2 text-sm">Faz: autoanálise & síntese</p>
+            <button class="mt-3 px-3 py-1 rounded-md border border-border hover:bg-border" data-guardian="mira">🔮 Invocar</button>
+          </div>
+        </div>
+        <div class="acc-item" style="background:color-mix(in srgb, var(--nexo-dia) var(--tint-dia), var(--card));">
+          <button class="acc-head">⦿ Nexo <span>+</span></button>
+          <div class="acc-body hidden">
+            <div class="badge">Trama</div><div class="badge">Crescimento</div>
+            <p class="mt-2 text-sm">Faz: narrativa & logs</p>
+            <button class="mt-3 px-3 py-1 rounded-md border border-border hover:bg-border" data-guardian="nexo">🔮 Invocar</button>
+          </div>
+        </div>
+        <div class="acc-item" style="background:color-mix(in srgb, var(--trino-dia) var(--tint-dia), var(--card));">
+          <button class="acc-head">∴ Trino <span>+</span></button>
+          <div class="acc-body hidden">
+            <div class="badge">Lógica</div><div class="badge">Decisão</div>
+            <p class="mt-2 text-sm">Faz: critérios & árvores</p>
+            <button class="mt-3 px-3 py-1 rounded-md border border-border hover:bg-border" data-guardian="trino">🔮 Invocar</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="guardian-state" class="mt-4 text-sm text-muted-2" aria-live="polite"></div>
+    </section>
+
+    <!-- Psique -->
+    <section id="psyche" class="py-12">
+      <h2 class="section-title">Psique</h2>
+      <div class="bg-card p-8 rounded-lg border border-border">
+        <p class="text-muted-2 mb-6">Personas base orquestradas pelo Symbol para alinhar tom e entrega.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="border border-border rounded-lg p-6">
+            <h3 class="font-extrabold text-xl mb-2">Sol</h3>
+            <p class="text-muted-2">Interação empática e clara.</p>
+          </div>
+          <div class="border border-border rounded-lg p-6">
+            <h3 class="font-extrabold text-xl mb-2">Nerd</h3>
+            <p class="text-muted-2">Configuração, lógica e estrutura.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comandos & Fluxos (Gemini) -->
+    <section id="flows" class="py-12">
+      <h2 class="section-title">Comandos & Fluxos</h2>
+      <div class="bg-card p-6 rounded-lg border border-border">
+        <h3 class="font-extrabold text-lg mb-4">Gerador de Presença Semanal</h3>
+        <p class="text-muted-2 mb-4">Invoque <code>/presenca</code> para palavra-guia + ação prática.</p>
+        <button id="generate-presence" class="gemini-button font-semibold px-4 py-2 rounded-lg flex items-center gap-2" aria-busy="false" aria-controls="presence-output">✨ Gerar Presença da Semana</button>
+        <div id="presence-output" class="mt-4 p-4 bg-neutral-200 rounded-lg hidden" aria-live="polite">
+          <h4 id="presence-word" class="font-extrabold text-lg"></h4>
+          <p id="presence-action" class="text-muted-2"></p>
+        </div>
+        <div id="presence-loader" class="mt-4 hidden"><div class="loader" aria-hidden="true"></div></div>
+        <div id="presence-error" class="mt-4 text-red-500 hidden" role="alert"></div>
+      </div>
+
+      <div class="bg-card p-6 rounded-lg border border-border mt-8">
+        <h3 class="font-extrabold text-lg mb-2">✨ Fluxo de Apoio Personalizado</h3>
+        <p class="text-muted-2 mb-4">Descreva um desafio; a IA sugere 2–3 passos práticos ligados aos Guardiões.</p>
+        <textarea id="flow-prompt" class="w-full p-2 border border-border rounded-lg bg-bg" rows="3" placeholder="Ex: Procrastinando um projeto importante..."></textarea>
+        <button id="generate-flow" class="gemini-button font-semibold px-4 py-2 rounded-lg mt-2 flex items-center gap-2" aria-busy="false" aria-controls="flow-output">Gerar Fluxo</button>
+        <div id="flow-output" class="mt-4 p-4 bg-neutral-200 rounded-lg hidden prose" aria-live="polite"></div>
+        <div id="flow-loader" class="mt-4 hidden"><div class="loader" aria-hidden="true"></div></div>
+        <div id="flow-error" class="mt-4 text-red-500 hidden" role="alert"></div>
+      </div>
+    </section>
+
+    <!-- Identidade -->
+    <section id="identity" class="py-12">
+      <h2 class="section-title">Identidade</h2>
+      <div class="bg-card p-8 rounded-lg border border-border">
+        <h3 class="font-extrabold text-xl mb-2">Paleta Neutra</h3>
+        <p class="text-muted-2 mb-6">Base em 5 tons. Acentos dos Guardiões ≤ 20%.</p>
+        <div class="space-y-4">
+          <div class="flex items-start gap-4"><div class="w-12 h-12 rounded-lg border border-border shrink-0" style="background:var(--neutral-100)"></div><div><div class="font-extrabold">Neutral 100 <span class="font-mono text-muted-2 text-sm">[#FFFFFF / #111214]</span></div><p class="text-sm text-muted-2">Cartões (claro); fundo (escuro).</p></div></div>
+          <div class="flex items-start gap-4"><div class="w-12 h-12 rounded-lg border border-border shrink-0" style="background:var(--neutral-200)"></div><div><div class="font-extrabold">Neutral 200 <span class="font-mono text-muted-2 text-sm">[#F7F7F8 / #1A1B1E]</span></div><p class="text-sm text-muted-2">Fundo (claro); cartões (escuro).</p></div></div>
+          <div class="flex items-start gap-4"><div class="w-12 h-12 rounded-lg border border-border shrink-0" style="background:var(--neutral-300)"></div><div><div class="font-extrabold">Neutral 300 <span class="font-mono text-muted-2 text-sm">[#E5E5EA / #2A2B2F]</span></div><p class="text-sm text-muted-2">Bordas e divisórias.</p></div></div>
+          <div class="flex items-start gap-4"><div class="w-12 h-12 rounded-lg border border-border shrink-0" style="background:var(--neutral-400)"></div><div><div class="font-extrabold">Neutral 400 <span class="font-mono text-muted-2 text-sm">[#888A91 / #A0A1A7]</span></div><p class="text-sm text-muted-2">Texto secundário.</p></div></div>
+          <div class="flex items-start gap-4"><div class="w-12 h-12 rounded-lg border border-border shrink-0" style="background:var(--neutral-500)"></div><div><div class="font-extrabold">Neutral 500 <span class="font-mono text-muted-2 text-sm">[#111111 / #F2F2F4]</span></div><p class="text-sm text-muted-2">Texto principal.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Diretrizes de imagem (concisas) -->
+    <section id="imagery" class="py-12">
+      <h2 class="section-title">Diretrizes de imagem (concisas)</h2>
+      <div class="table-container" role="region" aria-label="Diretrizes de imagem">
+        <table class="guardians-table">
+          <thead><tr><th>Item</th><th>Diretriz</th><th>Exemplo</th></tr></thead>
+          <tbody>
+            <tr><td>Tipografia</td><td>Manrope 400–800</td><td>Títulos 700/800; corpo 400/500</td></tr>
+            <tr><td>Estilo</td><td>Geometria simples; fundo limpo</td><td>Cards modulares; grid 8px</td></tr>
+            <tr><td>Personas</td><td>Semi-realista suave</td><td>Bordas macias; luz difusa</td></tr>
+            <tr><td>Objetos</td><td>Realismo fosco</td><td>Reflexos leves; sem brilho duro</td></tr>
+            <tr><td>Paleta</td><td>Tokens Dia/Noite; acentos ≤ 20%</td><td>Header neutro; Íris em realces</td></tr>
+            <tr><td>Contraste</td><td>Texto ≥ 4.5:1 (AA)</td><td>Autoajuste em chips</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Governança -->
+    <section id="governance" class="py-12">
+      <h2 class="section-title">Governança</h2>
+      <div class="bg-card p-8 rounded-lg border border-border">
+        <h3 class="font-extrabold text-xl mb-4">Princípios</h3>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <span class="py-2 px-4 rounded-full bg-neutral-300 font-semibold">Simples</span>
+          <span class="py-2 px-4 rounded-full bg-neutral-300 font-semibold">Seguro</span>
+          <span class="py-2 px-4 rounded-full bg-neutral-300 font-semibold">Relevante</span>
+          <span class="py-2 px-4 rounded-full bg-neutral-300 font-semibold">Memorável</span>
+          <span class="py-2 px-4 rounded-full bg-neutral-300 font-semibold">Sustentável</span>
+        </div>
+        <hr class="my-8 border-border">
+        <h3 class="font-extrabold text-xl mb-4">Regras</h3>
+        <ul class="space-y-3 text-muted-2 list-disc list-inside">
+          <li><strong>Versão Atual:</strong> Symbol v6.7 — 27/08/2025</li>
+          <li><strong>Ciclo:</strong> Trimestral.</li>
+          <li><strong>Arquivo Vivo:</strong> decisões e releases registrados.</li>
+          <li><strong>Mudanças:</strong> Trino → Íris → Farol.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="py-12">
+      <h2 class="section-title">Histórico de Versões</h2>
+      <div class="bg-card p-6 rounded-lg border border-border space-y-6">
+        <div>
+          <h3 class="font-extrabold text-lg">v6.7 <span class="text-sm font-normal text-muted-2">— Atual</span></h3>
+          <ul class="list-disc list-inside text-muted-2 mt-2">
+            <li>Seção <strong>“Como usar com IA”</strong> com prompts prontos + copiar.</li>
+            <li>Tabela dos Guardiões colorida por <strong>&lt;colgroup&gt;</strong> + coluna <strong>Ação/Invocar</strong>.</li>
+            <li><strong>Accordion mobile</strong> para leitura limpa em telas pequenas.</li>
+            <li>Diretrizes de imagem preservadas; IA (Gemini) mantida como demo.</li>
+            <li>Tipografia global em <strong>Manrope</strong>; limpeza de símbolos estranhos.</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-extrabold text-lg">v6.6</h3>
+          <ul class="list-disc list-inside text-muted-2 mt-2">
+            <li>Colorização AA, Ação/Invocar, diretrizes concisas reintroduzidas.</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-extrabold text-lg">v6.5</h3>
+          <ul class="list-disc list-inside text-muted-2 mt-2">
+            <li>Tints por coluna; ajustes de cabeçalho (base Gemini).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Back to top -->
+  <button id="back-to-top" aria-label="Voltar ao topo">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" role="img" aria-label="Seta para cima" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+    </svg>
+  </button>
+
+  <!-- Rodapé -->
+  <footer class="border-t border-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-4 sm:flex-row justify-between items-center text-sm text-muted-2">
+      <div class="flex items-center space-x-2">
+        <span class="logo-unicode text-2xl" aria-hidden="true">&infin;</span>
+        <span>Symbol • Sistema Simbólico Sustentável v6.7</span>
+      </div>
+      <div class="accessibility-controls">
+        <div class="font-size-controls flex items-center gap-2">
+          <span class="font-semibold">Fonte:</span>
+          <button id="decrease-font" aria-label="Diminuir tamanho da fonte">A-</button>
+          <button id="increase-font" aria-label="Aumentar tamanho da fonte">A+</button>
+        </div>
+        <label class="switch" aria-label="Alternar tema">
+          <input type="checkbox" id="themeSwitch" />
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite">Copiado</div>
+
+  <script type="module">
+    // ===== Util =====
+    const $ = (q,ctx=document)=>ctx.querySelector(q);
+    const $$ = (q,ctx=document)=>Array.from(ctx.querySelectorAll(q));
+    const toastEl = $('#toast');
+    function toast(msg='Copiado'){ toastEl.textContent = msg; toastEl.classList.add('show'); setTimeout(()=>toastEl.classList.remove('show'), 1200); }
+
+    // ===== UI básica =====
+    (function(){
+      const root=document.documentElement;
+      const themeSwitch=$('#themeSwitch');
+      const dec=$('#decrease-font');
+      const inc=$('#increase-font');
+      const back=$('#back-to-top');
+      const nav=$('#main-nav');
+      const links=nav ? $$('#main-nav a') : [];
+      const secs=links.map(a=>document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+      const STEP=1,MIN=12,MAX=20,DEF=16;
+
+      function setTheme(mode){ root.setAttribute('data-theme',mode); if(themeSwitch) themeSwitch.checked=(mode==='dark'); try{localStorage.setItem('symbol.theme',mode)}catch{} }
+      function setFont(px){ const n=Math.max(MIN,Math.min(px,MAX)); root.style.fontSize=n+'px'; try{localStorage.setItem('symbol.fontSize',n)}catch{} }
+      function spy(){ if(!secs.length)return; let cur=secs[0].id; const all=[document.getElementById('hero'),...secs]; for(const s of all){ if(!s)continue; const r=s.getBoundingClientRect(); if(r.top<=100 && r.bottom>=100){cur=s.id;break;} } links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')===`#${cur}`)); }
+
+      function init(){
+        let saved=null; try{saved=localStorage.getItem('symbol.theme')}catch{};
+        const prefers=window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setTheme(saved?saved:(prefers?'dark':'light'));
+        let fs=null; try{fs=localStorage.getItem('symbol.fontSize')}catch{};
+        setFont(fs?parseInt(fs,10):DEF);
+
+        themeSwitch?.addEventListener('change',e=>setTheme(e.target.checked?'dark':'light'));
+        dec?.addEventListener('click',()=>setFont(parseFloat(getComputedStyle(root).fontSize)-STEP));
+        inc?.addEventListener('click',()=>setFont(parseFloat(getComputedStyle(root).fontSize)+STEP));
+
+        if(back){
+          window.addEventListener('scroll',()=>{ if(window.scrollY>300) back.classList.add('show'); else back.classList.remove('show'); spy(); });
+          back.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+        }
+        window.addEventListener('scroll',spy); spy();
+      }
+      if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+    })();
+
+    // ===== Accordion (mobile) =====
+    (function(){
+      $$('.acc-head').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          const body = btn.parentElement.querySelector('.acc-body');
+          const span = btn.querySelector('span');
+          const open = body.classList.contains('hidden') === false;
+          $$('.acc-body').forEach(b=>b.classList.add('hidden'));
+          $$('.acc-head span').forEach(s=>s.textContent='+');
+          if(!open){ body.classList.remove('hidden'); span.textContent='−'; }
+        });
+      });
+    })();
+
+    // ===== Copiar prompts =====
+    (function(){
+      $$('.copy-btn').forEach(btn=>{
+        btn.addEventListener('click', async ()=>{
+          const text = btn.getAttribute('data-copy') || '';
+          try{ await navigator.clipboard.writeText(text); toast('Copiado'); }
+          catch{ toast('Copie manualmente'); }
+        });
+      });
+    })();
+
+    // ===== Invocar Guardião (feedback local) =====
+    (function(){
+      const out=$('#guardian-state');
+      $$('[data-guardian]').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          const g=btn.getAttribute('data-guardian');
+          out.textContent=`Guardião ativo: ${g.toUpperCase()}. Intenção ajustada.`;
+        });
+      });
+    })();
+
+    // ===== Gemini (demo - client) =====
+    const API_KEY=""; // usar proxy/key fora do cliente em produção
+    const API_URL=`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+
+    async function callGemini(payload){
+      let retries=3,delay=1000;
+      while(retries>0){
+        try{
+          const ctrl=new AbortController(); const t=setTimeout(()=>ctrl.abort(),12000);
+          const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),signal:ctrl.signal});
+          clearTimeout(t);
+          if(!res.ok) throw new Error(`HTTP ${res.status}`);
+          return await res.json();
+        }catch(e){ retries--; if(!retries) throw e; await new Promise(r=>setTimeout(r,delay)); delay*=2; }
+      }
+    }
+    const pick=(o,p,d=null)=>{try{return p.reduce((a,k)=>a?.[k],o) ?? d}catch{return d}};
+    const tryJSON=s=>{try{return JSON.parse(s)}catch{return null}};
+    const md=(m)=>{ const esc=m.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); return esc.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>') };
+
+    // Presença
+    (function(){
+      const btn=$('#generate-presence'), out=$('#presence-output'), word=$('#presence-word'), act=$('#presence-action'), load=$('#presence-loader'), err=$('#presence-error']);
+      btn.addEventListener('click',async()=>{
+        out.classList.add('hidden'); err.classList.add('hidden'); load.classList.remove('hidden'); btn.disabled=true; btn.setAttribute('aria-busy','true');
+        const systemPrompt=`Você é o sistema Symbol. Gere JSON { "palavra":"...", "acao":"..." }`;
+        const payload={ contents:[{parts:[{text:"Gere a presença da semana."}]}], systemInstruction:{parts:[{text:systemPrompt}]}, generationConfig:{responseMimeType:"application/json"} };
+        try{
+          const r=await callGemini(payload);
+          const text=pick(r,['candidates',0,'content','parts',0,'text'],'{}');
+          const data=tryJSON(text)||{palavra:'Presença',acao:'Respire 3× ao trocar de tarefa.'};
+          word.textContent=data.palavra; act.textContent=data.acao; out.classList.remove('hidden');
+        }catch(e){ err.textContent="⚡ Não deu. Tente de novo mais tarde ou verifique a key/proxy."; err.classList.remove('hidden'); }
+        finally{ load.classList.add('hidden'); btn.disabled=false; btn.setAttribute('aria-busy','false'); }
+      });
+    })();
+
+    // Fluxo
+    (function(){
+      const btn=$('#generate-flow'), prompt=$('#flow-prompt'), out=$('#flow-output'), load=$('#flow-loader'), err=$('#flow-error');
+      btn.addEventListener('click',async()=>{
+        const text=prompt.value.trim(); if(!text){ err.textContent="Descreva o seu desafio."; err.classList.remove('hidden'); return; }
+        out.classList.add('hidden'); err.classList.add('hidden'); load.classList.remove('hidden'); btn.disabled=true; btn.setAttribute('aria-busy','true');
+        const systemPrompt=`Você é o sistema Symbol. Crie um Fluxo de 2–3 passos usando rituais e intenções dos Guardiões.`;
+        const payload={ contents:[{parts:[{text:text}]}], systemInstruction:{parts:[{text:systemPrompt}]} };
+        try{
+          const r=await callGemini(payload);
+          const resp=pick(r,['candidates',0,'content','parts',0,'text'],'');
+          out.innerHTML = md(resp || "**Trino:** Defina 1 próximo passo.<br>**Joaquina:** Proteja 25 min foco.<br>**Lume:** Pausa breve ao concluir.");
+          out.classList.remove('hidden');
+        }catch(e){ err.textContent="⚡ Erro ao gerar o fluxo. Tente mais tarde ou configure a key/proxy."; err.classList.remove('hidden'); }
+        finally{ load.classList.add('hidden'); btn.disabled=false; btn.setAttribute('aria-busy','false'); }
+      });
+    })();
+  </script>
+</body>
+</html>
