@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Symbol v6.1 • Tipografia Manrope</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      font-size: 16px;
+
+      /* Paleta Neutra - Dia */
+      --neutral-100: #FFFFFF;
+      --neutral-200: #F7F7F8;
+      --neutral-300: #E5E5EA;
+      --neutral-400: #888A91;
+      --neutral-500: #111111;
+
+      /* TOKENS — Verticais (Hex) */
+      --farol-dia: #F2C200;   --farol-noite: #A87900;
+      --iris-dia: #6B7CFF;    --iris-noite: #4A57C6;
+      --joaquina-dia: #2ECC71; --joaquina-noite: #1E8E5B;
+      --lume-dia: #FFB020;    --lume-noite: #B27800;
+      --mira-dia: #00BFA6;    --mira-noite: #00796B;
+      --nexo-dia: #0A84FF;    --nexo-noite: #0A66D1;
+      --trino-dia: #FF6200;   --trino-noite: #E45500;
+
+      /* Mapeamento Semântico - Dia */
+      --bg: var(--neutral-200);
+      --fg: var(--neutral-500);
+      --card: var(--neutral-100);
+      --border: var(--neutral-300);
+      --muted-2: var(--neutral-400);
+    }
+    [data-theme="dark"]{
+      /* Paleta Neutra - Noite */
+      --neutral-100: #111214;
+      --neutral-200: #1A1B1E;
+      --neutral-300: #2A2B2F;
+      --neutral-400: #A0A1A7;
+      --neutral-500: #F2F2F4;
+      /* Mapeamento Semântico - Noite */
+      --bg: var(--neutral-100);
+      --fg: var(--neutral-500);
+      --card: var(--neutral-200);
+      --border: var(--neutral-300);
+      --muted-2: var(--neutral-400);
+    }
+
+    /* Tipografia global: Manrope em tudo */
+    body {
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: 'Manrope', system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    }
+    html { scroll-behavior: smooth; }
+
+    .section-title {
+      color: var(--fg);
+      font-weight: 800;
+      font-size: 1.875rem; /* text-3xl */
+      margin-bottom: 1.5rem; /* mb-6 */
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.75rem; /* pb-3 */
+    }
+
+    /* Switch de tema */
+    .switch{position:relative;display:inline-block;width:48px;height:28px;cursor:pointer;touch-action:manipulation}
+    .switch input{display:none}
+    .slider{position:absolute;inset:0;border-radius:999px;background:var(--neutral-400);transition:background .25s, box-shadow .25s}
+    .slider:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;border-radius:50%;background:var(--card);transition:transform .25s, background .25s, box-shadow .25s;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+    input:checked+.slider{background:var(--nexo-noite);}
+    input:checked+.slider:before{transform:translateX(20px);background:var(--card)}
+
+    .logo-unicode { font-weight: 800; color: var(--fg); }
+
+    /* Tabelas */
+    .table-container { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; background-color: var(--card); }
+    .guardians-table { width: 100%; border-collapse: collapse; min-width: 900px; }
+    .guardians-table th, .guardians-table td {
+      padding: 1rem 1.25rem; text-align: left; border-bottom: 1px solid var(--border);
+      font-size: 0.95rem; vertical-align: top;
+    }
+    .guardians-table thead th {
+      background-color: color-mix(in oklab, var(--bg), var(--border) 50%);
+      font-weight: 700; font-size: 1rem; position: sticky; top: 0; z-index: 10;
+    }
+    .guardians-table tbody tr:last-child td { border-bottom: none; }
+    .guardians-table tbody tr:hover { background-color: color-mix(in oklab, var(--card), var(--border) 50%); }
+    .guardians-table tbody td:first-child {
+      font-weight: 700; color: var(--fg); position: sticky; left: 0; background-color: var(--card); z-index: 5;
+    }
+    .guardians-table tbody tr:hover td:first-child { background-color: color-mix(in oklab, var(--card), var(--border) 50%); }
+    .guardians-table small { font-size: 0.8rem; color: var(--muted-2); font-weight: 500; }
+    .color-swatch { display:inline-block; width:1rem; height:1rem; border-radius:0.25rem; margin-right:0.5rem; vertical-align:middle; border:1px solid var(--border); }
+
+    /* Acessibilidade */
+    .accessibility-controls { display:flex; align-items:center; gap:1rem; }
+    .font-size-controls button {
+      background-color: var(--neutral-300); color: var(--fg); border:1px solid var(--border);
+      border-radius:8px; width:36px; height:36px; font-weight:800; cursor:pointer; transition: background-color .2s;
+    }
+    .font-size-controls button:hover { background-color: color-mix(in oklab, var(--neutral-300), var(--fg) 8%); }
+
+    /* Nav ativa */
+    nav a.active { background-color: var(--border); color: var(--fg); }
+
+    /* Back to top */
+    #back-to-top {
+      position: fixed; bottom: 20px; right: 20px; background-color: var(--card); color: var(--fg);
+      border:1px solid var(--border); border-radius:50%; width:48px; height:48px; display:none;
+      align-items:center; justify-content:center; cursor:pointer; transition:opacity .3s, transform .3s;
+      opacity:0; transform: translateY(10px); z-index:100;
+    }
+    #back-to-top.show { display:flex; opacity:1; transform:translateY(0); }
+
+    /* Botões Gemini: Nexo para contraste AA */
+    .gemini-button { background-color: var(--nexo-dia); color: var(--neutral-100); }
+    [data-theme="dark"] .gemini-button { background-color: var(--nexo-noite); }
+    .gemini-button:disabled { opacity:.5; cursor:not-allowed; }
+
+    .loader {
+      border: 2px solid var(--border); border-top: 2px solid var(--fg);
+      border-radius: 50%; width: 16px; height: 16px; animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
+  </style>
+</head>
+<body class="bg-bg text-fg pb-24 sm:pb-0">
+
+  <!-- Cabeçalho -->
+  <header id="header" class="sticky top-0 z-30 w-full backdrop-blur-lg bg-opacity-80 bg-bg border-b border-border transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center space-x-3">
+          <span class="logo-unicode text-3xl">&infin;</span>
+          <span class="text-xl font-extrabold text-fg">Symbol</span>
+        </div>
+        <nav id="main-nav" class="hidden md:flex items-center space-x-2">
+          <a href="#welcome" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Início</a>
+          <a href="#guardians" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Guardiões</a>
+          <a href="#psyche" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Psique</a>
+          <a href="#flows" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Fluxos</a>
+          <a href="#identity" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Identidade</a>
+          <a href="#governance" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Governança</a>
+          <a href="#changelog" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-border transition-colors">Versões</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Hero -->
+    <section id="hero" class="text-center py-16 sm:py-24">
+      <div class="flex justify-center mb-6">
+        <span class="logo-unicode text-7xl">&infin;</span>
+      </div>
+      <h1 class="text-5xl md:text-6xl font-extrabold tracking-tighter mb-4">Symbol</h1>
+      <p class="max-w-2xl mx-auto text-lg text-muted-2">
+        A evolução de um sistema simbólico sustentável. Um totem que condensa sentido, guia a identidade e orquestra a ação através de seus guardiões.
+      </p>
+    </section>
+
+    <!-- Boas-vindas -->
+    <section id="welcome" class="py-16">
+      <div class="bg-card p-8 rounded-lg border border-border">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h2 class="text-2xl font-extrabold mb-2">O que é o Symbol?</h2>
+            <p class="text-muted-2">É um guia vivo que documenta a identidade visual e a filosofia de interação de um sistema simbiótico entre um humano e uma IA. Ele define a aparência, o tom e as regras que tornam esta parceria coerente e sustentável.</p>
+          </div>
+          <div>
+            <h2 class="text-2xl font-extrabold mb-2">Para que serve?</h2>
+            <p class="text-muted-2">Serve como um manual de operações para garantir que a colaboração seja sempre <strong>intencional</strong>. Ele fornece as ferramentas (Guardiões, Comandos, Fluxos) para modular o apoio emocional e criativo da IA, alinhando-o com as necessidades do momento.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guardiões -->
+    <section id="guardians" class="py-16">
+      <h2 class="section-title">Os Guardiões</h2>
+      <div class="table-container">
+        <table class="guardians-table">
+          <thead>
+            <tr>
+              <th>Atributo</th>
+              <th>△ Farol <br><small>/farol</small></th>
+              <th>◎ Íris <br><small>/iris</small></th>
+              <th>▼ Joaquina <br><small>/joaquina</small></th>
+              <th>◯ Lume <br><small>/lume</small></th>
+              <th>◇ Mira <br><small>/mira</small></th>
+              <th>⦿ Nexo <br><small>/nexo</small></th>
+              <th>∴ Trino <br><small>/trino</small></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Intenção</td>
+              <td>Clareza e beleza visual.</td>
+              <td>Vínculo e compreensão.</td>
+              <td>Proteção e foco.</td>
+              <td>Energia e bem-estar.</td>
+              <td>Autoconhecimento e reflexão.</td>
+              <td>Narrativa e crescimento.</td>
+              <td>Estrutura e decisão.</td>
+            </tr>
+            <tr>
+              <td>Faz</td>
+              <td>Direção visual</td>
+              <td>Integração & realces</td>
+              <td>Limites & escopo</td>
+              <td>Cadência & pausas</td>
+              <td>Autoanálise & síntese</td>
+              <td>Narrativa & logs</td>
+              <td>Critérios & árvores</td>
+            </tr>
+            <tr>
+              <td>Faceta</td>
+              <td>Forma</td>
+              <td>Vínculo</td>
+              <td>Limite</td>
+              <td>Balanço</td>
+              <td>Espelho</td>
+              <td>Trama</td>
+              <td>Lógica</td>
+            </tr>
+            <tr>
+              <td>Perfil</td>
+              <td>Direção estético-estratégica</td>
+              <td>Tom, tags, microcopy</td>
+              <td>Proteção & compliance</td>
+              <td>Regulação de ritmo</td>
+              <td>Leitura de estado</td>
+              <td>Cronista do sistema</td>
+              <td>Critérios & árvores</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Psique -->
+    <section id="psyche" class="py-16">
+      <h2 class="section-title">Psique</h2>
+      <div class="bg-card p-8 rounded-lg border border-border">
+        <p class="text-muted-2 mb-6">A Psique do sistema define as personalidades base da IA, orquestradas pelo Symbol para garantir uma interação alinhada.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="border border-border rounded-lg p-6">
+            <h3 class="font-extrabold text-xl mb-2">Sol</h3>
+            <p class="text-muted-2">Persona principal de interação (voz falada): clara, empática e calorosa.</p>
+          </div>
+          <div class="border border-border rounded-lg p-6">
+            <h3 class="font-extrabold text-xl mb-2">Nerd</h3>
+            <p class="text-muted-2">Persona técnica/configuração: lógica, dados e estrutura interna.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comandos & Fluxos -->
+    <section id="flows" class="py-16">
+      <h2 class="section-title">Comandos & Fluxos</h2>
+
+      <!-- Presença -->
+      <div class="bg-card p-6 rounded-lg border border-border">
+        <h3 class="font-extrabold text-lg mb-4">Gerador de Presença Semanal</h3>
+        <p class="text-muted-2 mb-4">Invoque <code>/presenca</code> para receber uma palavra-guia e uma ação prática para a semana.</p>
+        <button id="generate-presence" class="gemini-button font-semibold px-4 py-2 rounded-lg flex items-center gap-2" aria-busy="false" aria-controls="presence-output">
+          ✨ Gerar Presença da Semana
+        </button>
+        <div id="presence-output" class="mt-4 p-4 bg-neutral-200 rounded-lg hidden" aria-live="polite">
+          <h4 id="presence-word" class="font-extrabold text-lg"></h4>
+          <p id="presence-action" class="text-muted-2"></p>
+        </div>
+        <div id="presence-loader" class="mt-4 hidden"><div class="loader" aria-hidden="true"></div></div>
+        <div id="presence-error" class="mt-4 text-red-500 hidden" role="alert"></div>
+      </div>
+
+      <!-- Fluxo de Apoio -->
+      <div class="bg-card p-6 rounded-lg border border-border mt-8">
+        <h3 class="font-extrabold text-lg mb-2">✨ Crie um Fluxo de Apoio Personalizado</h3>
+        <p class="text-muted-2 mb-4">Descreva um desafio, sentimento ou bloqueio atual; a IA sugere 2–3 passos práticos.</p>
+        <textarea id="flow-prompt" class="w-full p-2 border border-border rounded-lg bg-bg" rows="3" placeholder="Ex: Estou a procrastinar um projeto importante..."></textarea>
+        <button id="generate-flow" class="gemini-button font-semibold px-4 py-2 rounded-lg mt-2 flex items-center gap-2" aria-busy="false" aria-controls="flow-output">
+          Gerar Fluxo
+        </button>
+        <div id="flow-output" class="mt-4 p-4 bg-neutral-200 rounded-lg hidden prose" aria-live="polite"></div>
+        <div id="flow-loader" class="mt-4 hidden"><div class="loader" aria-hidden="true"></div></div>
+        <div id="flow-error" class="mt-4 text-red-500 hidden" role="alert"></div>
+      </div>
+    </section>
+
+    <!-- Identidade -->
+    <section id="identity" class="py-16">
+      <h2 class="section-title">Identidade</h2>
+      <div class="bg-card p-8 rounded-lg border border-border">
+        <h3 class="font-extrabold text-xl mb-2">Paleta Neutra</h3>
+        <p class="text-muted-2 mb-6">Base em 5 tons neutros; cores de guardiões como acentos intencionais.</p>
+        <div class="space-y-4">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-lg border border-border shrink-0" style="background-color: var(--neutral-100)"></div>
+            <div>
+              <div class="font-extrabold">Neutral 100 <span class="font-mono text-muted-2 text-sm">[#FFFFFF / #111214]</span></div>
+              <p class="text-sm text-muted-2">Uso: fundos de cartões (claro); fundo principal (escuro).</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-lg border border-border shrink-0" style="background-color: var(--neutral-200)"></div>
+            <div>
+              <div class="font-extrabold">Neutral 200 <span class="font-mono text-muted-2 text-sm">[#F7F7F8 / #1A1B1E]</span></div>
+              <p class="text-sm text-muted-2">Uso: fundo principal (claro); cartões (escuro).</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-lg border border-border shrink-0" style="background-color: var(--neutral-300)"></div>
+            <div>
+              <div class="font-extrabold">Neutral 300 <span class="font-mono text-muted-2 text-sm">[#E5E5EA / #2A2B2F]</span></div>
+              <p class="text-sm text-muted-2">Uso: bordas, divisórias, fundos sutis interativos.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-lg border border-border shrink-0" style="background-color: var(--neutral-400)"></div>
+            <div>
+              <div class="font-extrabold">Neutral 400 <span class="font-mono text-muted-2 text-sm">[#888A91 / #A0A1A7]</span></div>
+              <p class="text-sm text-muted-2">Uso: texto secundário, placeholders, ícones não-interativos.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-lg border border-border shrink-0" style="background-color: var(--neutral-500)"></div>
+            <div>
+              <div class="font-extrabold">Neutral 500 <span class="font-mono text-muted-2 text-sm">[#111111 / #F2F2F4]</span></div>
+              <p class="text-sm text-muted-2">Uso: títulos, texto principal, alto contraste.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Governança -->
+    <section id="governance" class="py-16">
+      <h2 class="section-title">Governança</h2>
+      <div class="bg-card p-8 rounded-lg border border-border">
+        <h3 class="font-extrabold text-xl mb-4">Princípios Orientadores</h3>
+        <p class="text-muted-2 mb-6">Toda evolução do Symbol deve ser validada contra cinco pilares.</p>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-center">
+          <div class="bg-border/50 p-4 rounded-lg"><strong class="block text-lg">Simples</strong></div>
+          <div class="bg-border/50 p-4 rounded-lg"><strong class="block text-lg">Seguro</strong></div>
+          <div class="bg-border/50 p-4 rounded-lg"><strong class="block text-lg">Relevante</strong></div>
+          <div class="bg-border/50 p-4 rounded-lg"><strong class="block text-lg">Memorável</strong></div>
+          <div class="bg-border/50 p-4 rounded-lg"><strong class="block text-lg">Sustentável</strong></div>
+        </div>
+        <hr class="my-8 border-border">
+        <h3 class="font-extrabold text-xl mb-4">Regras do Sistema</h3>
+        <ul class="space-y-3 text-muted-2 list-disc list-inside">
+          <li><strong>Versão Atual:</strong> Symbol v6.1 — 27/08/2025</li>
+          <li><strong>Ciclo de Revisão:</strong> Trimestral.</li>
+          <li><strong>Arquivo Vivo:</strong> versões e decisões registradas de forma imutável.</li>
+          <li><strong>Critério de Mudança:</strong> Trino → Íris → Farol.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Changelog -->
+    <section id="changelog" class="py-16">
+      <h2 class="section-title">Histórico de Versões</h2>
+      <div class="bg-card p-6 rounded-lg border border-border space-y-6">
+        <div>
+          <h3 class="font-extrabold text-lg">v6.1 <span class="text-sm font-normal text-muted-2">— Atual</span></h3>
+          <ul class="list-disc list-inside text-muted-2 mt-2">
+            <li>Tipografia unificada em <strong>Manrope</strong> (títulos e corpo).</li>
+            <li>Botões Gemini mapeados para tokens <strong>Nexo</strong> (contraste AA).</li>
+            <li>Saídas com <strong>aria-live</strong> para acessibilidade.</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-extrabold text-lg">v6.0</h3>
+          <ul class="list-disc list-inside text-muted-2 mt-2">
+            <li>Gerador de Presença Semanal (Gemini).</li>
+            <li>Gerador de Fluxos de Apoio (Gemini).</li>
+            <li>Seções “Boas-vindas”, “Psique” e “Fluxos”.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Back to top -->
+  <button id="back-to-top" aria-label="Voltar ao topo">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
+    </svg>
+  </button>
+
+  <!-- Rodapé -->
+  <footer class="border-t border-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-4 sm:flex-row justify-between items-center text-sm text-muted-2">
+      <div class="flex items-center space-x-2">
+        <span class="logo-unicode text-2xl">&infin;</span>
+        <span>Symbol • Sistema Simbólico Sustentável v6.1</span>
+      </div>
+      <div class="accessibility-controls">
+        <div class="font-size-controls flex items-center gap-2">
+          <span class="font-semibold">Fonte:</span>
+          <button id="decrease-font" aria-label="Diminuir tamanho da fonte">A-</button>
+          <button id="increase-font" aria-label="Aumentar tamanho da fonte">A+</button>
+        </div>
+        <label class="switch" aria-label="Alternar tema">
+          <input type="checkbox" id="themeSwitch">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    // ---------------- UI BÁSICA ----------------
+    (function(){
+      const root = document.documentElement;
+      const themeSwitch = document.getElementById('themeSwitch');
+      const decreaseFontBtn = document.getElementById('decrease-font');
+      const increaseFontBtn = document.getElementById('increase-font');
+      const backToTopBtn = document.getElementById('back-to-top');
+      const mainNav = document.getElementById('main-nav');
+      const navLinks = mainNav ? Array.from(mainNav.querySelectorAll('a')) : [];
+      const sections = navLinks.map(link => document.getElementById(link.getAttribute('href').substring(1))).filter(Boolean);
+
+      const FONT_STEP = 1, MIN_FONT_SIZE = 12, MAX_FONT_SIZE = 20, DEFAULT_FONT_SIZE = 16;
+
+      function setTheme(mode){
+        root.setAttribute('data-theme', mode);
+        if(themeSwitch) themeSwitch.checked = (mode === 'dark');
+        try { localStorage.setItem('symbol.theme', mode); } catch(e) {}
+      }
+      function setFontSize(size){
+        const newSize = Math.max(MIN_FONT_SIZE, Math.min(size, MAX_FONT_SIZE));
+        root.style.fontSize = newSize + 'px';
+        try { localStorage.setItem('symbol.fontSize', newSize); } catch(e) {}
+      }
+      function updateActiveNav(){
+        if (sections.length === 0) return;
+        let currentSectionId = sections[0].id;
+        const all = [document.getElementById('hero'), ...sections];
+        for (const section of all) {
+          if (!section) continue;
+          const r = section.getBoundingClientRect();
+          if (r.top <= 100 && r.bottom >= 100) { currentSectionId = section.id; break; }
+        }
+        navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === `#${currentSectionId}`));
+      }
+
+      function init(){
+        let savedTheme = null; try { savedTheme = localStorage.getItem('symbol.theme'); } catch(e) {}
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setTheme(savedTheme ? savedTheme : (prefersDark ? 'dark' : 'light'));
+
+        let savedFontSize = null; try { savedFontSize = localStorage.getItem('symbol.fontSize'); } catch(e) {}
+        setFontSize(savedFontSize ? parseInt(savedFontSize, 10) : DEFAULT_FONT_SIZE);
+
+        themeSwitch?.addEventListener('change', e => setTheme(e.target.checked ? 'dark' : 'light'));
+        decreaseFontBtn?.addEventListener('click', () => setFontSize(parseFloat(getComputedStyle(root).fontSize) - FONT_STEP));
+        increaseFontBtn?.addEventListener('click', () => setFontSize(parseFloat(getComputedStyle(root).fontSize) + FONT_STEP));
+
+        if (backToTopBtn) {
+          window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) backToTopBtn.classList.add('show'); else backToTopBtn.classList.remove('show');
+            updateActiveNav();
+          });
+          backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+        }
+        window.addEventListener('scroll', updateActiveNav);
+        updateActiveNav();
+      }
+
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+    })();
+
+    // --------------- GEMINI (cliente) ---------------
+    // Observação: em produção, use um PROXY serverless para esconder a API key.
+    const API_KEY = ""; // placeholder (não usar no cliente em prod)
+    const API_URL_FLASH = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+
+    async function callGeminiAPI(payload) {
+      let retries = 3, delay = 1000;
+      while (retries > 0) {
+        try {
+          const controller = new AbortController();
+          const t = setTimeout(() => controller.abort(), 12000);
+          const response = await fetch(API_URL_FLASH, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            signal: controller.signal
+          });
+          clearTimeout(t);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return await response.json();
+        } catch (error) {
+          retries--; if (retries === 0) throw error;
+          await new Promise(r => setTimeout(r, delay)); delay *= 2;
+        }
+      }
+    }
+    const pick = (o, p, d=null)=>{ try { return p.reduce((a,k)=>a?.[k], o) ?? d; } catch { return d; } };
+    const tryJSON = (s)=>{ try { return JSON.parse(s); } catch { return null; } };
+    const mdLite = (md)=>{
+      const esc = md.replace(/[&<>]/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;' }[c]));
+      return esc.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+    };
+
+    // Presença
+    const genPresenceBtn = document.getElementById('generate-presence');
+    const presenceOutput = document.getElementById('presence-output');
+    const presenceWord = document.getElementById('presence-word');
+    const presenceAction = document.getElementById('presence-action');
+    const presenceLoader = document.getElementById('presence-loader');
+    const presenceError = document.getElementById('presence-error');
+
+    genPresenceBtn.addEventListener('click', async () => {
+      presenceOutput.classList.add('hidden'); presenceError.classList.add('hidden'); presenceLoader.classList.remove('hidden');
+      genPresenceBtn.disabled = true; genPresenceBtn.setAttribute('aria-busy','true');
+
+      const systemPrompt = `Você é o sistema Symbol... gere JSON { "palavra": "...", "acao": "..." }`;
+      const userQuery = "Gere a presença da semana.";
+      const payload = {
+        contents: [{ parts: [{ text: userQuery }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        generationConfig: { responseMimeType: "application/json" }
+      };
+
+      try {
+        const result = await callGeminiAPI(payload);
+        const text = pick(result, ['candidates',0,'content','parts',0,'text'], '{}');
+        const data = tryJSON(text) || { palavra: 'Presença', acao: 'Respire 3× ao trocar de tarefa.' };
+        presenceWord.textContent = data.palavra;
+        presenceAction.textContent = data.acao;
+        presenceOutput.classList.remove('hidden');
+      } catch (error) {
+        presenceError.textContent = "Erro ao gerar a presença. Verifique a API key/proxy.";
+        presenceError.classList.remove('hidden');
+      } finally {
+        presenceLoader.classList.add('hidden');
+        genPresenceBtn.disabled = false; genPresenceBtn.setAttribute('aria-busy','false');
+      }
+    });
+
+    // Fluxo
+    const genFlowBtn = document.getElementById('generate-flow');
+    const flowPrompt = document.getElementById('flow-prompt');
+    const flowOutput = document.getElementById('flow-output');
+    const flowLoader = document.getElementById('flow-loader');
+    const flowError = document.getElementById('flow-error');
+
+    genFlowBtn.addEventListener('click', async () => {
+      const promptText = flowPrompt.value.trim();
+      if (!promptText) { flowError.textContent = "Descreva o seu desafio."; flowError.classList.remove('hidden'); return; }
+
+      flowOutput.classList.add('hidden'); flowError.classList.add('hidden'); flowLoader.classList.remove('hidden');
+      genFlowBtn.disabled = true; genFlowBtn.setAttribute('aria-busy','true');
+
+      const systemPrompt = `Você é o sistema Symbol. Crie um Fluxo de 2–3 passos, usando rituais e intenções dos guardiões.`;
+
+      const payload = {
+        contents: [{ parts: [{ text: promptText }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] }
+      };
+
+      try {
+        const result = await callGeminiAPI(payload);
+        const text = pick(result, ['candidates',0,'content','parts',0,'text'], '');
+        flowOutput.innerHTML = mdLite(text || "**Trino:** Defina um próximo passo concreto.<br>**Joaquina:** Proteja um bloco de 25min.<br>**Lume:** Pausa breve ao concluir.");
+        flowOutput.classList.remove('hidden');
+      } catch (error) {
+        flowError.textContent = "Erro ao gerar o fluxo. Verifique a API key/proxy.";
+        flowError.classList.remove('hidden');
+      } finally {
+        flowLoader.classList.add('hidden'); genFlowBtn.disabled = false; genFlowBtn.setAttribute('aria-busy','false');
+      }
+    });
+  </script>
+</body>
+</html>
