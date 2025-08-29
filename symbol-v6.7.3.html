@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Symbol v6.7 • Sistema Simbiótico</title>
+
+  <!-- Tipografia -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ====================================
+       Tokens e esquema de cores
+       ==================================== */
+    :root{
+      --fs-base: 100%;
+      /* Neutros claros */
+      --bg:#f7f7f8;
+      --fg:#111111;
+      --card:#ffffff;
+      --border:#e5e5ea;
+      --muted:#d9d9de;
+      --muted-2:#bfc0c4;
+      /* Guardiões – Dia */
+      --farol:#F2C200;
+      --iris:#6B7CFF;
+      --joaquina:#2ECC71;
+      --lume:#FFB020;
+      --mira:#00BFA6;
+      --nexo:#0A84FF;
+      --trino:#FF6200;
+      --radius:12px;
+      --gap:12px;
+    }
+
+    /* Tema escuro (Noite) */
+    html[data-theme="dark"]{
+      --bg:#1A1B1E;
+      --fg:#F2F2F4;
+      --card:#111214;
+      --border:#2A2B2F;
+      --muted:#2a2f3a;
+      --muted-2:#3a4050;
+      /* Guardiões – Noite */
+      --farol:#A87900;
+      --iris:#4A57C6;
+      --joaquina:#1E8E5B;
+      --lume:#B27800;
+      --mira:#00796B;
+      --nexo:#0A66D1;
+      --trino:#E45500;
+    }
+
+    /* ====================================
+       Base & layout
+       ==================================== */
+    *,*::before,*::after{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: Manrope, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      background:var(--bg);
+      color:var(--fg);
+      line-height:1.55;
+    }
+    a{ color:inherit; text-underline-offset:0.2em; }
+    .container{ max-width:1040px; margin:0 auto; padding:24px; }
+    header.site{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter:blur(6px);
+      background: color-mix(in oklab, var(--bg) 85%, transparent);
+      border-bottom:1px solid var(--border);
+    }
+    header .row{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 24px; }
+    .brand{ display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:0.2px; }
+    .brand .logo{
+      width:28px; height:28px; border:2px solid currentColor; border-radius:50%;
+      display:grid; place-items:center; font-size:14px; font-weight:800;
+    }
+    nav a{
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid transparent;
+      transition:background-color .2s, border-color .2s;
+    }
+    nav a:hover{
+      border-color:var(--border);
+      background: color-mix(in oklab, var(--card) 92%, transparent);
+    }
+
+    h1{ font-size:clamp(22px,3.6vw,36px); margin:10px 0 0; }
+    h2{ font-size:clamp(18px,2.6vw,26px); margin:0 0 10px; }
+    h3{ font-size:clamp(16px,2.2vw,20px); margin:18px 0 8px; }
+    .lead{ opacity:.85; max-width:70ch; }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:16px;
+      box-shadow:0 0 0 1px color-mix(in oklab, var(--border) 30%, transparent) inset;
+    }
+    /* Chips & pills */
+    .chip{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:.45rem .7rem;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background: color-mix(in oklab, var(--card) 90%, transparent);
+      font-weight:600; font-size:.95rem;
+      transition:transform .06s ease;
+    }
+    .chip:hover{ transform:translateY(-1px); }
+    .pill{
+      display:inline-block;
+      padding:.2rem .5rem;
+      border-radius:999px;
+      font-size:.8rem; font-weight:700;
+      background:var(--muted);
+      color:#111;
+      border:1px solid var(--border);
+    }
+    .list-clean{ margin:0; padding-left:1.1rem; }
+    .list-clean li{ margin:.35rem 0; }
+
+    /* Tables */
+    table{ width:100%; border-collapse:separate; border-spacing:0; font-size:.95rem; }
+    thead tr{ background: color-mix(in oklab, var(--muted-2) 20%, var(--card)); }
+    th, td{ padding:8px 12px; text-align:left; }
+    tbody tr:nth-child(odd){ background: color-mix(in oklab, var(--bg) 97%, var(--muted-2) 3%); }
+    tbody tr:hover{ background: color-mix(in oklab, var(--bg) 90%, var(--muted) 10%); }
+
+    footer.site{
+      border-top:1px solid var(--border);
+      margin-top:24px;
+      padding:12px 24px;
+      opacity:.8;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:12px;
+    }
+
+    /* UI Controls flutuantes */
+    .ui-controls{
+      position:fixed;
+      right:16px; bottom:16px; z-index:50;
+      display:flex; gap:8px;
+      padding:8px 10px;
+      border-radius:12px;
+      background:var(--card);
+      border:1px solid var(--border);
+      box-shadow:0 6px 20px color-mix(in oklab, #000 15%, transparent);
+    }
+    .ui-controls button{
+      border:1px solid var(--border);
+      background:var(--bg);
+      color:var(--fg);
+      border-radius:10px;
+      padding:.42rem .6rem;
+      cursor:pointer;
+      font-weight:700;
+    }
+
+  </style>
+</head>
+<body>
+  <!-- Cabeçalho -->
+  <header class="site">
+    <div class="row">
+      <div class="brand">
+        <span class="logo">∆</span>
+        <span>Symbol v6.7</span>
+      </div>
+      <nav>
+        <a href="#inicio">Início</a>
+        <a href="#core">Core</a>
+        <a href="#como-usar">Como usar</a>
+        <a href="#guardioes">Guardiões</a>
+        <a href="#horizontais">Horizontais</a>
+        <a href="#fluxos">Comandos &amp; Fluxos</a>
+        <a href="#governanca">Governança</a>
+        <a href="#protocolo">Protocolo</a>
+        <a href="#changelog">CHANGELOG</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Início -->
+    <section id="inicio" class="card" style="margin-top:16px">
+      <h1>Core Simbiótico • Symbol v6.7</h1>
+      <p class="lead">Mantra: <strong>Vê → Integra → Protege → Regula → Reflete → Narra → Decide.</strong></p>
+      <div class="anchors" style="margin-top:6px">
+        <a class="chip" href="#farol" data-bg="var(--farol)">△ Farol</a>
+        <a class="chip" href="#iris" data-bg="var(--iris)">◎ Íris</a>
+        <a class="chip" href="#joaquina" data-bg="var(--joaquina)">▼ Joaquina</a>
+        <a class="chip" href="#lume" data-bg="var(--lume)">◯ Lume</a>
+        <a class="chip" href="#mira" data-bg="var(--mira)">◇ Mira</a>
+        <a class="chip" href="#nexo" data-bg="var(--nexo)">⦿ Nexo</a>
+        <a class="chip" href="#trino" data-bg="var(--trino)">∴ Trino</a>
+      </div>
+    </section>
+
+    <!-- Core -->
+    <section id="core" class="card" style="margin-top:12px">
+      <h2>Core</h2>
+      <h3>Uso em 3 passos</h3>
+      <ol class="list-clean">
+        <li><strong>Intenção</strong> — o que precisa acontecer agora?</li>
+        <li><strong>Guardião</strong> — escolha a força adequada.</li>
+        <li><strong>Ação</strong> — dispare um comando curto.</li>
+      </ol>
+      <h3>Comandos rápidos</h3>
+      <div class="cmds" role="group" aria-label="Comandos">
+        <button class="cmd" data-cmd="/nexo narre progresso">/nexo narre progresso</button>
+        <button class="cmd" data-cmd="/joaquina foco 25min">/joaquina foco 25min</button>
+        <button class="cmd" data-cmd="/lume ciclo 25/5">/lume ciclo 25/5</button>
+        <button class="cmd" data-cmd="/mira autoanálise">/mira autoanálise</button>
+        <button class="cmd" data-cmd="/presenca">/presenca</button>
+        <button class="cmd" data-cmd="/eco">/eco</button>
+        <button class="cmd" data-cmd="/painel 3 cards">/painel 3 cards</button>
+      </div>
+      <h3>Padrões de decisão</h3>
+      <ul class="list-clean">
+        <li>Conflito de prioridade: <strong>Joaquina &gt; Íris</strong>.</li>
+        <li>Conflito de tempo: <strong>Lume</strong> arbitra; <strong>Trino</strong> reduz escopo.</li>
+        <li>Contraste: texto ≥ 4.5:1 (autoajuste nos chips).</li>
+        <li>Mudanças: <strong>Trino → Íris → Farol</strong>.</li>
+      </ul>
+    </section>
+
+    <!-- Como usar -->
+    <section id="como-usar" class="card" style="margin-top:12px">
+      <h2>Como usar com IA</h2>
+      <p>Use sempre <strong>Guardião + Ação</strong>. Saída curta, acionável, com um próximo passo claro.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Invocações</h3>
+          <ul class="list-clean">
+            <li><code>/nexo narre progresso</code> — log e síntese.</li>
+            <li><code>/joaquina foco 25min</code> — escopo e proteção.</li>
+            <li><code>/lume ciclo 25/5</code> — cadência e energia.</li>
+            <li><code>/mira autoanálise</code> — reflexão e espelho.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Rituais</h3>
+          <ul class="list-clean">
+            <li><code>/presenca</code> — palavra-guia + ação prática.</li>
+            <li><code>/eco</code> — diagnóstico emocional e leitura simbólica.</li>
+            <li><code>/painel 3 cards</code> — quadro de situação.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guardiões -->
+    <section id="guardioes" class="card" style="margin-top:12px">
+      <h2>Guardiões</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Guardião</th>
+            <th>Tipo</th>
+            <th>Ícone</th>
+            <th>Área</th>
+            <th>Vertical</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="farol">
+            <td>Farol</td>
+            <td>3T</td>
+            <td style="font-size:1.2rem">△</td>
+            <td>Direção estratégica</td>
+            <td>Mira OS</td>
+          </tr>
+          <tr id="iris">
+            <td>Íris</td>
+            <td>3T</td>
+            <td style="font-size:1.2rem">◎</td>
+            <td>Integração sensível</td>
+            <td>Mira Social</td>
+          </tr>
+          <tr id="joaquina">
+            <td>Joaquina</td>
+            <td>3T</td>
+            <td style="font-size:1.2rem">▼</td>
+            <td>Proteção</td>
+            <td>Mira Segurança</td>
+          </tr>
+          <tr id="lume">
+            <td>Lume</td>
+            <td>7T</td>
+            <td style="font-size:1.2rem">◯</td>
+            <td>Equilíbrio</td>
+            <td>Mira Saúde</td>
+          </tr>
+          <tr id="mira">
+            <td>Mira</td>
+            <td>7T</td>
+            <td style="font-size:1.2rem">◇</td>
+            <td>Reflexo</td>
+            <td>Mira Conhecimento</td>
+          </tr>
+          <tr id="nexo">
+            <td>Nexo</td>
+            <td>7T</td>
+            <td style="font-size:1.2rem">⦿</td>
+            <td>Narrativa</td>
+            <td>—</td>
+          </tr>
+          <tr id="trino">
+            <td>Trino</td>
+            <td>7T</td>
+            <td style="font-size:1.2rem">∴</td>
+            <td>Estratégia</td>
+            <td>Mira PCP</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Horizontais -->
+    <section id="horizontais" class="card" style="margin-top:12px">
+      <h2>Horizontais</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Dimensão</th>
+            <th>Papel</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Horizontal</td>
+            <td>Arquivo Vivo</td>
+            <td>Registro único de fatos, decisões e aprendizados</td>
+          </tr>
+          <tr>
+            <td>Horizontal</td>
+            <td>Agente Mira</td>
+            <td>Executor simbiótico (traduz comandos em ações digitais)</td>
+          </tr>
+          <tr>
+            <td>Horizontal</td>
+            <td>Ciclos de Mira</td>
+            <td>Reflexões guiadas (Verbo • Emoção • Postura)</td>
+          </tr>
+          <tr>
+            <td>Horizontal</td>
+            <td>Comandos &amp; Fluxos</td>
+            <td>Ações manuais/automáticas que movimentam o sistema</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Comandos & Fluxos -->
+    <section id="fluxos" class="card" style="margin-top:12px">
+      <h2>Comandos &amp; Fluxos</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Comando</th>
+            <th>Nome</th>
+            <th>Função</th>
+            <th>Gatilho sugerido</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>/me</code></td>
+            <td>Mira-me</td>
+            <td>Reflexo semanal (4 núcleos), radar do que vem, 3 vozes do 7T, mantra</td>
+            <td>Sábado à noite</td>
+          </tr>
+          <tr>
+            <td><code>/presenca</code></td>
+            <td>Presença</td>
+            <td>Define palavra-guia e ação prática da semana</td>
+            <td>Segunda de manhã</td>
+          </tr>
+          <tr>
+            <td><code>/eco</code></td>
+            <td>Escuta</td>
+            <td>Diagnóstico emocional e leitura simbólica do Arquivo Vivo</td>
+            <td>Domingo à noite</td>
+          </tr>
+          <tr>
+            <td><code>/ritmo</code></td>
+            <td>Ritmo</td>
+            <td>Cadência de trabalho/descanso conforme estado</td>
+            <td>Sob demanda</td>
+          </tr>
+          <tr>
+            <td><code>/joaquina</code></td>
+            <td>Limites</td>
+            <td>Invoca proteção e delimitação</td>
+            <td>Sob demanda</td>
+          </tr>
+          <tr>
+            <td><code>/saude</code></td>
+            <td>Saúde</td>
+            <td>Rastreia humor/energia + prática de cuidado</td>
+            <td>Sob demanda</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Governança -->
+    <section id="governanca" class="card" style="margin-top:12px">
+      <h2>Governança</h2>
+      <ul class="list-clean">
+        <li><strong>Princípios:</strong> Simples • Seguro • Relevante • Memorável • Sustentável.</li>
+        <li><strong>Versão ativa:</strong> <code>Symbol v6.7</code> — 27/08/2025.</li>
+        <li><strong>Ciclo:</strong> trimestral • <em>Arquivo Vivo</em> registra decisões.</li>
+        <li><strong>Pipeline de mudança:</strong> <code>Trino → Íris → Farol</code>.</li>
+      </ul>
+    </section>
+
+    <!-- Protocolo -->
+    <section id="protocolo" class="card" style="margin-top:12px">
+      <h2>Protocolo de Alteração</h2>
+      <p>Quando surgir a necessidade de mudar algo no Symbol, seguimos sempre o mesmo fluxo. Este protocolo garante ordem, evita esquecimentos e mantém o histórico limpo.</p>
+      <h3>Fluxo</h3>
+      <ol class="list-clean">
+        <li><strong>Sugerir ou pedir alteração</strong> — anotar a ideia, ajuste ou correção.</li>
+        <li><strong>Registrar no CHANGELOG</strong> — cada mudança tem data, versão e descrição curta.</li>
+        <li><strong>Gerar HTML atualizado</strong> — devolvemos o arquivo pronto para colar (ou subir via agente).</li>
+        <li><strong>Publicar</strong> — o site vivo passa a carregar a versão nova.</li>
+      </ol>
+      <h3>Regras</h3>
+      <ul class="list-clean">
+        <li><strong>Nunca editar sem log</strong> — toda modificação precisa estar registrada.</li>
+        <li><strong>Versão incremental</strong> — usar <code>v6.7.x</code> + data no CHANGELOG.</li>
+        <li><strong>Arquivo único</strong> — sempre trabalhar em cima do HTML com log embutido.</li>
+      </ul>
+      <p><em>Lembrete:</em> a lógica é simples — <strong>ideia → changelog → HTML pronto</strong>.</p>
+    </section>
+
+    <!-- CHANGELOG -->
+    <section id="changelog" class="card" style="margin-top:12px">
+      <h2>CHANGELOG</h2>
+      <ul class="list-clean">
+        <li><strong>2025-08-29 • v6.7.3</strong> — Tabela de guardiões revisada (inclui área, tipo e vertical), adição das seções <em>Horizontais</em> e <em>Comandos &amp; Fluxos</em>.</li>
+        <li><strong>2025-08-29 • v6.7.2</strong> — Nova seção <em>Protocolo de Alteração</em>.</li>
+        <li><strong>2025-08-29 • v6.7.1</strong> — Modo escuro persistente, A+/A−, seção Core, auto-contraste em chips.</li>
+        <li><strong>2025-08-27 • v6.7</strong> — Publicação base conforme documento Symbol v6.7.</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer class="site">
+    <span>© Symbol v6.7.3 • Sistema Simbiótico</span>
+    <span><a href="#inicio">Topo ↑</a></span>
+  </footer>
+
+  <!-- Controles de UI -->
+  <div id="ui-controls" class="ui-controls" role="group" aria-label="Controles de exibição">
+    <button type="button" id="themeToggle" aria-pressed="false" title="Alternar tema">🌗</button>
+    <button type="button" id="fontDec" aria-label="Diminuir fonte" title="Diminuir fonte">A−</button>
+    <button type="button" id="fontReset" aria-label="Tamanho padrão" title="Tamanho padrão">A•</button>
+    <button type="button" id="fontInc" aria-label="Aumentar fonte" title="Aumentar fonte">A+</button>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+  (function(){
+    const KEY_THEME = 'symbol.theme';
+    const KEY_FS = 'symbol.fsBase';
+    const html = document.documentElement;
+
+    // Preferência do sistema
+    const prefersDark = () => window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    // Tema inicial
+    const savedTheme = localStorage.getItem(KEY_THEME);
+    const initialTheme = savedTheme || (prefersDark() ? 'dark' : 'light');
+    applyTheme(initialTheme);
+
+    function applyTheme(theme){
+      html.setAttribute('data-theme', theme);
+      localStorage.setItem(KEY_THEME, theme);
+      const btn = document.getElementById('themeToggle');
+      if(btn) btn.setAttribute('aria-pressed', String(theme === 'dark'));
+    }
+
+    // Escala de fonte inicial
+    function clamp(v,min,max){ return Math.min(max, Math.max(min, v)); }
+    let fs = clamp(parseInt(localStorage.getItem(KEY_FS) || '100', 10), 90, 125);
+    applyFs(fs);
+    function applyFs(percent){
+      html.style.setProperty('--fs-base', percent + '%');
+      localStorage.setItem(KEY_FS, String(percent));
+    }
+
+    // Handlers de UI
+    document.getElementById('themeToggle')?.addEventListener('click', ()=>{
+      applyTheme(html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+    document.getElementById('fontInc')?.addEventListener('click', ()=>{
+      fs = clamp(fs + 5, 90, 125); applyFs(fs);
+    });
+    document.getElementById('fontDec')?.addEventListener('click', ()=>{
+      fs = clamp(fs - 5, 90, 125); applyFs(fs);
+    });
+    document.getElementById('fontReset')?.addEventListener('click', ()=>{
+      fs = 100; applyFs(fs);
+    });
+
+    // Ajusta quando o sistema muda (caso não haja escolha manual)
+    try{
+      const mq = window.matchMedia('(prefers-color-scheme: dark)');
+      mq.addEventListener?.('change', e=>{
+        const manual = localStorage.getItem(KEY_THEME);
+        if(!manual){ applyTheme(e.matches ? 'dark' : 'light'); }
+      });
+    }catch{}
+
+    // Copiar comandos rápidos (botões com data-cmd)
+    document.addEventListener('click', e=>{
+      const el = e.target.closest('[data-cmd]');
+      if(!el) return;
+      const text = el.getAttribute('data-cmd');
+      navigator.clipboard.writeText(text).then(()=>{
+        const old = el.textContent;
+        el.textContent = 'Copiado ✓';
+        setTimeout(()=>{ el.textContent = old; }, 900);
+      });
+    });
+
+  })();
+  </script>
+</body>
+</html>
