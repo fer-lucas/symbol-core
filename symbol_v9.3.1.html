@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Symbol v9.3.1 • Link no Logo + A11y + Motion</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      font-size: 16px;
+
+      /* Paleta de Cores - Dia */
+      --bg-light: #FFFFFF;
+      --fg-light: #111111;
+      --fg-muted-light: #6B6B6B;
+      --border-light: #E5E5EA;
+      --card-light: #F7F7F8;
+      --accent-light: #0A84FF;
+
+      /* Paleta de Cores - Noite */
+      --bg-dark: #0D0D10;
+      --fg-dark: #F2F2F4;
+      --fg-muted-dark: #A0A1A7;
+      --border-dark: #2A2B2F;
+      --card-dark: #1A1B1E;
+      --accent-dark: #FFFFFF;
+
+      /* Tokens dos Guardiões */
+      --farol: #F2C200; --farol-noite: #A87900;
+      --iris: #6B7CFF; --iris-noite: #4A57C6;
+      --joaquina: #2ECC71; --joaquina-noite: #1E8E5B;
+      --lume: #FFB020; --lume-noite: #B27800;
+      --mira: #00BFA6; --mira-noite: #00796B;
+      --nexo: #0A84FF; --nexo-noite: #0A66D1;
+      --trino: #FF6200; --trino-noite: #E45500;
+
+      /* /pcp opcional */
+      --pcp: #FF6200;
+    }
+
+    body[data-theme="light"] {
+      --bg: var(--bg-light); --fg: var(--fg-light); --fg-muted: var(--fg-muted-light);
+      --border: var(--border-light); --card: var(--card-light); --accent: var(--accent-light);
+    }
+    body[data-theme="dark"] {
+      --bg: var(--bg-dark); --fg: var(--fg-dark); --fg-muted: var(--fg-muted-dark);
+      --border: var(--border-dark); --card: var(--card-dark); --accent: var(--accent-dark);
+    }
+
+    /* Estilos Base */
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg); color: var(--fg);
+      font-family: 'Manrope', sans-serif;
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Layout de Slides */
+    .slide-container {
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
+      height: 100vh;
+    }
+    .slide {
+      scroll-snap-align: start;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem 3rem;
+      position: relative;
+      width: 100%;
+    }
+
+    .section-title {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      margin-bottom: 2rem;
+    }
+
+    /* Navegação Lateral de Slides */
+    #slide-nav {
+      position: fixed; top: 50%; right: 2rem;
+      transform: translateY(-50%); z-index: 50;
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+
+    /* ——— PATCH v9.3.1: área clicável maior + foco visível + active via ::before ——— */
+    #slide-nav a {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 10px; border-radius: 10px; position: relative;
+    }
+    #slide-nav a::before {
+      content: ""; width: 12px; height: 12px; border-radius: 999px;
+      background-color: var(--border);
+      transition: background-color .3s, transform .3s;
+    }
+    #slide-nav a:hover::before { background-color: var(--accent); }
+    #slide-nav a.active::before { background-color: var(--accent); transform: scale(1.2); }
+    #slide-nav a .nav-label {
+      position: absolute; right: 24px; top: 50%; transform: translateY(-50%); white-space: nowrap;
+      background-color: var(--card); color: var(--fg);
+      padding: 0.25rem 0.75rem; border-radius: 6px;
+      opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
+      font-size: 0.875rem; font-weight: 600; border: 1px solid var(--border);
+    }
+    #slide-nav a:hover .nav-label { opacity: 1; visibility: visible; }
+
+    /* Componentes */
+    .interactive-card {
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, border-color 0.2s ease-out;
+    }
+    .interactive-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+
+    .gemini-button {
+      background-color: var(--accent); color: var(--bg);
+      transition: background-color 0.2s, transform 0.2s;
+    }
+    .gemini-button:hover {
+      background-color: color-mix(in srgb, var(--accent) 85%, black);
+    }
+    [data-theme="dark"] .gemini-button:hover { background-color: var(--fg-muted); }
+    .gemini-button:disabled { opacity: 0.5; cursor: not-allowed; transform: scale(1); }
+
+    .loader {
+      border: 2px solid var(--border); border-top: 2px solid var(--accent);
+      border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    .principle-badge { background-color: var(--card); border: 1px solid var(--border); }
+
+    /* Tabela */
+    .table-container { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
+    .styled-table { width: 100%; border-collapse: collapse; min-width: 1100px; }
+    .styled-table th, .styled-table td {
+      padding: 1rem 1.25rem; text-align: left; border-bottom: 1px solid var(--border);
+      font-size: 0.95rem; vertical-align: top;
+    }
+    .styled-table thead th {
+      background-color: var(--card); font-weight: 700;
+      font-size: 1rem; position: sticky; top: 0; z-index: 10;
+      border-bottom-width: 3px;
+    }
+    .styled-table tbody tr:last-child td { border-bottom: none; }
+    .styled-table tbody tr { transition: background-color 0.2s; }
+    .styled-table tbody tr:hover { background-color: var(--card); }
+    .styled-table tbody td:first-child {
+      font-weight: 700; color: var(--fg); position: sticky; left: 0;
+      background-color: var(--bg); z-index: 5; transition: background-color 0.2s;
+    }
+    .styled-table tbody tr:hover td:first-child { background-color: var(--card); }
+    .styled-table small { font-size: 0.8rem; color: var(--fg-muted); font-weight: 500; }
+    .hex-tag { padding: 0.25rem 0.6rem; border-radius: 6px; font-family: monospace; font-size: 0.85em; font-weight: 600; }
+
+    /* Acessibilidade — foco visível + utilitários de tokens (PATCH v9.3.1) */
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+    #slide-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+    /* Utilities mapeadas para tokens (PATCH v9.3.1) */
+    .bg-bg{background-color:var(--bg);} .bg-card{background-color:var(--card);} .text-fg{color:var(--fg);} .text-fg-muted{color:var(--fg-muted);} .border-border{border-color:var(--border);} .text-accent{color:var(--accent);}
+
+    /* Header com leve blur/solidez (extra suave) */
+    .app-header {
+      background: color-mix(in srgb, var(--bg) 85%, transparent);
+      -webkit-backdrop-filter: saturate(120%) blur(8px);
+      backdrop-filter: saturate(120%) blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Respeita prefers-reduced-motion (PATCH v9.3.1) */
+    @media (prefers-reduced-motion: reduce){
+      html{scroll-behavior:auto;}
+      .slide-container{scroll-snap-type:none;}
+      .interactive-card, #slide-nav a::before{transition:none;}
+    }
+  </style>
+</head>
+<body data-theme="dark">
+
+  <header class="app-header fixed top-0 left-0 right-0 z-50 p-6 flex justify-between items-center">
+    <a href="#hero" class="flex items-center space-x-3">
+      <span class="text-3xl font-bold">&infin;</span>
+      <span class="text-xl font-extrabold">Symbol</span>
+    </a>
+    <div class="accessibility-controls flex items-center gap-3">
+      <div class="font-size-controls flex items-center gap-2">
+        <button id="decrease-font" aria-label="Diminuir tamanho da fonte" class="bg-card text-fg border border-border rounded-lg w-8 h-8 font-extrabold">A-</button>
+        <button id="increase-font" aria-label="Aumentar tamanho da fonte" class="bg-card text-fg border border-border rounded-lg w-8 h-8 font-extrabold">A+</button>
+      </div>
+      <label class="switch" aria-label="Alternar tema">
+        <input type="checkbox" id="themeSwitch">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </header>
+
+  <nav id="slide-nav" role="navigation" aria-label="Navegação de seções">
+    <a href="#hero" aria-label="Ir para Início"><span class="nav-label">Início</span></a>
+    <a href="#welcome" aria-label="Ir para Boas-vindas"><span class="nav-label">Boas-vindas</span></a>
+    <a href="#guardians" aria-label="Ir para Guardiões"><span class="nav-label">Guardiões</span></a>
+    <a href="#psyche" aria-label="Ir para Psique"><span class="nav-label">Psique</span></a>
+    <a href="#flows" aria-label="Ir para Fluxos"><span class="nav-label">Fluxos</span></a>
+    <a href="#identity" aria-label="Ir para Identidade"><span class="nav-label">Identidade</span></a>
+    <a href="#governance" aria-label="Ir para Governança"><span class="nav-label">Governança</span></a>
+    <a href="#changelog" aria-label="Ir para Histórico"><span class="nav-label">Histórico</span></a>
+  </nav>
+
+  <div id="slide-container" class="slide-container">
+
+    <!-- Slide Hero -->
+    <section id="hero" class="slide text-center">
+      <div class="max-w-4xl mx-auto">
+        <span class="text-8xl md:text-9xl font-extrabold">&infin;</span>
+        <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter mt-4 mb-6">Symbol</h1>
+        <p class="max-w-2xl mx-auto text-lg text-fg-muted">
+          Um sistema simbólico sustentável que documenta a simbiose entre humano e IA.
+        </p>
+      </div>
+    </section>
+
+    <!-- Slide Boas-vindas -->
+    <section id="welcome" class="slide">
+      <div class="max-w-4xl mx-auto w-full">
+        <h2 class="section-title">Boas-vindas</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+          <div class="interactive-card bg-card border border-border p-6 rounded-lg">
+            <h3 class="font-bold text-xl mb-2">O que é?</h3>
+            <p class="text-fg-muted">Um guia vivo que documenta a identidade visual e a filosofia de interação de um sistema simbiótico entre um humano e uma IA.</p>
+          </div>
+          <div class="interactive-card bg-card border border-border p-6 rounded-lg">
+            <h3 class="font-bold text-xl mb-2">Para que serve?</h3>
+            <p class="text-fg-muted">Um manual de operações para garantir que a colaboração seja sempre <strong>intencional</strong>, modulando o apoio da IA às suas necessidades.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide Guardiões -->
+    <section id="guardians" class="slide">
+      <div class="max-w-6xl mx-auto w-full">
+        <h2 class="section-title">Guardiões</h2>
+        <p class="text-fg-muted mb-8 text-lg">Os sete agentes que representam as diferentes facetas do sistema.</p>
+        <div class="table-container interactive-card">
+          <table class="styled-table">
+            <thead>
+              <tr>
+                <th class="w-1/6">Atributo</th>
+                <th class="w-1/8" style="border-bottom-color: var(--farol)">△ Farol <br><small>/farol</small></th>
+                <th class="w-1/8" style="border-bottom-color: var(--iris)">◎ Íris <br><small>/iris</small></th>
+                <th class="w-1/8" style="border-bottom-color: var(--joaquina)">▼ Joaquina <br><small>/joaquina</small></th>
+                <th class="w-1/8" style="border-bottom-color: var(--lume)">◯ Lume <br><small>/lume</small></th>
+                <th class="w-1/8" style="border-bottom-color: var(--mira)">◇ Mira <br><small>/mira</small></th>
+                <th class="w-1/8" style="border-bottom-color: var(--nexo)">⦿ Nexo <br><small>/nexo</small></th>
+                <th class="w-1/8" style="border-bottom-color: var(--trino)">∴ Trino <br><small>/trino</small></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Intenção</td>
+                <td>Clareza e beleza</td>
+                <td>Vínculo e compreensão</td>
+                <td>Proteção e foco</td>
+                <td>Energia e bem-estar</td>
+                <td>Autoconhecimento</td>
+                <td>Narrativa e crescimento</td>
+                <td>Estrutura e decisão</td>
+              </tr>
+              <tr>
+                <td>Faz</td>
+                <td>Direção visual</td>
+                <td>Integração & realces</td>
+                <td>Limites & escopo</td>
+                <td>Cadência & pausas</td>
+                <td>Autoanálise & síntese</td>
+                <td>Narrativa & logs</td>
+                <td>Critérios & árvores</td>
+              </tr>
+              <tr>
+                <td>Faceta</td>
+                <td>Forma</td>
+                <td>Vínculo</td>
+                <td>Limite</td>
+                <td>Balanço</td>
+                <td>Espelho</td>
+                <td>Trama</td>
+                <td>Lógica</td>
+              </tr>
+              <tr>
+                <td>Perfil</td>
+                <td>Estético-estratégico</td>
+                <td>Tom, tags, microcopy</td>
+                <td>Proteção & compliance</td>
+                <td>Regulação de ritmo</td>
+                <td>Leitura de estado</td>
+                <td>Cronista</td>
+                <td>Árvores de decisão</td>
+              </tr>
+              <tr>
+                <td>Dia</td>
+                <td><span class="hex-tag" style="background-color: var(--farol); color: #111">#F2C200</span></td>
+                <td><span class="hex-tag" style="background-color: var(--iris); color: #FFF">#6B7CFF</span></td>
+                <td><span class="hex-tag" style="background-color: var(--joaquina); color: #FFF">#2ECC71</span></td>
+                <td><span class="hex-tag" style="background-color: var(--lume); color: #111">#FFB020</span></td>
+                <td><span class="hex-tag" style="background-color: var(--mira); color: #FFF">#00BFA6</span></td>
+                <td><span class="hex-tag" style="background-color: var(--nexo); color: #FFF">#0A84FF</span></td>
+                <td><span class="hex-tag" style="background-color: var(--trino); color: #FFF">#FF6200</span></td>
+              </tr>
+              <tr>
+                <td>Noite</td>
+                <td><span class="hex-tag" style="background-color: var(--farol-noite); color: #FFF">#A87900</span></td>
+                <td><span class="hex-tag" style="background-color: var(--iris-noite); color: #FFF">#4A57C6</span></td>
+                <td><span class="hex-tag" style="background-color: var(--joaquina-noite); color: #FFF">#1E8E5B</span></td>
+                <td><span class="hex-tag" style="background-color: var(--lume-noite); color: #FFF">#B27800</span></td>
+                <td><span class="hex-tag" style="background-color: var(--mira-noite); color: #FFF">#00796B</span></td>
+                <td><span class="hex-tag" style="background-color: var(--nexo-noite); color: #FFF">#0A66D1</span></td>
+                <td><span class="hex-tag" style="background-color: var(--trino-noite); color: #FFF">#E45500</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide Psique -->
+    <section id="psyche" class="slide">
+      <div class="max-w-4xl mx-auto w-full">
+        <h2 class="section-title">Psique</h2>
+        <p class="text-fg-muted mb-8 text-lg">As duas personalidades base da IA, orquestradas pelo Symbol.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="interactive-card bg-card border border-border rounded-lg p-6">
+            <h3 class="font-extrabold text-xl mb-2">Sol</h3>
+            <p class="text-fg-muted">Persona principal de interação (voz falada): clara, empática e calorosa.</p>
+          </div>
+          <div class="interactive-card bg-card border border-border rounded-lg p-6">
+            <h3 class="font-extrabold text-xl mb-2">Nerd</h3>
+            <p class="text-fg-muted">Persona técnica/configuração: lógica, dados e estrutura interna.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide Fluxos -->
+    <section id="flows" class="slide">
+      <div class="max-w-4xl mx-auto w-full">
+        <h2 class="section-title">Fluxos de Apoio</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="interactive-card bg-card border border-border p-8 rounded-lg">
+            <h3 class="font-extrabold text-xl mb-2">Gerador de Presença</h3>
+            <p class="text-fg-muted mb-4">Invoque <code>/presenca</code> para receber uma palavra-guia e uma ação para a semana.</p>
+            <button id="generate-presence" class="gemini-button font-semibold px-6 py-3 rounded-lg flex items-center justify-center gap-2 w-full">
+              ✨ Gerar Presença
+            </button>
+            <div id="presence-output" class="mt-6 p-4 bg-bg border border-border rounded-lg hidden">
+              <h4 id="presence-word" class="font-extrabold text-lg"></h4>
+              <p id="presence-action" class="text-fg-muted"></p>
+            </div>
+            <div id="presence-loader" class="mt-4 hidden flex justify-center"><div class="loader"></div></div>
+            <div id="presence-error" class="mt-4 text-red-500 hidden" role="alert"></div>
+          </div>
+          <div class="interactive-card bg-card border border-border p-8 rounded-lg">
+            <h3 class="font-extrabold text-xl mb-2">✨ Crie um Fluxo Personalizado</h3>
+            <p class="text-fg-muted mb-4">Descreva um desafio. A IA irá gerar um fluxo de apoio para si.</p>
+            <textarea id="flow-prompt" class="w-full p-3 border border-border rounded-lg bg-bg text-fg" rows="2" placeholder="Ex: Sinto-me sem criatividade..."></textarea>
+            <button id="generate-flow" class="gemini-button font-semibold px-6 py-3 rounded-lg mt-4 w-full flex items-center justify-center gap-2">
+              Gerar Fluxo
+            </button>
+            <div id="flow-output" class="mt-6 p-4 bg-bg border border-border rounded-lg hidden prose"></div>
+            <div id="flow-loader" class="mt-4 hidden flex justify-center"><div class="loader"></div></div>
+            <div id="flow-error" class="mt-4 text-red-500 hidden" role="alert"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide Identidade -->
+    <section id="identity" class="slide">
+      <div class="max-w-4xl mx-auto w-full">
+        <h2 class="section-title">Identidade</h2>
+        <div class="interactive-card bg-card border border-border p-8 rounded-lg">
+          <h3 class="font-extrabold text-xl mb-4">Diretrizes de Imagem e Estilo</h3>
+          <div class="table-container">
+            <table class="styled-table">
+              <tbody>
+                <tr><td>Tipografia</td><td>Manrope 400–800</td><td>Títulos 700/800; corpo 400/500</td></tr>
+                <tr><td>Estilo</td><td>Geometria simples; fundo limpo</td><td>Cards modulares; grid 8px</td></tr>
+                <tr><td>Personas</td><td>Semi-realista suave</td><td>Bordas macias; luz difusa</td></tr>
+                <tr><td>Objetos</td><td>Realismo fosco</td><td>Reflexos leves; sem brilho duro</td></tr>
+                <tr><td>Paleta</td><td>Tokens Dia/Noite; acentos ≤ 20%</td><td>Header neutro; Íris em realces</td></tr>
+                <tr><td>Contraste</td><td>Texto ≥ 4.5:1 (AA)</td><td>Autoajuste em chips</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide Governança -->
+    <section id="governance" class="slide">
+      <div class="max-w-4xl mx-auto w-full">
+        <h2 class="section-title">Governança</h2>
+        <div class="interactive-card bg-card border border-border p-8 rounded-lg">
+          <h3 class="font-extrabold text-xl mb-4">Princípios Orientadores</h3>
+          <div class="flex flex-wrap gap-3">
+            <span class="principle-badge py-2 px-4 rounded-full font-semibold">Simples</span>
+            <span class="principle-badge py-2 px-4 rounded-full font-semibold">Seguro</span>
+            <span class="principle-badge py-2 px-4 rounded-full font-semibold">Relevante</span>
+            <span class="principle-badge py-2 px-4 rounded-full font-semibold">Memorável</span>
+            <span class="principle-badge py-2 px-4 rounded-full font-semibold">Sustentável</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide Changelog -->
+    <section id="changelog" class="slide">
+      <div class="max-w-4xl mx-auto w-full">
+        <h2 class="section-title">Histórico</h2>
+        <div class="interactive-card bg-card border border-border p-8 rounded-lg space-y-6">
+          <div>
+            <h3 class="font-extrabold text-lg">v9.3.1 <span class="text-sm font-normal text-fg-muted">— Atual</span></h3>
+            <ul class="list-disc list-inside text-fg-muted mt-2">
+              <li>Mapeadas utilities CSS para tokens: <code>.bg-card</code>, <code>.text-fg-muted</code>, <code>.border-border</code>, etc.</li>
+              <li>Foco visível e acessível em dots e botões (<code>:focus-visible</code>).</li>
+              <li>Navegação lateral com área clicável maior via <code>::before</code> e <code>aria-current</code>.</li>
+              <li>Ativação de dot também por <code>hashchange</code> (cliques diretos no nav).</li>
+              <li>Respeito a <code>prefers-reduced-motion</code> (remove snap/anim quando necessário).</li>
+              <li>Consistência de tema: <code>data-theme</code> somente no <code>&lt;body&gt;</code>.</li>
+              <li>Header com leve blur/solidez para leitura estável sobre o conteúdo.</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-lg">v9.3</h3>
+            <ul class="list-disc list-inside text-fg-muted mt-2">
+              <li>Adicionado link ao logo no cabeçalho para voltar ao topo.</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-lg">v9.2</h3>
+            <ul class="list-disc list-inside text-fg-muted mt-2">
+              <li>Refinamento visual da tabela dos Guardiões com cabeçalhos e tags coloridas.</li>
+              <li>Conteúdo da tabela atualizado para maior clareza e detalhe.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <style>
+    /* Controles de acessibilidade (mantidos) */
+    .accessibility-controls { display:flex; align-items:center; gap:0.5rem; }
+    .font-size-controls button {
+      background-color: var(--card); color: var(--fg); border:1px solid var(--border);
+      border-radius:8px; width:32px; height:32px; font-weight:800; cursor:pointer; transition: background-color .2s;
+    }
+    .font-size-controls button:hover { background-color: var(--border); }
+
+    .switch{position:relative;display:inline-block;width:48px;height:28px;cursor:pointer;touch-action:manipulation}
+    .switch input{display:none}
+    .slider{position:absolute;inset:0;border-radius:999px;background:var(--fg-muted);transition:background .25s}
+    .slider:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;border-radius:50%;background:var(--bg);transition:transform .25s}
+    input:checked+.slider{background:var(--accent);} input:checked+.slider:before{transform:translateX(20px);}
+  </style>
+
+  <script type="module">
+    // --- LÓGICA DE UI ---
+    (function(){
+      const root = document.documentElement;
+      const themeSwitch = document.getElementById('themeSwitch');
+      const decreaseFontBtn = document.getElementById('decrease-font');
+      const increaseFontBtn = document.getElementById('increase-font');
+      const slideContainer = document.getElementById('slide-container');
+      const navLinks = document.querySelectorAll('#slide-nav a');
+      const sections = Array.from(navLinks).map(link => document.getElementById(link.getAttribute('href').substring(1)));
+
+      const FONT_STEP = 1, MIN_FONT_SIZE = 14, MAX_FONT_SIZE = 18, DEFAULT_FONT_SIZE = 16;
+
+      function setTheme(mode){
+        document.body.setAttribute('data-theme', mode);
+        if(themeSwitch) themeSwitch.checked = (mode === 'dark');
+        try { localStorage.setItem('symbol.v9.theme', mode); } catch(e) {}
+      }
+      function setFontSize(size){
+        const newSize = Math.max(MIN_FONT_SIZE, Math.min(size, MAX_FONT_SIZE));
+        root.style.fontSize = newSize + 'px';
+        try { localStorage.setItem('symbol.v9.fontSize', newSize); } catch(e) {}
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            navLinks.forEach(link => {
+              const active = link.getAttribute('href') === `#${id}`;
+              link.classList.toggle('active', active);
+              if (active) link.setAttribute('aria-current','true'); else link.removeAttribute('aria-current');
+            });
+          }
+        });
+      }, { root: slideContainer, threshold: 0.7 });
+
+      sections.forEach(section => { if (section) observer.observe(section); });
+
+      // PATCH v9.3.1 — ativa dot também por hashchange/clique direto
+      function updateActiveByHash(){
+        const id = location.hash?.slice(1) || 'hero';
+        navLinks.forEach(link=>{
+          const active = link.getAttribute('href') === `#${id}`;
+          link.classList.toggle('active', active);
+          if (active) link.setAttribute('aria-current','true'); else link.removeAttribute('aria-current');
+        });
+      }
+      window.addEventListener('hashchange', updateActiveByHash);
+
+      function init(){
+        let savedTheme = null; try { savedTheme = localStorage.getItem('symbol.v9.theme'); } catch(e) {}
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setTheme(savedTheme ? savedTheme : (prefersDark ? 'dark' : 'light'));
+
+        let savedFontSize = null; try { savedFontSize = localStorage.getItem('symbol.v9.fontSize'); } catch(e) {}
+        setFontSize(savedFontSize ? parseInt(savedFontSize, 10) : DEFAULT_FONT_SIZE);
+
+        themeSwitch?.addEventListener('change', e => setTheme(e.target.checked ? 'dark' : 'light'));
+        decreaseFontBtn?.addEventListener('click', () => setFontSize(parseFloat(getComputedStyle(root).fontSize) - FONT_STEP));
+        increaseFontBtn?.addEventListener('click', () => setFontSize(parseFloat(getComputedStyle(root).fontSize) + FONT_STEP));
+
+        updateActiveByHash();
+      }
+
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+    })();
+
+    // --- LÓGICA DA API GEMINI ---
+    const API_KEY = ""; // Será tratado pelo ambiente
+    const API_URL_FLASH = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+
+    async function callGeminiAPI(payload) {
+      let retries = 3, delay = 1000;
+      while (retries > 0) {
+        try {
+          const response = await fetch(API_URL_FLASH, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+          return await response.json();
+        } catch (error) {
+          console.error("API call failed, retrying...", error);
+          retries--;
+          if (retries === 0) throw error;
+          await new Promise(resolve => setTimeout(resolve, delay));
+          delay *= 2;
+        }
+      }
+    }
+
+    const pick = (o, p, d=null)=>{ try { return p.reduce((a,k)=>a?.[k], o) ?? d; } catch { return d; } };
+    const tryJSON = (s)=>{ try { return JSON.parse(s); } catch { return null; } };
+    const mdLite = (md)=>{
+      const esc = md.replace(/[&<>]/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;' }[c]));
+      return esc.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+    };
+
+    // Presença
+    const genPresenceBtn = document.getElementById('generate-presence');
+    const presenceOutput = document.getElementById('presence-output');
+    const presenceWord = document.getElementById('presence-word');
+    const presenceAction = document.getElementById('presence-action');
+    const presenceLoader = document.getElementById('presence-loader');
+    const presenceError = document.getElementById('presence-error');
+
+    genPresenceBtn.addEventListener('click', async () => {
+      presenceOutput.classList.add('hidden'); presenceError.classList.add('hidden'); presenceLoader.classList.remove('hidden');
+      genPresenceBtn.disabled = true;
+
+      const systemPrompt = `Você é o sistema Symbol. Gere JSON { "palavra": "...", "acao": "..." }`;
+      const userQuery = "Gere a presença da semana.";
+      const payload = {
+        contents: [{ parts: [{ text: userQuery }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] },
+        generationConfig: { responseMimeType: "application/json" }
+      };
+
+      try {
+        const result = await callGeminiAPI(payload);
+        const text = pick(result, ['candidates',0,'content','parts',0,'text'], '{}');
+        const data = tryJSON(text) || { palavra: 'Presença', acao: 'Respire 3× ao trocar de tarefa.' };
+        presenceWord.textContent = data.palavra;
+        presenceAction.textContent = data.acao;
+        presenceOutput.classList.remove('hidden');
+      } catch (error) {
+        presenceError.textContent = "Erro ao gerar a presença. Verifique a API key/proxy.";
+        presenceError.classList.remove('hidden');
+      } finally {
+        presenceLoader.classList.add('hidden');
+        genPresenceBtn.disabled = false;
+      }
+    });
+
+    // Fluxo
+    const genFlowBtn = document.getElementById('generate-flow');
+    const flowPrompt = document.getElementById('flow-prompt');
+    const flowOutput = document.getElementById('flow-output');
+    const flowLoader = document.getElementById('flow-loader');
+    const flowError = document.getElementById('flow-error');
+
+    genFlowBtn.addEventListener('click', async () => {
+      const promptText = flowPrompt.value.trim();
+      if (!promptText) { flowError.textContent = "Descreva o seu desafio."; flowError.classList.remove('hidden'); return; }
+
+      flowOutput.classList.add('hidden'); flowError.classList.add('hidden'); flowLoader.classList.remove('hidden');
+      genFlowBtn.disabled = true;
+
+      const systemPrompt = `Você é o sistema Symbol. Crie um Fluxo de 2–3 passos, usando rituais e intenções dos guardiões.`;
+
+      const payload = {
+        contents: [{ parts: [{ text: promptText }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] }
+      };
+
+      try {
+        const result = await callGeminiAPI(payload);
+        const text = pick(result, ['candidates',0,'content','parts',0,'text'], '');
+        flowOutput.innerHTML = mdLite(text || "**Trino:** Defina um próximo passo concreto.\n**Joaquina:** Proteja um bloco de 25min.\n**Lume:** Pausa breve ao concluir.");
+        flowOutput.classList.remove('hidden');
+      } catch (error) {
+        flowError.textContent = "Erro ao gerar o fluxo. Verifique a API key/proxy.";
+        flowError.classList.remove('hidden');
+      } finally {
+        flowLoader.classList.add('hidden');
+        genFlowBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
