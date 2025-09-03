@@ -136,7 +136,7 @@
 
     /* Tabela */
     .table-container { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
-    .styled-table { width: 100%; border-collapse: collapse; min-width: 1100px; }
+    .styled-table { width: 100%; border-collapse: collapse;min-width: 100%;100%: ; }
     .styled-table th, .styled-table td {
       padding: 1rem 1.25rem; text-align: left; border-bottom: 1px solid var(--border);
       font-size: 0.95rem; vertical-align: top;
@@ -568,7 +568,44 @@
       return esc.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
     };
 
-    // Presença
+    // P
+    // Fallback functions for offline or sandbox
+function inSandbox(){
+  const h = location.hostname;
+  return h.includes('github.com') || h.includes('githubusercontent') || h === '';
+}
+function shouldUseLocal(){
+  return !API_KEY || inSandbox();
+}
+function localPresence(){
+  const palavras = ["Âncora","Ritmo","Foco","Clareza","Trama","Respiro","Cuidado","Limite","Vínculo","Síntese"];
+  const acoes = [
+    "Respire 3× ao trocar de tarefa.",
+    "Proteja 1 bloco de 25min sem notificações.",
+    "Escreva 3 linhas de intenção ao abrir o dia.",
+    "Feche com 1 nota de aprendizado.",
+    "Diga não a 1 micro-desvio hoje.",
+    "Levante e alongue a cada ciclo."
+  ];
+  const p = palavras[Math.floor(Math.random()*palavras.length)];
+  const a = acoes[Math.floor(Math.random()*acoes.length)];
+  return { palavra: p, acao: a };
+}
+function localFlow(promptText=""){
+  const linhas = [
+    "**Trino:** defina o próximo passo atômico (\u226410min).",
+    "**Joaquina:** proteja 1 bloco de 25min no calendário.",
+    "**Lume:** ao concluir, pausa de 2min + registro de 1 linha."
+  ];
+  if (/\b(criativ|ideia|bloqueio)\b/i.test(promptText)) {
+    linhas[0] = "**Farol:** faça 3 variações feias e rápidas (sem julgar).";
+  }
+  if (/\b(cansa|energia|sono|over)\b/i.test(promptText)) {
+    linhas[2] = "**Lume:** 3× respiração 4-4-6 e água antes de retomar.";
+  }
+  return linhas.join("\n");
+}
+resença
     const genPresenceBtn = document.getElementById('generate-presence');
     const presenceOutput = document.getElementById('presence-output');
     const presenceWord = document.getElementById('presence-word');
@@ -580,7 +617,18 @@
       presenceOutput.classList.add('hidden'); presenceError.classList.add('hidden'); presenceLoader.classList.remove('hidden');
       genPresenceBtn.disabled = true;
 
-      const systemPrompt = `Você é o sistema Symbol. Gere JSON { "palavra": "...", "acao": "..." }`;
+     
+          // Fallback for presence
+    if (shouldUseLocal()) {
+      const data = localPresence();
+      presenceWord.textContent = data.palavra;
+      presenceAction.textContent = data.acao;
+      presenceOutput.classList.remove('hidden');
+      presenceLoader.classList.add('hidden');
+      genPresenceBtn.disabled = false;
+      return;
+    }
+const systemPrompt = `Você é o sistema Symbol. Gere JSON { "palavra": "...", "acao": "..." }`;
       const userQuery = "Gere a presença da semana.";
       const payload = {
         contents: [{ parts: [{ text: userQuery }] }],
@@ -616,10 +664,25 @@
       if (!promptText) { flowError.textContent = "Descreva o seu desafio."; flowError.classList.remove('hidden'); return; }
 
       flowOutput.classList.add('hidden'); flowError.classList.add('hidden'); flowLoader.classList.remove('hidden');
-      genFlowBtn.disabled = true;
+     
+             // Fallback for flow
+        if (shouldUseLocal()) {
+          const html = localFlow(promptText);
+          flowOutput.innerHTML = mdLite(html);
+          flowOutput.classList.remove('hidden');
+          flowLoader.classList.add('hidden');
+          genFlowBtn.disabled = false;
+          return;
+        }
+ flowOutput.classList.remove('hidden');
+      flowLoader.classList.add('hidden');
+      genFlowBtn.disabled = false;
+      return;
+    }
+genFlowBtn.disabled = true;
 
       const systemPrompt = `Você é o sistema Symbol. Crie um Fluxo de 2–3 passos, usando rituais e intenções dos guardiões.`;
-
+mdLite
       const payload = {
         contents: [{ parts: [{ text: promptText }] }],
         systemInstruction: { parts: [{ text: systemPrompt }] }
