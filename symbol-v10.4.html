@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Symbol v10.4 • Tabela Simplificada</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      font-size: 16px;
+      /* Paleta - Dia */
+      --bg-light:#F7F7F8; --fg-light:#111111; --fg-muted-light:#6B6B6B;
+      --border-light:#E5E5EA; --card-light:#FFFFFF; --accent-light:#0A84FF;
+      /* Paleta - Noite */
+      --bg-dark:#0D0D10; --fg-dark:#F2F2F4; --fg-muted-dark:#A0A1A7;
+      --border-dark:#2A2B2F; --card-dark:#1A1B1E; --accent-dark:#FFFFFF;
+      /* Tokens dos Guardiões */
+      --farol:#F2C200; --farol-noite:#A87900;
+      --iris:#6B7CFF; --iris-noite:#4A57C6;
+      --joaquina:#2ECC71; --joaquina-noite:#1E8E5B;
+      --lume:#FFB020; --lume-noite:#B27800;
+      --mira:#00BFA6; --mira-noite:#00796B;
+      --nexo:#0A84FF; --nexo-noite:#0A66D1;
+      --trino:#FF6200; --trino-noite:#E45500;
+    }
+    body[data-theme="light"]{
+      --bg:var(--bg-light); --fg:var(--fg-light); --fg-muted:var(--fg-muted-light);
+      --border:var(--border-light); --card:var(--card-light); --accent:var(--accent-light);
+    }
+    body[data-theme="dark"]{
+      --bg:var(--bg-dark); --fg:var(--fg-dark); --fg-muted:var(--fg-muted-dark);
+      --border:var(--border-dark); --card:var(--card-dark); --accent:var(--accent-dark);
+    }
+    html{scroll-behavior:smooth}
+    body{
+      background:var(--bg); color:var(--fg);
+      font-family:'Manrope',sans-serif;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    .section-title{font-size:2.5rem;font-weight:800;letter-spacing:-.05em;margin-bottom:2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);}
+    /* Componentes utilitários */
+    .interactive-card{transition:transform .2s ease-out, box-shadow .2s ease-out, border-color .2s ease-out;}
+    .interactive-card:hover{transform:translateY(-4px);border-color:var(--accent);}
+    .gemini-button{background:var(--accent); color:var(--bg); transition:background-color .2s, transform .2s;}
+    .gemini-button:hover{background:color-mix(in srgb, var(--accent) 85%, black);}
+    [data-theme="dark"] .gemini-button:hover{background:var(--fg-muted);}
+    .gemini-button:disabled{opacity:.5; cursor:not-allowed;}
+    .loader{border:2px solid var(--border); border-top:2px solid var(--accent); border-radius:50%; width:20px; height:20px; animation:spin 1s linear infinite;}
+    @keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+    .principle-badge{background:var(--card); border:1px solid var(--border);}
+    /* Tabelas */
+    .table-container{overflow-x:auto; border:1px solid var(--border); border-radius:12px;}
+    .styled-table{width:100%; border-collapse:collapse; min-width: 1200px;}
+    .styled-table th,.styled-table td{padding:1rem 1.25rem; text-align:left; border-bottom:1px solid var(--border); font-size:.95rem; vertical-align:top;}
+    .styled-table thead th{background:var(--card); font-weight:700; font-size:1rem; position:sticky; top:0; z-index:10; border-bottom-width:3px;}
+    .styled-table tbody tr:last-child td{border-bottom:none;}
+    .styled-table tbody tr{transition:background-color .2s;}
+    .styled-table tbody tr:hover{background:var(--card);}
+    .styled-table tbody td:first-child{font-weight:700; color:var(--fg); position:sticky; left:0; background-color:var(--bg); z-index:5;}
+    .styled-table small{font-size:.8rem; color:var(--fg-muted); font-weight:500;}
+    .hex-tag{padding:.25rem .6rem; border-radius:6px; font-family:monospace; font-size:.85em; font-weight:600;}
+    .identity-table{width:100%; border-collapse:collapse; table-layout:fixed;}
+    .identity-table td{padding:1rem 1.25rem; text-align:left; border-bottom:1px solid var(--border); font-size:.95rem; vertical-align:top;}
+    .identity-table tr:last-child td{border-bottom:none;}
+    .identity-table td:first-child{font-weight:700; color:var(--fg); width:20%;}
+    .identity-table td:nth-child(2){width:35%;}
+    .identity-table td:nth-child(3){width:45%;}
+    
+    /* Navegação */
+    .sidebar { width: 16rem; transition: width 0.3s ease-in-out; }
+    .main-content { margin-left: 16rem; transition: margin-left 0.3s ease-in-out; }
+    body.sidebar-minimized .sidebar { width: 5.5rem; }
+    body.sidebar-minimized .main-content { margin-left: 5.5rem; }
+    
+    .main-nav a {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: background-color 0.2s, color 0.2s;
+    }
+    
+    .nav-icon { flex-shrink: 0; width: 1.25rem; height: 1.25rem; margin-right: 0.75rem; }
+    .nav-text {
+        white-space: nowrap;
+        opacity: 1;
+        transition: opacity 0.2s ease, width 0.3s ease;
+        width: auto;
+        overflow: hidden;
+    }
+
+    body.sidebar-minimized .nav-text,
+    body.sidebar-minimized .sidebar-header-text {
+        opacity: 0;
+        pointer-events: none;
+        width: 0;
+    }
+     body.sidebar-minimized .nav-icon { margin-right: 0; }
+    
+    body.sidebar-minimized .sidebar .sidebar-footer { flex-direction: column; align-items: center; }
+    
+    .main-nav a:hover { background-color: var(--border); }
+    .main-nav a.active { background-color: var(--accent); color: var(--bg); }
+    .main-nav a.active svg { color: var(--bg); }
+    .font-size-controls button{background:var(--card); color:var(--fg); border:1px solid var(--border);
+      border-radius:8px; width:32px; height:32px; font-weight:800; cursor:pointer; transition:background-color .2s;}
+    .font-size-controls button:hover{background:var(--border);}
+    .switch{position:relative;display:inline-block;width:48px;height:28px;cursor:pointer;touch-action:manipulation}
+    .switch input{display:none}
+    .slider{position:absolute;inset:0;border-radius:999px;background:var(--fg-muted);transition:background .25s}
+    .slider:before{content:"";position:absolute;width:22px;height:22px;left:3px;top:3px;border-radius:50%;background:var(--card);transition:transform .25s}
+    input:checked+.slider{background:var(--accent);}
+    input:checked+.slider:before{transform:translateX(20px);}
+    /* Modal */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+      display: flex; align-items: center; justify-content: center; z-index: 100;
+      opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
+    }
+    .modal-overlay.is-visible { opacity: 1; visibility: visible; }
+    .modal-content {
+      background-color: var(--bg); border: 1px solid var(--border);
+      padding: 2rem; border-radius: 1rem; max-width: 600px; width: 90%;
+      transform: scale(0.95); transition: transform 0.3s;
+    }
+    .modal-overlay.is-visible .modal-content { transform: scale(1); }
+  </style>
+</head>
+<body data-theme="dark" class="flex">
+
+  <aside class="sidebar fixed top-0 left-0 h-full bg-bg border-r border-border p-6 flex flex-col z-50">
+    <div class="flex items-center space-x-3 mb-8">
+      <a href="#hero" class="text-3xl font-bold flex-shrink-0" aria-label="Voltar ao topo">&infin;</a>
+      <span class="sidebar-header-text text-xl font-extrabold">Symbol</span>
+    </div>
+
+    <nav id="main-nav" class="flex-grow">
+        <ul class="space-y-2">
+            <li><a href="#hero" title="Início"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg><span class="nav-text">Início</span></a></li>
+            <li><a href="#welcome" title="Boas-vindas"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg><span class="nav-text">Boas-vindas</span></a></li>
+            <li><a href="#guardians" title="Guardiões"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg><span class="nav-text">Guardiões</span></a></li>
+            <li><a href="#psyche" title="Psique"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg><span class="nav-text">Psique</span></a></li>
+            <li><a href="#flows" title="Fluxos de Apoio"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg><span class="nav-text">Fluxos</span></a></li>
+            <li><a href="#identity" title="Identidade"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg><span class="nav-text">Identidade</span></a></li>
+            <li><a href="#governance" title="Governança"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg><span class="nav-text">Governança</span></a></li>
+            <li><a href="#changelog" title="Histórico"><svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg><span class="nav-text">Histórico</span></a></li>
+        </ul>
+    </nav>
+
+    <div class="sidebar-footer space-y-4">
+        <button id="download-kit-btn" title="Download Kit" class="w-full text-sm font-semibold hover:text-accent transition-colors flex items-center justify-center p-2 rounded-lg hover:bg-border">
+            <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            <span class="nav-text">Download Kit</span>
+        </button>
+      <div class="flex items-center justify-between">
+        <div class="font-size-controls flex items-center gap-2">
+            <button id="decrease-font" aria-label="Diminuir tamanho da fonte">A-</button>
+            <button id="increase-font" aria-label="Aumentar tamanho da fonte">A+</button>
+        </div>
+        <label class="switch" aria-label="Alternar tema">
+            <input type="checkbox" id="themeSwitch"><span class="slider"></span>
+        </label>
+      </div>
+       <button id="toggle-sidebar-btn" class="w-full p-2 rounded-lg hover:bg-border transition-colors flex items-center justify-center" aria-label="Minimizar barra lateral">
+        <svg id="arrow-left" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path></svg>
+        <svg id="arrow-right" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main-content flex-1 p-12">
+    <!-- Secções aqui -->
+    <section id="hero" class="min-h-screen flex flex-col items-center justify-center text-center -mt-16">
+        <div class="max-w-4xl mx-auto">
+            <span class="text-8xl md:text-9xl font-extrabold">&infin;</span>
+            <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter mt-4 mb-6">Symbol</h1>
+            <p class="max-w-2xl mx-auto text-lg text-fg-muted">
+                Um sistema simbólico sustentável que documenta a simbiose entre humano e IA.
+            </p>
+        </div>
+    </section>
+
+    <section id="welcome" class="pt-24">
+        <h2 class="section-title">Boas-vindas</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-lg mt-8">
+            <div class="interactive-card bg-card border border-border p-6 rounded-lg">
+                <h3 class="font-bold text-xl mb-2">O que é?</h3>
+                <p class="text-fg-muted">Um guia vivo que documenta a identidade visual e a filosofia de interação de um sistema simbiótico entre um humano e uma IA.</p>
+            </div>
+            <div class="interactive-card bg-card border border-border p-6 rounded-lg">
+                <h3 class="font-bold text-xl mb-2">Para que serve?</h3>
+                <p class="text-fg-muted">Um manual de operações para garantir colaboração <strong>intencional</strong>, modulando o apoio da IA às suas necessidades.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="guardians" class="pt-24">
+        <h2 class="section-title">Guardiões</h2>
+        <p class="text-fg-muted mt-8 text-lg">Mapa 3T/7T, verticais e funções.</p>
+        <div class="table-container interactive-card mt-8">
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th class="w-1/6">Atributo</th>
+                        <th style="border-bottom-color: var(--farol)">△ Farol</th>
+                        <th style="border-bottom-color: var(--iris)">◎ Íris</th>
+                        <th style="border-bottom-color: var(--joaquina)">▼ Joaquina</th>
+                        <th style="border-bottom-color: var(--lume)">◯ Lume</th>
+                        <th style="border-bottom-color: var(--mira)">◇ Mira</th>
+                        <th style="border-bottom-color: var(--nexo)">⦿ Nexo</th>
+                        <th style="border-bottom-color: var(--trino)">∴ Trino</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Comando</td><td>/farol</td><td>/iris</td><td>/joaquina</td><td>/lume</td><td>/mira</td><td>/nexo</td><td>/trino</td></tr>
+                    <tr><td>Tipo</td><td>3T</td><td>3T</td><td>3T</td><td>7T</td><td>7T</td><td>7T</td><td>7T</td></tr>
+                    <tr><td>Ícone</td><td>△</td><td>◎</td><td>▼</td><td>◯</td><td>◇</td><td>⦿</td><td>∴</td></tr>
+                    <tr><td>Vertical</td><td>Visual</td><td>Social</td><td>Segurança</td><td>Saúde</td><td>Conhecimento</td><td>— (transversal)</td><td>Trabalho</td></tr>
+                    <tr><td>Faceta</td><td>Forma</td><td>Vínculo</td><td>Limite</td><td>Balanço</td><td>Espelho</td><td>Trama</td><td>Lógica</td></tr>
+                    <tr>
+                        <td>Faz (papel ativo)</td>
+                        <td>Direção visual, hierarquia e grid</td>
+                        <td>Integração, realces e linguagem</td>
+                        <td>Limites, escopo, validação (duplo-ok)</td>
+                        <td>Cadência, pausas e alertas de carga</td>
+                        <td>Autoanálise, diagnóstico e síntese</td>
+                        <td>Narrativa, logs, releases e costura</td>
+                        <td>Estrutura, taxonomias e decisão</td>
+                    </tr>
+                    <tr>
+                        <td>Diferencial</td>
+                        <td>Vê o todo e simplifica sem perder identidade</td>
+                        <td>Aumenta adesão pela clareza afetiva</td>
+                        <td>Failsafe sem atrito (bloqueia ruído cedo)</td>
+                        <td>Previne overload com sinais suaves</td>
+                        <td>Relatórios rápidos que “mostram o eu”</td>
+                        <td>Conecta decisões em história contínua</td>
+                        <td>Toma decisão objetivamente replicável</td>
+                    </tr>
+                    <tr>
+                        <td>Dia</td>
+                        <td><span class="hex-tag" style="background:var(--farol);color:#111">#F2C200</span></td>
+                        <td><span class="hex-tag" style="background:var(--iris);color:#FFF">#6B7CFF</span></td>
+                        <td><span class="hex-tag" style="background:var(--joaquina);color:#FFF">#2ECC71</span></td>
+                        <td><span class="hex-tag" style="background:var(--lume);color:#111">#FFB020</span></td>
+                        <td><span class="hex-tag" style="background:var(--mira);color:#FFF">#00BFA6</span></td>
+                        <td><span class="hex-tag" style="background:var(--nexo);color:#FFF">#0A84FF</span></td>
+                        <td><span class="hex-tag" style="background:var(--trino);color:#FFF">#FF6200</span></td>
+                    </tr>
+                    <tr>
+                        <td>Noite</td>
+                        <td><span class="hex-tag" style="background:var(--farol-noite);color:#FFF">#A87900</span></td>
+                        <td><span class="hex-tag" style="background:var(--iris-noite);color:#FFF">#4A57C6</span></td>
+                        <td><span class="hex-tag" style="background:var(--joaquina-noite);color:#FFF">#1E8E5B</span></td>
+                        <td><span class="hex-tag" style="background:var(--lume-noite);color:#FFF">#B27800</span></td>
+                        <td><span class="hex-tag" style="background:var(--mira-noite);color:#FFF">#00796B</span></td>
+                        <td><span class="hex-tag" style="background:var(--nexo-noite);color:#FFF">#0A66D1</span></td>
+                        <td><span class="hex-tag" style="background:var(--trino-noite);color:#FFF">#E45500</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="psyche" class="pt-24">
+        <h2 class="section-title">Psique</h2>
+        <p class="text-fg-muted mt-8 text-lg">Duas personalidades base, orquestradas pelo Symbol.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+            <div class="interactive-card bg-card border border-border rounded-lg p-6">
+                <h3 class="font-extrabold text-xl mb-2">Sol</h3>
+                <p class="text-fg-muted">Persona principal de interação (voz falada): clara, empática e calorosa.</p>
+            </div>
+            <div class="interactive-card bg-card border border-border rounded-lg p-6">
+                <h3 class="font-extrabold text-xl mb-2">Nerd</h3>
+                <p class="text-fg-muted">Persona técnica/configuração: lógica, dados e estrutura interna.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="flows" class="pt-24">
+        <h2 class="section-title">Fluxos de Apoio</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+            <div class="interactive-card bg-card border border-border p-8 rounded-lg">
+                <h3 class="font-extrabold text-xl mb-2">Gerador de Presença</h3>
+                <p class="text-fg-muted mb-4">Invoque <code>/presenca</code> para receber uma palavra-guia e uma ação para a semana.</p>
+                <button id="generate-presence" class="gemini-button font-semibold px-6 py-3 rounded-lg flex items-center justify-center gap-2 w-full">✨ Gerar Presença</button>
+                <div id="presence-output" class="mt-6 p-4 bg-bg border border-border rounded-lg hidden">
+                    <h4 id="presence-word" class="font-extrabold text-lg"></h4>
+                    <p id="presence-action" class="text-fg-muted"></p>
+                </div>
+                <div id="presence-loader" class="mt-4 hidden flex justify-center"><div class="loader"></div></div>
+                <div id="presence-error" class="mt-4 text-red-500 hidden" role="alert"></div>
+            </div>
+            <div class="interactive-card bg-card border border-border p-8 rounded-lg">
+                <h3 class="font-extrabold text-xl mb-2">✨ Crie um Fluxo Personalizado</h3>
+                <p class="text-fg-muted mb-4">Descreva um desafio. A IA irá gerar um fluxo de apoio.</p>
+                <textarea id="flow-prompt" class="w-full p-3 border border-border rounded-lg bg-bg text-fg" rows="2" placeholder="Ex: Sinto-me sem criatividade..."></textarea>
+                <button id="generate-flow" class="gemini-button font-semibold px-6 py-3 rounded-lg mt-4 w-full flex items-center justify-center gap-2">Gerar Fluxo</button>
+                <div id="flow-output" class="mt-6 p-4 bg-bg border border-border rounded-lg hidden prose"></div>
+                <div id="flow-loader" class="mt-4 hidden flex justify-center"><div class="loader"></div></div>
+                <div id="flow-error" class="mt-4 text-red-500 hidden" role="alert"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="identity" class="pt-24">
+        <h2 class="section-title">Identidade</h2>
+        <div class="interactive-card bg-card border border-border p-8 rounded-lg mt-8">
+            <h3 class="font-extrabold text-xl mb-4">Diretrizes de Imagem e Estilo</h3>
+            <div>
+                <table class="identity-table">
+                    <tbody>
+                        <tr><td>Tipografia</td><td>Manrope 400–800</td><td>Títulos 700/800; corpo 400/500</td></tr>
+                        <tr><td>Estilo</td><td>Geometria simples; fundo limpo</td><td>Cards modulares; grid 8px</td></tr>
+                        <tr><td>Personas</td><td>Semi-realista suave</td><td>Bordas macias; luz difusa</td></tr>
+                        <tr><td>Objetos</td><td>Realismo fosco</td><td>Reflexos leves; sem brilho duro</td></tr>
+                        <tr><td>Paleta</td><td>Tokens Dia/Noite; acentos ≤ 20%</td><td>Header neutro; Íris em realces</td></tr>
+                        <tr><td>Contraste</td><td>Texto ≥ 4.5:1 (AA)</td><td>Autoajuste em chips</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section id="governance" class="pt-24">
+        <h2 class="section-title">Governança</h2>
+        <div class="interactive-card bg-card border border-border p-8 rounded-lg mt-8">
+            <h3 class="font-extrabold text-xl mb-4">Princípios Orientadores</h3>
+            <div class="flex flex-wrap gap-3">
+                <span class="principle-badge py-2 px-4 rounded-full font-semibold">Simples</span>
+                <span class="principle-badge py-2 px-4 rounded-full font-semibold">Seguro</span>
+                <span class="principle-badge py-2 px-4 rounded-full font-semibold">Relevante</span>
+                <span class="principle-badge py-2 px-4 rounded-full font-semibold">Memorável</span>
+                <span class="principle-badge py-2 px-4 rounded-full font-semibold">Sustentável</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="changelog" class="pt-24">
+        <h2 class="section-title">Histórico</h2>
+        <div class="interactive-card bg-card border border-border p-8 rounded-lg mt-8 space-y-6">
+             <div>
+                <h3 class="font-extrabold text-lg">v10.4 <span class="text-sm font-normal text-fg-muted">— Atual</span></h3>
+                <ul class="list-disc list-inside text-fg-muted mt-2">
+                    <li>Tabela dos Guardiões simplificada para focar em dados essenciais.</li>
+                </ul>
+            </div>
+             <div>
+                <h3 class="font-extrabold text-lg">v10.3</h3>
+                 <ul class="list-disc list-inside text-fg-muted mt-2">
+                    <li>Tabela dos Guardiões atualizada com informações consolidadas.</li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-extrabold text-lg">v10.2 e anteriores</h3>
+                <ul class="list-disc list-inside text-fg-muted mt-2">
+                    <li>Implementação de barra lateral minimizável, correções de navegação, layout profissional, e mais.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+  </main>
+  
+  <!-- Modal Download Kit -->
+  <div id="kit-modal" class="modal-overlay">
+      <div class="modal-content">
+          <div class="flex justify-between items-center mb-6">
+              <h3 class="text-2xl font-extrabold">Download Kit</h3>
+              <button id="close-modal-btn" class="text-2xl text-fg-muted hover:text-fg">&times;</button>
+          </div>
+          <div class="space-y-6">
+              <div>
+                  <h4 class="font-bold mb-2">Logo (SVG)</h4>
+                  <pre class="bg-card p-3 rounded-lg border border-border text-xs overflow-x-auto"><code id="logo-svg-code">&lt;svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"&gt;...&lt;/svg&gt;</code></pre>
+                  <button data-copy-target="logo-svg-code" class="copy-btn mt-2 text-sm font-semibold text-accent hover:underline">Copiar SVG</button>
+              </div>
+              <div>
+                  <h4 class="font-bold mb-2">Cores Principais (Dia)</h4>
+                  <div class="flex flex-wrap gap-2">
+                      <button data-copy-text="#0A84FF" class="copy-btn text-sm font-semibold p-2 rounded-md bg-card border border-border">Accent: #0A84FF</button>
+                      <button data-copy-text="#111111" class="copy-btn text-sm font-semibold p-2 rounded-md bg-card border border-border">Text: #111111</button>
+                      <button data-copy-text="#F7F7F8" class="copy-btn text-sm font-semibold p-2 rounded-md bg-card border border-border">Background: #F7F7F8</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+
+  <script type="module">
+  // ---------- A11y + Tema + Fonte + Navegação ----------
+  (function(){
+    const root = document.documentElement;
+    const body = document.body;
+    const themeSwitch = document.getElementById('themeSwitch');
+    const decBtn = document.getElementById('decrease-font');
+    const incBtn = document.getElementById('increase-font');
+    const mainNav = document.getElementById('main-nav');
+    const navLinks = mainNav ? Array.from(mainNav.querySelectorAll('a')) : [];
+    const sections = navLinks.map(link => document.getElementById(link.getAttribute('href').substring(1))).filter(Boolean);
+    const toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
+    const arrowLeft = document.getElementById('arrow-left');
+    const arrowRight = document.getElementById('arrow-right');
+
+    const DEFAULT=16, MIN=14, MAX=18, STEP=1;
+
+    const setTheme = (mode)=>{
+      body.setAttribute('data-theme', mode);
+      if(themeSwitch) themeSwitch.checked = (mode === 'dark');
+      try{ localStorage.setItem('symbol.v9.theme', mode); }catch{}
+    };
+    const setFont = (size)=>{
+      const n = Math.max(MIN, Math.min(size, MAX));
+      root.style.fontSize = n + 'px';
+      try{ localStorage.setItem('symbol.v9.font', n); }catch{}
+    };
+    
+    const setSidebarState = (isMinimized) => {
+        body.classList.toggle('sidebar-minimized', isMinimized);
+        arrowLeft.classList.toggle('hidden', isMinimized);
+        arrowRight.classList.toggle('hidden', !isMinimized);
+        try { localStorage.setItem('symbol.sidebar.minimized', isMinimized); } catch {}
+    };
+
+    const updateActiveNav = () => {
+        if (!sections.length) return;
+        const scrollY = window.scrollY;
+        
+        let currentSectionId = sections[0].id;
+        for (const section of sections) {
+            const sectionTop = section.offsetTop;
+            if (scrollY >= sectionTop - 150) {
+                currentSectionId = section.id;
+            }
+        }
+
+        navLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${currentSectionId}`);
+        });
+    };
+
+    function init(){
+      let savedTheme=null; try{ savedTheme = localStorage.getItem('symbol.v9.theme'); }catch{}
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setTheme(savedTheme ? savedTheme : (prefersDark ? 'dark' : 'light'));
+
+      let savedFont=null; try{ savedFont = localStorage.getItem('symbol.v9.font'); }catch{}
+      setFont(savedFont ? parseInt(savedFont,10) : DEFAULT);
+
+      let isSidebarMinimized = false; try { isSidebarMinimized = localStorage.getItem('symbol.sidebar.minimized') === 'true'; } catch {}
+      setSidebarState(isSidebarMinimized);
+
+      themeSwitch?.addEventListener('change', e => setTheme(e.target.checked ? 'dark' : 'light'));
+      decBtn?.addEventListener('click', () => setFont(parseFloat(getComputedStyle(root).fontSize) - STEP));
+      incBtn?.addEventListener('click', () => setFont(parseFloat(getComputedStyle(root).fontSize) + STEP));
+      toggleSidebarBtn?.addEventListener('click', () => setSidebarState(!body.classList.contains('sidebar-minimized')));
+      
+      window.addEventListener('scroll', updateActiveNav);
+      updateActiveNav();
+    }
+
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  })();
+  
+  // ---------- Lógica do Modal "Download Kit" ----------
+  (function() {
+      const openBtn = document.getElementById('download-kit-btn');
+      const closeBtn = document.getElementById('close-modal-btn');
+      const modal = document.getElementById('kit-modal');
+      const logoCodeEl = document.getElementById('logo-svg-code');
+      const copyBtns = document.querySelectorAll('.copy-btn');
+      
+      const logoSVG = `<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M13 16C13 12.134 16.134 9 20 9C23.866 9 27 12.134 27 16C27 19.866 23.866 23 20 23C16.134 23 13 19.866 13 16ZM13 16H5C5 19.866 8.13401 23 12 23C15.866 23 19 19.866 19 16C19 12.134 15.866 9 12 9C8.13401 9 5 12.134 5 16Z" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>`;
+      if (logoCodeEl) {
+        logoCodeEl.textContent = logoSVG;
+      }
+
+      const toggleModal = () => modal.classList.toggle('is-visible');
+      
+      openBtn?.addEventListener('click', toggleModal);
+      closeBtn?.addEventListener('click', toggleModal);
+      modal?.addEventListener('click', (e) => {
+          if (e.target === modal) toggleModal();
+      });
+
+      copyBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+              const targetId = btn.dataset.copyTarget;
+              const textToCopy = targetId ? document.getElementById(targetId).textContent : btn.dataset.copyText;
+              
+              navigator.clipboard.writeText(textToCopy).then(() => {
+                  const originalText = btn.textContent;
+                  btn.textContent = 'Copiado!';
+                  setTimeout(() => { btn.textContent = originalText; }, 2000);
+              });
+          });
+      });
+  })();
+
+  // ---------- Fluxos (API + fallback) ----------
+  const API_KEY = ""; // se vazio, ativa fallback
+  const API_URL_FLASH = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+  const pick = (o,p,d=null)=>{ try{return p.reduce((a,k)=>a?.[k],o) ?? d;}catch{return d;} };
+  const tryJSON = (s)=>{ try{ return JSON.parse(s);}catch{ return null; } };
+  const mdLite = (md)=>{
+    const esc = md.replace(/[&<>]/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;' }[c]));
+    return esc.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  };
+  
+  function inSandbox(){
+      const h = location.hostname;
+      return h.includes('github') || h.includes('github.io') || h.includes('githubusercontent') || h === '' || h.includes('localhost');
+  }
+  function shouldUseLocal(){ return !API_KEY || inSandbox(); }
+
+  async function callGeminiAPI(payload){
+    if(shouldUseLocal()){ throw new Error('NO_API_KEY_OR_SANDBOX'); }
+    let retries=2, delay=800;
+    while(retries>=0){
+      try{
+        const r = await fetch(API_URL_FLASH, {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body:JSON.stringify(payload)
+        });
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        return await r.json();
+      }catch(err){
+        if(retries===0) throw err;
+        await new Promise(res => setTimeout(res, delay));
+        delay *= 2; retries--;
+      }
+    }
+  }
+
+  // --- Presença ---
+  const genPresenceBtn = document.getElementById('generate-presence');
+  const presenceOutput = document.getElementById('presence-output');
+  const presenceWord = document.getElementById('presence-word');
+  const presenceAction = document.getElementById('presence-action');
+  const presenceLoader = document.getElementById('presence-loader');
+  const presenceError = document.getElementById('presence-error');
+
+  function presenceLocal(){
+    const options = [
+      { palavra:'Foco', acao:'Bloqueie 25min e feche notificações.' },
+      { palavra:'Ritmo', acao:'Respire 4×4×4 antes de iniciar blocos.' },
+      { palavra:'Limite', acao:'Diga “não por agora”; reagende com critério.' },
+      { palavra:'Vínculo', acao:'Envie 1 nota de reconhecimento objetiva.' },
+      { palavra:'Forma', acao:'Refatore um layout: reduza 10% de ruído.' },
+    ];
+    return options[Math.floor(Math.random()*options.length)];
+  }
+
+  genPresenceBtn?.addEventListener('click', async ()=>{
+    presenceOutput.classList.add('hidden'); presenceError.classList.add('hidden'); presenceLoader.classList.remove('hidden');
+    genPresenceBtn.disabled = true;
+    const systemPrompt = `Você é o sistema Symbol. Gere JSON {"palavra":"...", "acao":"..."} — conciso e prático.`;
+    const payload = {
+      contents:[{ parts:[{ text:"Gere a presença da semana." }] }],
+      systemInstruction:{ parts:[{ text:systemPrompt }] },
+      generationConfig:{ responseMimeType:"application/json" }
+    };
+    try{
+      const result = await callGeminiAPI(payload);
+      const text = pick(result,['candidates',0,'content','parts',0,'text'],'{}');
+      const data = tryJSON(text) || presenceLocal();
+      presenceWord.textContent = data.palavra;
+      presenceAction.textContent = data.acao;
+      presenceOutput.classList.remove('hidden');
+    }catch(err){
+      const data = presenceLocal();
+      presenceWord.textContent = data.palavra;
+      presenceAction.textContent = data.acao;
+      presenceOutput.classList.remove('hidden');
+    }finally{
+      presenceLoader.classList.add('hidden'); genPresenceBtn.disabled = false;
+    }
+  });
+
+  // --- Fluxo ---
+  const genFlowBtn = document.getElementById('generate-flow');
+  const flowPrompt = document.getElementById('flow-prompt');
+  const flowOutput = document.getElementById('flow-output');
+  const flowLoader = document.getElementById('flow-loader');
+  const flowError = document.getElementById('flow-error');
+
+  function flowLocal(promptText){
+      const steps=[
+        "**Trino:** defina um próximo passo atômico (≤10min).",
+        "**Joaquina:** proteja 1 bloco de 25min no calendário.",
+        "**Lume:** pausa de 2min + 1 linha de registro ao concluir."
+      ];
+      if(/\b(criativ|ideia|bloqueio)\b/i.test(promptText)) steps[0]="**Farol:** faça 3 variações feias e rápidas.";
+      if(/\b(cansa|energia|sono|over)\b/i.test(promptText)) steps[2]="**Lume:** respiração 4-4-6 + água antes de retomar.";
+      return steps.join("\n");
+  }
+
+  genFlowBtn?.addEventListener('click', async ()=>{
+    const promptText = (flowPrompt?.value || "").trim();
+    if(!promptText){ flowError.textContent = "Descreva o seu desafio."; flowError.classList.remove('hidden'); return; }
+    flowOutput.classList.add('hidden'); flowError.classList.add('hidden'); flowLoader.classList.remove('hidden');
+    genFlowBtn.disabled = true;
+    const systemPrompt = `Você é o sistema Symbol. Retorne 2–3 passos em **Negrito Guardião:** frase. Linhas separadas.`;
+    const payload = { contents:[{ parts:[{ text:promptText }] }], systemInstruction:{ parts:[{ text:systemPrompt }] } };
+    try{
+      const result = await callGeminiAPI(payload);
+      const text = pick(result,['candidates',0,'content','parts',0,'text'],'');
+      const html = mdLite(text) || flowLocal(promptText);
+      flowOutput.innerHTML = html;
+      flowOutput.classList.remove('hidden');
+    }catch(err){
+      const html = mdLite(flowLocal(promptText));
+      flowOutput.innerHTML = html;
+      flowOutput.classList.remove('hidden');
+    }finally{
+      flowLoader.classList.add('hidden'); genFlowBtn.disabled = false;
+    }
+  });
+  </script>
+</body>
+</html>
+
