@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>SOS · Núcleo & Biblioteca — Mapa Unificado</title>
+<style>
+  :root{
+    /* SOS tokens (P&B + ≤20% acentos) */
+    --bg:#FFFFFF; --fg:#111111; --muted:#6B6B6B; --card:#F7F7F8; --border:#E6E7EA;
+    --accent-farol:#F2C200;   /* Estrutural */
+    --accent-iris:#6B7CFF;    /* Visual */
+    --accent-joaquina:#2ECC71;/* Simbólico */
+    --accent-lume:#FFB020;    /* Autodidata */
+    --accent-mira:#00BFA6;    /* Reflexivo */
+    --accent-trino:#FF6200;   /* Funcional */
+    --ring:#0A84FF;           /* Nexo/anel de contexto */
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0D0D10; --fg:#F2F2F4; --muted:#A0A1A7; --card:#1A1B1E; --border:#2A2B31; }
+  }
+  *{box-sizing:border-box}
+  body{ margin:0; background:var(--bg); color:var(--fg);
+        font-family: Manrope, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif; }
+  .wrap{ max-width:1024px; margin:28px auto; padding:20px; }
+  header{ display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; }
+  h1{ font-weight:900; margin:0; letter-spacing:.2px; }
+  .sub{ color:var(--muted); font-size:14px; }
+  .card{ background:var(--card); border:1px solid var(--border); border-radius:16px; padding:18px; }
+  .legend{ display:flex; flex-wrap:wrap; gap:8px 12px; font-size:13px; color:var(--muted); }
+  .dot{ width:10px; height:10px; border-radius:50%; display:inline-block; margin-right:6px; vertical-align:middle; }
+  .canvas{ width:100%; aspect-ratio: 16 / 9; display:block; }
+  .label{ font:800 11px/1 Manrope,system-ui; fill:#fff; text-anchor:middle; }
+  .subLabel{ font:600 10px/1 Manrope,system-ui; fill:rgba(255,255,255,.96); text-anchor:middle; }
+  .center{ font:900 11px/1 Manrope,system-ui; fill:#fff; text-anchor:middle; }
+  .ringLabel{ font:800 11px/1 Manrope,system-ui; fill:#111; text-anchor:middle; }
+  .mutedRing{ font:600 10px/1 Manrope,system-ui; fill:#444; text-anchor:middle; }
+  @media (prefers-color-scheme: dark){
+    .ringLabel{ fill:#EDEDF2 } .mutedRing{ fill:#B9BAC1 }
+  }
+  .hint{ margin-top:10px; font-size:13px; color:var(--muted); }
+  .footer{ margin-top:14px; font-size:12px; color:var(--muted); display:flex; gap:12px; justify-content:space-between; flex-wrap:wrap; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>SOS · Mapa Unificado</h1>
+        <div class="sub">Núcleo (seu modo de pensar) + Biblioteca (corredores universais)</div>
+      </div>
+      <div class="legend">
+        <span><i class="dot" style="background:var(--accent-farol)"></i>Estrutural</span>
+        <span><i class="dot" style="background:var(--accent-iris)"></i>Visual</span>
+        <span><i class="dot" style="background:var(--accent-joaquina)"></i>Simbólico</span>
+        <span><i class="dot" style="background:var(--accent-lume)"></i>Autodidata</span>
+        <span><i class="dot" style="background:var(--accent-mira)"></i>Reflexivo</span>
+        <span><i class="dot" style="background:var(--accent-trino)"></i>Funcional</span>
+        <span><i class="dot" style="background:var(--ring)"></i>Corredores Universais</span>
+      </div>
+    </header>
+
+    <div class="card">
+      <svg class="canvas" viewBox="-480 -270 960 540" role="img" aria-label="Mapa Unificado SOS">
+        <defs>
+          <filter id="sombra" x="-50%" y="-50%" width="200%" height="200%">
+            <feDropShadow dx="0" dy="1" stdDeviation="0.6" flood-opacity="0.18"/>
+          </filter>
+        </defs>
+
+        <!-- Eixos do Nexo -->
+        <g stroke="rgba(107,107,107,.35)" stroke-width="1.2" stroke-dasharray="3 4">
+          <line x1="0" y1="0" x2="0" y2="-190"/>
+          <line x1="0" y1="0" x2="165" y2="-95"/>
+          <line x1="0" y1="0" x2="150" y2="150"/>
+          <line x1="0" y1="0" x2="0" y2="190"/>
+          <line x1="0" y1="0" x2="-150" y2="150"/>
+          <line x1="0" y1="0" x2="-165" y2="-95"/>
+        </g>
+
+        <!-- Anel externo: Biblioteca Infinita -->
+        <circle cx="0" cy="0" r="240" fill="none" stroke="rgba(10,132,255,.22)" stroke-width="2" />
+        <!-- Outer nodes (ring) -->
+        <!-- ENTROPIA -->
+        <g transform="translate(0,-240)">
+          <circle r="38" fill="transparent" stroke="var(--ring)" stroke-width="2" filter="url(#sombra)"></circle>
+          <text class="ringLabel" x="0" y="-2">ENTROPIA</text>
+          <text class="mutedRing" x="0" y="12">Manter × Deixar ir</text>
+          <title>Entropia: tudo tende à desordem; priorize prevenção e manutenção.</title>
+        </g>
+        <!-- INTERDEPENDÊNCIA -->
+        <g transform="translate(200,-115)">
+          <circle r="38" fill="transparent" stroke="var(--ring)" stroke-width="2" filter="url(#sombra)"></circle>
+          <text class="ringLabel" x="0" y="-2">INTERDEPENDÊNCIA</text>
+          <text class="mutedRing" x="0" y="12">Interfaces & alavancas</text>
+          <title>Interdependência: nada existe isolado; otimize interfaces.</title>
+        </g>
+        <!-- LIMITE DA PERCEPÇÃO -->
+        <g transform="translate(200,115)">
+          <circle r="38" fill="transparent" stroke="var(--ring)" stroke-width="2" filter="url(#sombra)"></circle>
+          <text class="ringLabel" x="0" y="-8">LIMITE DA</text>
+          <text class="ringLabel" x="0" y="6">PERCEPÇÃO</text>
+          <text class="mutedRing" x="0" y="22">Pontos cegos</text>
+          <title>Limite da Percepção: vemos frações do real; crie checagens externas.</title>
+        </g>
+        <!-- IMAGINAÇÃO -->
+        <g transform="translate(0,240)">
+          <circle r="38" fill="transparent" stroke="var(--ring)" stroke-width="2" filter="url(#sombra)"></circle>
+          <text class="ringLabel" x="0" y="-2">IMAGINAÇÃO</text>
+          <text class="mutedRing" x="0" y="12">Prototipar futuros</text>
+          <title>Imaginação: cenários abrem espaço de decisão atual.</title>
+        </g>
+        <!-- FRAGILIDADE COMPARTILHADA -->
+        <g transform="translate(-200,115)">
+          <circle r="38" fill="transparent" stroke="var(--ring)" stroke-width="2" filter="url(#sombra)"></circle>
+          <text class="ringLabel" x="0" y="-8">FRAGILIDADE</text>
+          <text class="ringLabel" x="0" y="6">COMPARTILHADA</text>
+          <text class="mutedRing" x="0" y="22">Força nos limites</text>
+          <title>Fragilidade Compartilhada: vulnerabilidades assumidas convidam cooperação.</title>
+        </g>
+        <!-- RECORRÊNCIA -->
+        <g transform="translate(-200,-115)">
+          <circle r="38" fill="transparent" stroke="var(--ring)" stroke-width="2" filter="url(#sombra)"></circle>
+          <text class="ringLabel" x="0" y="-2">RECORRÊNCIA</text>
+          <text class="mutedRing" x="0" y="12">Ciclos & rimas</text>
+          <title>Recorrência: padrões repetem; interrompa rimas nocivas, reforce as virtuosas.</title>
+        </g>
+
+        <!-- Centro (núcleo pessoal) -->
+        <circle cx="0" cy="0" r="20" fill="#000" filter="url(#sombra)"></circle>
+        <text class="center" x="0" y="-4">Fernando</text>
+        <text class="center" x="0" y="10" style="font-weight:800">Mind Core</text>
+
+        <!-- Inner nodes (seu mapa mental) -->
+        <g transform="translate(0,-190)">
+          <circle r="28" fill="var(--accent-farol)" filter="url(#sombra)"></circle>
+          <text class="label" y="-2" text-anchor="middle">Estrutural</text>
+          <text class="subLabel" y="12" text-anchor="middle">Grid • Sistemas</text>
+          <title>Frameworks e coerência sistêmica.</title>
+        </g>
+        <g transform="translate(165,-95)">
+          <circle r="32" fill="var(--accent-iris)" filter="url(#sombra)"></circle>
+          <text class="label" y="-2" text-anchor="middle">Visual</text>
+          <text class="subLabel" y="12" text-anchor="middle">Forma • Estética</text>
+          <title>Hierarquia, tipografia, paleta, composição.</title>
+        </g>
+        <g transform="translate(150,150)">
+          <circle r="30" fill="var(--accent-joaquina)" filter="url(#sombra)"></circle>
+          <text class="label" y="-2" text-anchor="middle">Simbólico</text>
+          <text class="subLabel" y="12" text-anchor="middle">Guardiões • Sentido</text>
+          <title>Metáforas, nomes, papéis, afeto orientando decisões.</title>
+        </g>
+        <g transform="translate(0,190)">
+          <circle r="28" fill="var(--accent-lume)" filter="url(#sombra)"></circle>
+          <text class="label" y="-2" text-anchor="middle">Autodidata</text>
+          <text class="subLabel" y="12" text-anchor="middle">Exploração</text>
+          <title>Aprender fazendo, prototipar, iterar.</title>
+        </g>
+        <g transform="translate(-150,150)">
+          <circle r="30" fill="var(--accent-mira)" filter="url(#sombra)"></circle>
+          <text class="label" y="-2" text-anchor="middle">Reflexivo</text>
+          <text class="subLabel" y="12" text-anchor="middle">Análise • Aprendizado</text>
+          <title>Autoanálise, registro, síntese.</title>
+        </g>
+        <g transform="translate(-165,-95)">
+          <circle r="32" fill="var(--accent-trino)" filter="url(#sombra)"></circle>
+          <text class="label" y="-2" text-anchor="middle">Funcional</text>
+          <text class="subLabel" y="12" text-anchor="middle">Fluxo • Utilidade</text>
+          <title>Eficiência, clareza, usabilidade.</title>
+        </g>
+      </svg>
+      <p class="hint">Camadas: interior = seu modo de pensar · anel = corredores universais. Tooltips nos nós trazem resumos rápidos.</p>
+    </div>
+
+    <div class="footer">
+      <div>Tipografia: <strong>Manrope</strong> · Paleta P&amp;B + acentos · Nexo como anel orientador.</div>
+      <div>v1.0-unificado · pronto para inserir no site SOS.</div>
+    </div>
+  </div>
+</body>
+</html>
