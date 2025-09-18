@@ -1,275 +1,59 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SOS Open v1.0 — Symbol Open System (Fernando)</title>
-  <meta name="description"
-    content="Manual pessoal para suporte emocional, decisões /PCP e presets de imagem. Portável entre GPT, Gemini e Grok." />
-  <link rel="icon" href="favicon-32.png" sizes="32x32" />
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <link rel="manifest" href="site.webmanifest" />
-  <link rel="stylesheet" href="assets/css/site.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SOS Open v1.x</title>
+<link rel="stylesheet" href="assets/sos.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;600;800;900&display=swap">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon-32.png">
 </head>
-<body class="page-manual">
-  <header class="top-nav">
-    <div class="page-shell bar" role="navigation" aria-label="Navegação principal">
-      <a class="brand" href="index.html">
-        <span class="logo" aria-hidden="true">∞</span>
-        <span>SOS — Symbol Open System</span>
-      </a>
-      <nav aria-label="Seções do manual">
-        <ul class="primary-nav">
-          <li><a href="#sigla">Sigla</a></li>
-          <li><a href="#principios">Princípios</a></li>
-          <li><a href="#emocional">Emocional</a></li>
-          <li><a href="#pcp">/PCP</a></li>
-          <li><a href="#imagem">Imagem</a></li>
-          <li><a href="#portabilidade">Portabilidade</a></li>
-          <li><a href="#governanca">Governança</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <section class="hero">
-      <div class="page-shell">
-        <p class="eyebrow">Manual pessoal (Fernando)</p>
-        <h1>SOS Open v1</h1>
-        <p>Um sistema leve que combina suporte emocional, estrutura de trabalho (/PCP) e a camada visual do Symbol. Desenhado
-          para ser replicado entre modelos de IA sem perder contexto ou intenção.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#pcp">Ir direto para /PCP</a>
-          <a class="button secondary" href="index.html">Voltar ao hub</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section compact" id="sigla">
-      <div class="page-shell">
-        <header class="section-header">
-          <h2>Significado da sigla SOS</h2>
-          <p>Núcleo conceitual do manual: linguagem simbiótica, abertura a outros modelos e um sistema replicável.</p>
-        </header>
-        <div class="section-grid columns-3">
-          <article class="card">
-            <h3>Symbol</h3>
-            <p class="muted">Núcleo visual, tipografia e narrativa icônica. Conexão rápida por símbolos familiares.</p>
-          </article>
-          <article class="card">
-            <h3>Open</h3>
-            <p class="muted">Portável entre plataformas. Ajustes mínimos garantem consistência de tom e estrutura.</p>
-          </article>
-          <article class="card">
-            <h3>System</h3>
-            <p class="muted">Princípios, guardiões e fluxos operacionais integrados. Sempre prontos para ação.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section compact" id="principios">
-      <div class="page-shell">
-        <header class="section-header">
-          <h2>Princípios</h2>
-          <p>Filtro de decisões: só permanece o que gera clareza, reduz risco ou acelera ação.</p>
-        </header>
-        <div class="badge-grid">
-          <span class="badge">Simples</span>
-          <span class="badge">Seguro</span>
-          <span class="badge">Relevante</span>
-          <span class="badge">Memorável</span>
-          <span class="badge">Sustentável</span>
-        </div>
-        <p class="muted" style="margin-top:1rem">Regra: menos camadas, mais clareza. Se não ajuda a decidir ou agir, sai.</p>
-      </div>
-    </section>
-
-    <section class="section" id="emocional">
-      <div class="page-shell">
-        <header class="section-header">
-          <h2>Suporte emocional — Guardiões</h2>
-          <p>3T guiam o todo (visão). 7T executam (ação). Use como posturas mentais acionáveis para reorientar a rotina.</p>
-        </header>
-        <h3 class="muted">Tríade 3T</h3>
-        <div class="grid-guardian">
-          <article class="guardian-card" data-tone="farol">
-            <strong>△ Farol · 3T · Visual</strong>
-            <ul class="list small">
-              <li><em>Intenção:</em> clareza estética-estratégica.</li>
-              <li><em>Ritual 60s:</em> “O que é o essencial visual aqui?”</li>
-              <li><em>Quando invocar:</em> confusão de forma/hierarquia.</li>
-            </ul>
-          </article>
-          <article class="guardian-card" data-tone="iris">
-            <strong>○ Íris · 3T · Social</strong>
-            <ul class="list small">
-              <li><em>Intenção:</em> vínculo e linguagem.</li>
-              <li><em>Ritual 60s:</em> “Como digo isso mais humano e direto?”</li>
-              <li><em>Quando invocar:</em> adesão baixa, ruído de tom.</li>
-            </ul>
-          </article>
-          <article class="guardian-card" data-tone="joaquina">
-            <strong>▼ Joaquina · 3T · Segurança</strong>
-            <ul class="list small">
-              <li><em>Intenção:</em> limite e validação (duplo-ok).</li>
-              <li><em>Ritual 60s:</em> “Qual o risco? Qual bloqueio mínimo?”</li>
-              <li><em>Quando invocar:</em> escopo inchando, risco difuso.</li>
-            </ul>
-          </article>
-        </div>
-
-        <h3 class="muted" style="margin-top:2rem">Tríade 7T</h3>
-        <div class="grid-guardian">
-          <article class="guardian-card" data-tone="lume">
-            <strong>◯ Lume · 7T · Saúde</strong>
-            <ul class="list small">
-              <li><em>Intenção:</em> cadência e pausas.</li>
-              <li><em>Ritual 60s:</em> 25/5 + água + alongar.</li>
-              <li><em>Quando invocar:</em> sinais de overload.</li>
-            </ul>
-          </article>
-          <article class="guardian-card" data-tone="mira">
-            <strong>◇ Mira · 7T · Conhecimento</strong>
-            <ul class="list small">
-              <li><em>Intenção:</em> autoanálise e síntese.</li>
-              <li><em>Ritual 60s:</em> “Qual o diagnóstico em 3 linhas?”</li>
-              <li><em>Quando invocar:</em> ambiguidade alta.</li>
-            </ul>
-          </article>
-          <article class="guardian-card" data-tone="nexo">
-            <strong>⦿ Nexo · 7T · Transversal</strong>
-            <ul class="list small">
-              <li><em>Intenção:</em> narrativa e costura.</li>
-              <li><em>Ritual 60s:</em> “Qual foi a decisão e por quê (1 linha)?”</li>
-              <li><em>Quando invocar:</em> perda de contexto/histórico.</li>
-            </ul>
-          </article>
-          <article class="guardian-card" data-tone="trino">
-            <strong>∴ Trino · 7T · Trabalho (PCP)</strong>
-            <ul class="list small">
-              <li><em>Intenção:</em> estrutura e critérios.</li>
-              <li><em>Ritual 60s:</em> “Qual o próximo passo replicável?”</li>
-              <li><em>Quando invocar:</em> decisão emperrada.</li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="pcp">
-      <div class="page-shell">
-        <header class="section-header">
-          <h2>/PCP — Plano · Critérios · Prioridade (Trino)</h2>
-          <p>Framework para transformar caos em decisão replicável. Entradas mínimas: objetivo, restrições, critérios e opções.</p>
-        </header>
-        <article class="card">
-          <h3 class="small">1) Plano (esqueleto)</h3>
-          <ul class="list small">
-            <li><strong>Contexto</strong> (3 linhas): objetivo + estado atual.</li>
-            <li><strong>Entregáveis</strong> (3–5): o que existe ao final.</li>
-            <li><strong>Sequência</strong>: passos essenciais (até 5).</li>
-          </ul>
-          <h3 class="small">2) Critérios (métrica de decisão)</h3>
-          <ul class="list small">
-            <li>Defina 3–4 critérios alinhados ao objetivo.</li>
-            <li>Use escala 1–5. Peso adicional apenas se houver trade-offs fortes.</li>
-          </ul>
-          <h3 class="small">3) Prioridade (ação)</h3>
-          <ul class="list small">
-            <li>Matriz opções × critérios. Some pontuações e valide com guardiões.</li>
-            <li>Saída: <strong>ação imediata</strong> + <strong>checkpoint</strong> (data, guardião responsável).</li>
-          </ul>
-          <div class="callout" style="margin-top:1.25rem">
-            <strong>Prompt portável:</strong> <code>/PCP objetivo=&hellip; restricoes=&hellip; opcoes=&hellip;</code>. Para decisão complexa, use também
-            <code>"matriz de decisão"</code> solicitando tabela (opções nas linhas, critérios nas colunas).</div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" id="imagem">
-      <div class="page-shell">
-        <header class="section-header">
-          <h2>Configurações de imagem</h2>
-          <p>Presets flexíveis para gerar cenas coerentes com o Symbol. Combine guardiões e variações conforme a narrativa.</p>
-        </header>
-        <div class="split-panel">
-          <div class="panel">
-            <h3>Fundação visual</h3>
-            <ul class="list small">
-              <li><strong>Paleta base:</strong> off-white + azul cobalto + preto profundo.</li>
-              <li><strong>Tipografia:</strong> Inter (peso 600+) + SF Mono para código.</li>
-              <li><strong>Estética:</strong> futurismo leve, iluminação suave, profundidade em camadas.</li>
-            </ul>
-            <div class="callout small">Prompt base: <code>"symbol open system, minimal futuristic interface, glowing cobalt accents"</code></div>
-          </div>
-          <div class="panel">
-            <h3>Variações por guardião</h3>
-            <ul class="list small">
-              <li><strong>Farol:</strong> contraste alto, luz dourada, foco em hierarquia.</li>
-              <li><strong>Íris:</strong> texturas suaves, elementos circulares, toques lilás.</li>
-              <li><strong>Joaquina:</strong> grades firmes, recortes diagonais, luz verde-azulada.</li>
-              <li><strong>Lume/Mira/Nexo/Trino:</strong> modularidade, sobreposições leves, ruído baixo.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="portabilidade">
-      <div class="page-shell">
-        <header class="section-header">
-          <h2>Portabilidade — GPT · Gemini · Grok</h2>
-          <p>Como transportar o SOS entre modelos sem perder contexto. Use prompts curtos e campos claros.</p>
-        </header>
-        <div class="section-grid columns-3">
-          <article class="card">
-            <h3>Setup padrão</h3>
-            <ul class="list small">
-              <li>Carregar resumo do SOS + guardiões.</li>
-              <li>Explicar como usar <code>/PCP</code> e check-ins.</li>
-              <li>Salvar respostas com data + guardião acionado.</li>
-            </ul>
-          </article>
-          <article class="card">
-            <h3>Comandos essenciais</h3>
-            <ul class="list small">
-              <li><code>/PCP</code> — estrutura de decisão.</li>
-              <li><code>/resumo</code> — síntese de sessão.</li>
-              <li><code>/imagem</code> — presets visuais (apontar guardião).</li>
-            </ul>
-          </article>
-          <article class="card">
-            <h3>Dicas rápidas</h3>
-            <ul class="list small">
-              <li>Manter contexto com <em>"lembrar guardiões ativos"</em>.</li>
-              <li>Para portabilidade, exportar resumo em markdown.</li>
-              <li>Revisar comandos após cada atualização do manual.</li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section compact" id="governanca">
-      <div class="page-shell">
-        <header class="section-header">
-          <h2>Governança</h2>
-          <p>Processo de revisão e manutenção do SOS para garantir leveza e aderência às necessidades atuais.</p>
-        </header>
-        <div class="card">
-          <p class="muted">Revisão trimestral seguindo a sequência <strong>Trino → Íris → Farol</strong>. Atualizar apenas o necessário para
-            preservar clareza e ação.</p>
-          <p class="muted">Checklist: validar relevância dos guardiões, atualizar prompts e confirmar compatibilidade entre modelos.</p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="page-shell">SOS Open v1 — manual pessoal. Portável, seguro, pronto para expansão.</div>
-  </footer>
+<body>
+<header class="header">
+  <div class="brand">
+    <div class="logo">SOS</div>
+    <span class="title">Symbol Open System</span>
+  </div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="sos-open-v1.html">SOS Open</a>
+    <a href="sos-mapa-unificado.html">Mapa Unificado</a>
+    <a href="guia-visual.html">Guia Visual</a>
+  </nav>
+</header>
+<main>
+<section class="page-header">
+  <h1>SOS Open v1.x</h1>
+  <p>Manual do sistema: descubra os guardiões, rituais e princípios que estruturam o SOS.</p>
+</section>
+<section class="guardian-list">
+  <h2>Guardiões</h2>
+  <ul>
+    <li><strong>Farol (Estrutural)</strong> – Cria frameworks, sistemas e grids; busca coerência sistêmica.</li>
+    <li><strong>Íris (Visual)</strong> – Zela por forma, estética e paleta; ordena tipografia e composição.</li>
+    <li><strong>Joaquina (Simbólica)</strong> – Dá nomes e papéis; cria guardiões e metáforas para orientar decisões.</li>
+    <li><strong>Lume (Autodidata)</strong> – Incorpora aprendizado por exploração; prototipar e iterar são seu método.</li>
+    <li><strong>Mira (Reflexiva)</strong> – Favorece a autoanálise e o registro; sintetiza aprendizados.</li>
+    <li><strong>Trino (Funcional)</strong> – Busca fluxo, usabilidade e utilidade; decisões pragmáticas.</li>
+  </ul>
+</section>
+<section class="rituals">
+  <h2>Rituais de Uso</h2>
+  <ol>
+    <li>Defina o contexto e escolha um guardião relevante.</li>
+    <li>Faça uma pergunta-portal e liste evidências (dados e experiências).</li>
+    <li>Tome uma decisão reversível no curto prazo e outra para monitorar no longo prazo.</li>
+    <li>Revisite em sete dias; reforce padrões virtuosos, repense rimas nocivas.</li>
+  </ol>
+</section>
+<section class="closing">
+  <p>O SOS Open é um documento vivo. Adapte seus rituais, refine guardiões e expanda a linguagem conforme sua prática.</p>
+  <p><a class="btn btn-ghost" href="index.html">Voltar ao início</a></p>
+</section>
+</main>
+<footer class="footer">
+  <p>© 2025 – Symbol Open System.</p>
+</footer>
 </body>
 </html>

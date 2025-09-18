@@ -1,0 +1,15 @@
+:root {
+  --bg: #0D0D10;
+  --fg: #F2F2F4;
+  --muted: #A0A1A7;
+  --card: #1A1B1E;
+  --border: #2A2B31;
+  --farol: #F2C200;
+  --iris: #6B7CFF;
+  --joaquina: #2ECC71;
+  --lume: #FFB020;
+  --mira: #00BFA6;
+  --trino: #FF6200;
+  --radius: 14px;
+  --maxw: 1100px;
+}
