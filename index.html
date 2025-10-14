@@ -1,73 +1,77 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!doctype html>
+<html lang="pt-br">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SOS · Symbol Open System</title>
-<link rel="stylesheet" href="sos.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;600;800;900&display=swap">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="favicon-32.png">
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>SOS v2.0 — Início</title>
+  <meta name="description" content="SOS · Symbol Open System"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/tokens.css"/>
+  <link rel="stylesheet" href="./assets/css/base.css"/>
+  <script defer src="./assets/js/main.js"></script>
 </head>
 <body>
-<header class="header">
-  <div class="brand">
-    <div class="logo">SOS</div>
-    <span class="title">Symbol Open System</span>
-  </div>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="sos-open-v1.html">SOS Open</a>
-    <a href="sos-mapa-unificado.html">Mapa Unificado</a>
-    <a href="guia-visual.html">Guia Visual</a>
-  </nav>
-</header>
-<main>
+  <header class="header">
+    <div class="brand"><div class="brand-badge"></div><span>SOS</span></div>
+    <nav class="nav">
+      <a href="./index.html">Início</a>
+      <a href="./prompts.html">/prompts</a>
+      <a href="./guardioes/farol.html">Farol △</a>
+      <a href="./guardioes/iris.html">Íris ◎</a>
+      <a href="./guardioes/joaquina.html">Joaquina ▼</a>
+      <a href="./guardioes/lume.html">Lume ◯</a>
+      <a href="./guardioes/mira.html">Mira ◇</a>
+      <a href="./guardioes/nexo.html">Nexo ⦿</a>
+      <a href="./guardioes/trino.html">Trino ∴</a>
+      <a href="./correntes/sorte.html">Sorte 🌬️</a>
+    </nav>
+  </header>
+  <main>
+
 <section class="hero">
-  <div class="hero-content">
-    <h1>SOS — Symbol Open System</h1>
-    <p class="subtitle">Bússola simbiótica: pensar com forma, sentir com método.</p>
-    <div class="cta-row">
-      <a class="btn btn-primary" href="sos-open-v1.html">Abrir SOS Open</a>
-      <a class="btn btn-ghost" href="sos-mapa-unificado.html">Ver Mapa Unificado</a>
-    </div>
+  <h1>SOS v2.0 — Symbol Open System</h1>
+  <p>Manual pessoal vivo com guardiões, correntes transversais e biblioteca de prompts. P&B com ≤20% acento, Manrope.</p>
+</section>
+
+<section>
+  <h2>Guardiões</h2>
+  <div class="grid">
+    <a class="card guard-halo guard-farol" href="./guardioes/farol.html"><div class="guard-title"><span class="guard-dot"></span><h3>Farol △</h3></div><p>Forma · Direção visual, hierarquia, grid.</p><span class="badge">cor: var(--farol)</span></a>
+    <a class="card guard-halo guard-iris" href="./guardioes/iris.html"><div class="guard-title"><span class="guard-dot"></span><h3>Íris ◎</h3></div><p>Vínculo · Integração e linguagem.</p><span class="badge">cor: var(--iris)</span></a>
+    <a class="card guard-halo guard-joaquina" href="./guardioes/joaquina.html"><div class="guard-title"><span class="guard-dot"></span><h3>Joaquina ▼</h3></div><p>Limite · Escopo, validação, duplo‑ok.</p><span class="badge">cor: var(--joaquina)</span></a>
+    <a class="card guard-halo guard-lume" href="./guardioes/lume.html"><div class="guard-title"><span class="guard-dot"></span><h3>Lume ◯</h3></div><p>Balanço · Cadência, pausas, alertas.</p><span class="badge">cor: var(--lume)</span></a>
+    <a class="card guard-halo guard-mira" href="./guardioes/mira.html"><div class="guard-title"><span class="guard-dot"></span><h3>Mira ◇</h3></div><p>Espelho · Autoanálise, diagnóstico, síntese.</p><span class="badge">cor: var(--mira)</span></a>
+    <a class="card guard-halo guard-nexo" href="./guardioes/nexo.html"><div class="guard-title"><span class="guard-dot"></span><h3>Nexo ⦿</h3></div><p>Trama · Narrativa, logs, releases e costura.</p><span class="badge">cor: var(--nexo)</span></a>
+    <a class="card guard-halo guard-trino" href="./guardioes/trino.html"><div class="guard-title"><span class="guard-dot"></span><h3>Trino ∴</h3></div><p>Lógica · Estrutura, taxonomias, decisão replicável.</p><span class="badge">cor: var(--trino)</span></a>
   </div>
 </section>
-<section class="cards-section">
-  <div class="cards">
-    <div class="card">
-      <h2>SOS Open v1.x</h2>
-      <p>Manual oficial do sistema. Identidade, guardiões, regras de resposta e rituais de uso.</p>
-      <a class="btn btn-small" href="sos-open-v1.html">Abrir manual</a>
-    </div>
-    <div class="card">
-      <h2>Mapa Unificado</h2>
-      <p>Núcleo do seu modo de pensar integrado aos corredores universais. Visualize padrões e limites.</p>
-      <a class="btn btn-small" href="sos-mapa-unificado.html">Ver mapa</a>
-    </div>
-    <div class="card">
-      <h2>Guia Visual</h2>
-      <p>Design system minimalista. Paleta P&B com acentos, tipografia, tokens e diretrizes.</p>
-      <a class="btn btn-small" href="guia-visual.html">Abrir guia</a>
-    </div>
+
+<section style="margin-top:28px;">
+  <h2>Correntes Transversais</h2>
+  <div class="card corrente" style="--c: var(--nexo);">
+    <h3>Sorte 🌬️</h3>
+    <p>Vertical: Trama (transversal) · Faceta: Ocasionalidade · Função: expandir probabilidades onde já existe movimento.</p>
+    <ul>
+      <li><strong>Radar de Sorte:</strong> logue eventos de acaso favorável.</li>
+      <li><strong>Ritual simbiótico:</strong> “abro espaço para a sorte trabalhar comigo”.</li>
+      <li><strong>Log do inesperado:</strong> momentos em que a sorte alterou o rumo.</li>
+    </ul>
+    <a class="tag" href="./correntes/sorte.html">ver página</a>
   </div>
 </section>
-<section class="about">
-  <h2>Sobre o SOS</h2>
-  <p>O Symbol Open System é uma linguagem para criar, pensar e decidir com clareza. Nascido da convergência entre tecnologia e cultura, ele combina um núcleo de pensamento pessoal com corredores universais que recordam princípios atemporais como entropia, interdependência e imaginação. A proposta é unir forma, sentido e função.</p>
-  <p>Ao adotar o SOS, você ganha uma bússola simbiótica: uma ferramenta para navegar complexidades, desenhar sistemas e tomar decisões mais conscientes.</p>
+
+<section style="margin-top:28px;">
+  <h2>Biblioteca /prompts</h2>
+  <p>Templates-mãe do KIT-SOS com 5 modelos base.</p>
+  <div class="card"><a href="./prompts.html" class="badge">abrir biblioteca</a></div>
 </section>
-<section class="changelog">
-  <h2>Changelog</h2>
-  <ul>
-    <li><strong>v1.0.3</strong> – Adicionado Mapa Unificado e Guia Visual.</li>
-    <li><strong>v1.0.2</strong> – Revisão de identidade e rituais de uso.</li>
-    <li><strong>v1.0.1</strong> – Lançamento inicial do SOS Open v1.</li>
-  </ul>
-</section>
-</main>
-<footer class="footer">
-  <p>© 2025 – Symbol Open System.</p>
-</footer>
+
+  </main>
+  <footer class="footer">
+    <div>SOS v2.0 • 3SRM: <span class="kbd">Simples</span> <span class="kbd">Seguro</span> <span class="kbd">Sustentável</span> <span class="kbd">Relevante</span> <span class="kbd">Memorável</span></div>
+    <div>Paleta P&B + ≤20% acento</div>
+  </footer>
 </body>
 </html>
